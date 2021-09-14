@@ -1,0 +1,57 @@
+.widget{
+  border-radius: 4px;
+  margin-bottom: 20px;
+  &__head{
+    display: flex;
+    padding: 10px 15px;
+
+    &--title{
+      margin: 0;
+    }
+
+    &--actions{
+      margin-left: auto;
+      display: flex;
+    }
+
+    &--actiongroup{
+      display: flex;
+    }
+
+    &--actionItem{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      &:not(:last-child){
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &__body{
+    &--vertical,
+    &--horizontal{
+      display: flex;
+    }
+
+    &--vertical{
+      flex-direction: column;
+    }
+
+    &--section{
+      padding: 15px;
+      &-full{
+        flex:  1 0 auto;
+        min-width: 0;
+      }
+    }
+  }
+
+  &__foot{
+    padding: 10px 15px;
+  }
+}

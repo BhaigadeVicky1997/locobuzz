@@ -1,0 +1,38 @@
+<div class="break">
+    <div class="break--left" fxFlex="60%">
+        <img src="assets/images/media/break.svg" alt="" class="img__fluid">
+    </div>
+    <div fxFlex="40%" class="break--right">
+        <div class="break--header">
+            <ul>
+                <li>
+                    <img src="assets/locobuzz-logo.svg" alt="">
+                </li>
+                <li>
+                    <img class="agentPic" src="http://pbs.twimg.com/profile_images/1081115559624724480/LOMcFF7z_400x400.jpg" alt="">
+                    <span>{{username}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="break--body">
+            <h3 class="text-capitalize mb-25">you are on break since</h3>
+            <svg width="234" height="234" xmlns="http://www.w3.org/2000/svg">
+                <circle id="circle" class="circle_animation" r="108" cy="117" cx="117" stroke-width="8" stroke="#3d09ae" fill="none"/>
+            </svg>
+            <!-- <div class="break--timer">
+                <div class="break--timer--play"></div>
+            </div> -->
+            <div class="break--timer--counter" style="background-image: url('assets/images/media/break-timer.jpg');">
+                <p>{{hoursToDday}}:{{minutesToDday}}:{{secondsToDday}}
+                </p>
+            </div>
+        </div>
+        <div class="break--foot">
+            <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                <mat-label>Enter password to end break</mat-label>
+                <input formControlName='AuthorName' #titleInput matInput>
+            </mat-form-field>
+            <button type="submit" mat-flat-button color="accent" class="break--foot--button" (click)="endBreak(titleInput.value)">end break</button>
+        </div>
+    </div>
+</div>

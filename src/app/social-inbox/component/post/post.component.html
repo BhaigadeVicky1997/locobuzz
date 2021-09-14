@@ -1,0 +1,910 @@
+<!-- post--opacity add this class, when show eye icon on post -->
+<div class="post">
+    
+  <div class="post__head">
+      <div class="post__head--profile">
+          <div class="post__head--channel">
+              <div class="channel">
+                  <img class="channel__image" [src]="post.channelImage" alt="channel image" />
+                  <span class="channel__label">{{ post.channelName }}</span>
+              </div>
+          </div>
+          <!-- <div class="post__head--channel">
+              <img class="img__fluid" [src]="imgPath + brandImg" alt="brand image" />
+          </div> -->
+          <div>
+              <div class="profile post__dropdown">
+                  <div class="profile__img">
+                      <img [src]="post.Userinfo.image"
+                      onError="this.src='assets/images/agentimages/sample-image.jpg'" alt="user image" />
+                  </div>
+                  <div class="profile__name">{{ post.Userinfo.name }}</div>
+                  <div class="profile__handle profile__handle--none" *ngIf="post.Userinfo.screenName">
+                      ({{ post.Userinfo.screenName }})
+                  </div>
+                  <div class="profile__isverified" *ngIf="this.post.Userinfo.isVerified">
+                      <img class="img__fluid" src="/assets/social-mention/post/isVerified.svg" />
+                  </div>
+                  <div class="post__dropdown--list post__dropdown--listprofile profile__dropdown">
+                      <div class="profile__dropdown--head">
+                          <div class="profile__img mr-12">
+                              <img class="img__fluid" [src]="post.Userinfo.image"
+                              onError="this.src='assets/images/agentimages/sample-image.jpg'" alt="user image" />
+                          </div>
+                          <div class="profile__dropdowninfo">
+                              <div class="profile__name">{{ post.Userinfo.name }}</div>
+                              <div class="profile__handle" *ngIf="post.Userinfo.screenName">
+                                  ({{ post.Userinfo.screenName }})
+                              </div>
+                          </div>
+                          <a mat-icon-button href="javascript:void(0)" class="profile__dropdown--action ml-auto" (click)="openUserProfile(1)">
+                              <mat-icon>account_box</mat-icon>
+                          </a>
+                      </div>
+                      <div class="profile__dropdown--body">
+                          <div class="profile__dropdown--summary" *ngIf="post.Userinfo.bio">
+                              {{ post.Userinfo.bio }}
+                          </div>
+                          <div class="profile__dropdown--stats">
+                              <div class="profile__dropdown--stats-item" *ngIf="
+                  post.Userinfo.followers != null ||
+                  post.Userinfo.followers != undefined
+                ">
+                                  <span class="text__label--sm">{{
+                  post.Userinfo.followers
+                }}</span>
+                                  <span class="text__regular--sm"> Followers</span>
+                              </div>
+                              <div class="profile__dropdown--stats-item" *ngIf="
+                  post.Userinfo.following != null ||
+                  post.Userinfo.following != undefined
+                ">
+                                  <span class="text__label--sm">{{
+                  post.Userinfo.following
+                }}</span>
+                                  <span class="text__regular--sm"> Following</span>
+                              </div>
+                          </div>
+                          <div class="profile__dropdown--location" *ngIf="post.Userinfo.location">
+                              <mat-icon>location_on</mat-icon>
+                              <span>{{ post.Userinfo.location }}</span>
+                          </div>
+                          <div class="profile__dropdown--score">
+                              <ul>
+                                  <li class="d-flex-items-center mb-4" *ngIf="
+                    post.Userinfo.sentimentUpliftScore != null ||
+                    post.Userinfo.sentimentUpliftScore != undefined
+                  ">
+                                      <span class="text__label--sm">Sentiment Uplift Score</span>
+                                      <span class="colored__yellow--dark text-semibold ml-auto">{{
+                    post.Userinfo.sentimentUpliftScore
+                  }}</span>
+                                  </li>
+                                  <li class="d-flex-items-center mb-4" *ngIf="
+                    post.Userinfo.npsScore != null ||
+                    post.Userinfo.npsScore != undefined
+                  ">
+                                      <span class="text__label--sm">NPS Score</span>
+                                      <span class="colored__green text-semibold ml-auto">{{
+                    post.Userinfo.npsScore
+                  }}</span>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="post__head--info">
+          <div class="post__head--infoitem conversation--crm" (click)="getRequestPopup()" *ngIf="ticketHistoryData.crmcreatereqpop;else showmobilenopopup">
+              <div class="post__pill cursor-pointer">
+                  <mat-icon class="post__foot--icon mr-3" fontSet="material-icons-outlined" aria-hidden="false" aria-label="done">done</mat-icon>
+                  <span class="post__foot--label">CRM</span>
+              </div>
+          </div>
+          <ng-template #showmobilenopopup>
+            <div class="post__head--infoitem conversation--crm" *ngIf="ticketHistoryData.crmmobilenopopup">
+                <div [matMenuTriggerFor]="menu" class="post__pill cursor-pointer">
+                    <mat-icon class="post__foot--icon mr-3" fontSet="material-icons-outlined" aria-hidden="false" aria-label="done">done</mat-icon>
+                    <span class="post__foot--label">CRM</span>
+                </div>
+            </div>
+          </ng-template>
+          <div class="post__head--infoitem" *ngIf="fromCall==1">
+              <div class="post__pill cursor-pointer" *ngIf="post.assignTo" (click)="assignTicket()">
+                  <mat-icon class="post__head--icon post__pill--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="how_to_reg icon">how_to_reg</mat-icon>
+                  <span>{{ post.assignTo }}</span>
+              </div>
+          </div>
+          <div class="post__head--infoitem">
+              <div class="post__pill">
+                  <img class="img__fluid w-20 mr-3 brand__img--circle" [src]="post.brandLogo" onError="this.src='assets/social-mention/post/default_brand.svg'" alt="brand image"/>
+                  <span>{{ post.brandName }}</span>
+              </div>
+          </div>
+          <div class="post__head--infoitem" *ngIf="ticketHistoryData.isabouttobreach && fromCall==1">
+              <mat-icon class="post__head--icon" [ngClass]="{'colored__red': ticketHistoryData.alreadybreached}" fontSet="material-icons-outlined" aria-hidden="false" aria-label="alarm icon">alarm</mat-icon>
+              <span class="post__head--label">{{ticketHistoryData.timetobreach}}</span>
+          </div>
+          <div class="post__head--infoitem">
+              <!-- <mde-popover class="custom__tooltip mat-elevation-z4" #appPopover="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                  <div class="custom__tooltip--item">
+                      <span class="custom__tooltip--label">Created on</span>
+                      <span class="custom__tooltip--value">{{
+            post.ticketTime.createdDate
+          }}</span>
+                  </div>
+                  <div class="custom__tooltip--item">
+                      <span class="custom__tooltip--label">Modified on:</span>
+                      <span class="custom__tooltip--value">{{
+            post.ticketTime.modifiedDate
+          }}</span>
+                  </div>
+                  <div class="custom__tooltip--item">
+                      <span class="custom__tooltip--label">Mentioned on:</span>
+                      <span class="custom__tooltip--value">{{
+            post.ticketTime.mentionDate
+          }}</span>
+                  </div>
+              </mde-popover> -->
+              <mat-icon class="post__head--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="schedule icon">schedule</mat-icon>
+              <span class="post__head--label" >{{
+        post.ticketTime.timetoshow
+      }}</span>
+          </div>
+          <!-- <div class="post__status post__status--new">
+              New
+          </div> -->
+           <!-- <div class="post__status post__status--show">
+              <mat-icon class="material-icons-outlined">remove_red_eye</mat-icon>
+          </div> -->
+      </div>
+  </div>
+  <div class="post__body">
+      <div class="post__body--data">
+          <ng-container>
+              <div class="post__body--content">
+                  <div *ngIf="postData.channelGroup == channelGroupEnum.Email">
+                      <div class="mt-0 mb-10 border-bottom__light-grey ticket__trigger">
+                          <div class="d-flex-items-center mb-10">
+                              <label class="text__label mb-0">From: </label>
+                              <div class="ml-5"> {{post.Userinfo.socialid}}</div>
+                          </div>
+                          <div class="d-flex-items-center mb-10">
+                              <label class="text__label mb-0">To/Cc: </label>
+                              <div class="ml-5 mr-5"> {{ticketHistoryData.tomaillist}}  <a href="jvascript:void(0)" > <!--[mdePopoverTriggerFor]="emailSummary" -->
+                                  <mat-icon>keyboard_arrow_down</mat-icon>
+                                </a></div>
+                          </div>
+                          <!-- <mde-popover class="bg__white p-10 mat-elevation-z4 customPopOver" #emailSummary="mdePopover" mdePopoverPositionY="below" mdePopoverPositionX="before" [mdePopoverOverlapTrigger]="false">
+                              <div class="d-flex-items-center mb-10">
+                                  <label class="text__label mb-0">From: </label>
+                                  <div class="ml-5">john.Doe@gmail.com</div>
+                              </div>
+                              <div class="d-flex-items-center">
+                                  <label class="text__label mb-0">To: </label>
+                                  <div class="ml-5">john.Doe@gmail.com</div>
+                              </div>
+                          </mde-popover> -->
+                      </div>
+                      <p *ngIf="postData.channelGroup == channelGroupEnum.Email; else otherChannelsTitle" class="text__label">{{ ticketHistoryData.title }}</p>
+                      <ng-template #otherChannelsTitle>
+                          <p class="text__label mb-0">{{ ticketHistoryData.title }}</p>
+                      </ng-template>
+                  </div>
+
+                  <div *ngIf="ticketHistoryData?.description" [innerHTML]="ticketHistoryData.description"></div>
+                  <div class="post__note post__note--image" *ngIf="ticketHistoryData?.htmlData" [innerHTML]="ticketHistoryData.htmlData"></div>
+                  <div class="post__alert post__alert--warning" *ngIf="post.note">
+                      <label class="post__alert--label" *ngIf="ticketHistoryData.isrejectedNote else LastNote">Rejected Note: </label>
+                      <ng-template #LastNote>
+                        <label class="post__alert--label">Note: </label>
+                      </ng-template>
+                      <span class="post__alert--info"> {{post.note}}</span>
+                  </div>
+          </div>
+
+    </ng-container>
+
+                  <ng-template>
+                      <div class="post__body--content">
+                          <p class="post__body--label">
+                              Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+                          </p>
+                          <div class="post__body--more">
+                              <span>2</span>
+                          </div>
+                          <div class="post__body--email">
+                              <img class="post__body--profile" src="assets/social-mention/post/default_brand.svg" />
+                              <p>
+                                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                              </p>
+                          </div>
+                          <div class="post__body--email">
+                              <img class="post__body--profile" src="assets/social-mention/post/default_brand.svg" />
+                              <p>
+                                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                              </p>
+                          </div>
+                          <div class="post__body--email">
+                              <img class="post__body--profile" src="assets/social-mention/post/default_brand.svg" />
+                              <p>
+                                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                              </p>
+                          </div>
+                      </div>
+                  </ng-template>
+
+                  <div class="post__body--media position-relative" *ngIf="ticketHistoryData.imageurls">
+                      <img class="img__fluid cursor-pointer" [src]="ticketHistoryData.imageurls[0]"  (click)="openAttachmentPreview()">
+                      <mat-icon class="video__play--icon" *ngIf="videoIcon">play_circle_outline</mat-icon>
+                  </div>
+              </div>
+              <div class="post__body--data mt-8">
+                  <div *ngIf="showTranslated" class="post__note">
+                      <p *ngIf="!isTranslateError" class="post__note--title">Translated from From: <a class="post__note--highlight">{{translateFrom}}</a> To: <a class="post__note--highlight post__note--dropdown" [matMenuTriggerFor]="languageDropdown">{{translateTo}} <mat-icon>keyboard_arrow_down</mat-icon></a>
+                          <mat-icon (click)="showTranslated=false" fontSet="material-icons-outlined" class="cursor-pointer">highlight_off</mat-icon>
+                      </p>
+
+                      <mat-menu  #languageDropdown="matMenu">
+                          <button *ngFor="let language of Object.keys(languages)" (click)="setTranslateTo(languages[language].DisplayName,languages[language].PassingName)" mat-menu-item>{{languages[language].DisplayName}}</button>
+                      </mat-menu>
+                      <span class="post__note--info">{{translatedText}}</span>
+                                  <mat-icon *ngIf="isTranslateError" (click)="showTranslated=false" fontSet="material-icons-outlined" class="cursor-pointer">highlight_off</mat-icon>
+                              </div>
+              </div>
+              <div [ngClass]="{'element__disable' : ticketHistoryData.isDeletedMentionDisable }" *ngIf="fromCall==2 && ticketHistoryData.communicationLogProperty.showLikeShareBox">
+                  <mat-menu #handleSelect="matMenu" (click)="$event.stopPropagation();" xPosition="after" yPosition="above">
+                      <ng-template matMenuContent let-type="type">
+                          <div class="px-10 pb-10 bb__light-grey">
+                              <span class="text__label">{{type}}</span>
+                          </div>
+                          <button mat-menu-item *ngFor="let item of this.handleNames" (click)="setSocialHandle(item);$event.stopPropagation()">
+            <div class="d-flex-items-center">
+                <img class="mr-4 img w-20" [src]="item.profilepic" alt="Brand Image" >
+                <span>{{item.handleName}}</span>
+            </div>
+        </button>
+                          <div class="d-flex-items-center p-10 bt__light-grey">
+                              <a class="ml-auto colored__locobuzz" (click)="submitActionHandle()">Submit</a>
+                          </div>
+                      </ng-template>
+                  </mat-menu>
+                  <ng-template [ngIf]="postData.channelGroup == channelGroupEnum.Facebook">
+                      <div class="post__stat">
+                          <div *ngIf="ticketHistoryData.communicationLogProperty.likeEnabled" class="post__stat--item">
+                              <span [matMenuTriggerFor]="handleSelect" [matMenuTriggerData]="{type: 'Like/Unlike by handle'}" class="post__stat--icon" (click)="setMentionFlag(getMentionAction.LikeUnlike, ticketHistoryData.communicationLogProperty.likeStatus)">
+           <mat-icon fontSet="material-icons-outlined">favorite_border</mat-icon>
+         </span>
+                              <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.likeCount}}</span>
+                          </div>
+                          <div class="post__stat--item">
+                              <span class="post__stat--icon">
+           <mat-icon fontSet="material-icons-outlined">repeat</mat-icon>
+         </span>
+                              <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.shareCount}}</span>
+                          </div>
+                      </div>
+                  </ng-template>
+                  <div *ngIf="postData.channelGroup == channelGroupEnum.Twitter; else otherChannels" class="post__stat">
+                      <div *ngIf="ticketHistoryData.communicationLogProperty.likeEnabled" class="post__stat--item">
+                          <span [matMenuTriggerFor]="handleSelect" [matMenuTriggerData]="{type: 'Like/Unlike by handle'}" class="post__stat--icon" (click)="setMentionFlag(getMentionAction.LikeUnlike,ticketHistoryData.communicationLogProperty.likeStatus)">
+          <mat-icon fontSet="material-icons-outlined">favorite</mat-icon>
+        </span>
+                          <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.likeCount}}</span>
+                      </div>
+                      <div *ngIf="ticketHistoryData.communicationLogProperty.reTweetEnabled" class="post__stat--item">
+                          <span [matMenuTriggerFor]="handleSelect" [matMenuTriggerData]="{type: 'Retweet/UnRetweet by handle'}" (click)="setMentionFlag(getMentionAction.RetweetUntweet,ticketHistoryData.communicationLogProperty.retweetStatus)" class="post__stat--icon">
+          <mat-icon fontSet="material-icons-outlined">repeat</mat-icon>
+        </span>
+                          <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.shareCount}}</span>
+                      </div>
+                      
+                  </div>
+                  <div class="post__foot--item" *ngIf="post.mentionCategoryTop && post.mentionCategoryTop != '' && !ticketHistoryData.showMarkactionable" (click)="openCategoryDialog('mentionCategory')" > <!-- [mdePopoverTriggerFor]="mentionCategoryTop"-->
+                    <mat-icon class="post__foot--icon " [ngClass]="{ 'colored__red': post.mentionCatColor === getSentiment.Negative || post.mentionCatColor === getSentiment.Mixed,'colored__green--dark': post.mentionCatColor === getSentiment.Positive,
+                    'colored__yellow--dark': post.mentionCatColor === getSentiment.Neutral }"  fontSet="material-icons-outlined" aria-hidden="false" aria-label="speaker notes">speaker_notes</mat-icon>
+                    <span class="post__foot--label">{{ post.mentionCategoryTop }}</span>
+                    <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #mentionCategoryTop="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                      <div class="custom__tooltip--item">
+                          <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">speaker_notes</mat-icon>Mention Category</span>
+                          <span class="custom__tooltip--label">{{ post.mentionCategoryTop }}</span>
+                      </div>
+                  </mde-popover> -->
+                </div>
+                  <ng-template #otherChannels>
+                      <div class="post__stat--item" *ngIf="postData.channelGroup == channelGroupEnum.Instagram || postData.channelGroup == channelGroupEnum.Youtube">
+                          <div class="mr-10" *ngIf="ticketHistoryData.communicationLogProperty.likeEnabled">
+                              <span [matMenuTriggerFor]="handleSelect" [matMenuTriggerData]="{type: 'Like/Unlike by handle'}" class="post__stat--icon" (click)="setMentionFlag(getMentionAction.LikeUnlike, ticketHistoryData.communicationLogProperty.likeStatus)">
+          <mat-icon fontSet="material-icons-outlined">favorite</mat-icon>
+        </span>
+                              <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.likeCount}}</span>
+                          </div>
+                          <div>
+                              <span class="post__stat--icon">
+          <mat-icon fontSet="material-icons-outlined">repeat</mat-icon>
+        </span>
+                              <span class="post__stat--value">{{ticketHistoryData.communicationLogProperty.shareCount}}</span>
+                          </div>
+                      </div>
+                  </ng-template>
+              </div>
+              <!-- SSRE Note -->
+              <div class="post__note" *ngIf="ticketHistoryData.isSSREPreview">
+                  <div class="post__note--head" [innerHTML]="ticketHistoryData.SSREPreview.actionPerformed"></div>
+                  <span class="post__note--info" [innerHTML]="ticketHistoryData.SSREPreview.messageContent"></span
+    >
+  </div>
+  <!-- Approve and Reject Note -->
+  <div class="post__note" *ngIf="ticketHistoryData.isMakerCheckerPreview">
+    <div class="post__note--head">
+      <p
+        class="post__note--title"
+        [innerHTML]="ticketHistoryData.MakerCheckerPreview.actionPerformed"
+      ></p>
+    </div>
+    <span
+      class="post__note--info"
+      [innerHTML]="ticketHistoryData.MakerCheckerPreview.messageContent"
+    ></span>
+              </div>
+              <div class="post__note post__note--image" *ngIf="false">
+                  <img src="assets/images/media/media-1.jpg" srcset="assets/images/media/media-1.jpg">
+              </div>
+      </div>
+      <div class="post__foot" *ngIf="fromCall==1">
+          <div class="post__foot--wrapper order__change post__foot--wrapper--width">
+              <div class="post__foot--item post__foot--checkitem">
+                  <mat-checkbox [ngClass]="{'w-16': post.ticketId >= 0}" [(ngModel)]="AllCheckBoxes" (change)="postSelect($event.checked, post.ticketId)"></mat-checkbox>
+                  <div *ngIf="ticketHistoryData.ismentionidVisible" class="d-flex-items-center ml-12">
+                      <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">message</mat-icon>
+                      <span class="post__foot--label" [title]="ticketHistoryData.mentionid">{{ ticketHistoryData.mentionid }}</span>
+                  </div>
+
+              </div>
+              <div class="post__foot--item" *ngIf="post.ticketId > 0" > <!-- [mdePopoverTriggerFor]="ticketId"-->
+                  <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">local_activity</mat-icon>
+                  <span class="post__foot--label" [title]="post.ticketId">{{ post.ticketId }}</span>
+                    <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #ticketId="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                        <div class="custom__tooltip--item">
+                            <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">local_activity</mat-icon>  Ticket Id</span>
+                            <span class="custom__tooltip--label">{{ post.ticketId }} <mat-icon [cdkCopyToClipboard]="post.ticketId">content_copy </mat-icon></span>
+                        </div>
+                    </mde-popover> -->
+              </div>
+              <div *ngIf="!ticketHistoryData.showMarkactionable && post.mentionCount > 0" class="post__foot--item" > <!-- [mdePopoverTriggerFor]="mentionCount" -->
+                  <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="question answer">question_answer</mat-icon>
+                  <span class="post__foot--label">{{ post.mentionCount }}</span>
+                  <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #mentionCount="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                    <div class="custom__tooltip--item">
+                        <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">question_answer</mat-icon> Total Mentions</span>
+                        <span class="custom__tooltip--label">{{ post.mentionCount }}</span>
+                    </div>
+                </mde-popover> -->
+              </div>
+              <div *ngIf="!ticketHistoryData.showMarkactionable" class="post__foot--item" > <!-- [mdePopoverTriggerFor]="ticketStatus"-->
+                  <mat-icon class="post__foot--icon colored__blue" [ngClass]="statusClass" fontSet="material-icons-outlined" aria-hidden="false" aria-label="folder">folder</mat-icon>
+                  <span class="post__foot--label">{{ post.ticketStatus }}</span>
+                  <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #ticketStatus="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                    <div class="custom__tooltip--item">
+                        <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">folder</mat-icon>  Ticket Status</span>
+                        <span class="custom__tooltip--label">{{ post.ticketStatus }}</span>
+                    </div>
+                </mde-popover> -->
+              </div>
+              <div *ngIf="!ticketHistoryData.showMarkactionable" class="post__foot--item" [matMenuTriggerFor]="prioritymenu">
+                  <mat-icon class="post__foot--icon" [ngClass]="priorityClass" fontSet="material-icons-outlined" aria-hidden="false" aria-label="low priority">low_priority</mat-icon>
+                  <span class="post__foot--label">{{ ticketPriority }}</span>
+                  <mat-menu #prioritymenu="matMenu" yPosition="above" class="matmenu-md">
+                      <button mat-menu-item (click)="changePriority('3', 'Urgent')">
+          <mat-icon class="colored__red--dark rotate__180">low_priority</mat-icon>
+          <!-- 3 -->
+          <span>Urgent</span>
+        </button>
+                      <button mat-menu-item (click)="changePriority('2', 'High')">
+          <mat-icon class="colored__red rotate__180">low_priority</mat-icon>
+          <!-- 2 -->
+          <span>High</span>
+        </button>
+                      <button mat-menu-item (click)="changePriority('1', 'Medium')">
+          <mat-icon class="colored__yellow">low_priority</mat-icon>
+          <!-- 1 -->
+          <span>Medium</span>
+        </button>
+                      <button mat-menu-item (click)="changePriority('0', 'Low')">
+          <mat-icon class="colored__grey">low_priority</mat-icon>
+          <!-- 0 -->
+          <span>Low</span>
+        </button>
+                  </mat-menu>
+              </div>
+              <div class="post__foot--item" *ngIf="post.ticketCategoryTop && post.ticketCategoryTop != '' && !ticketHistoryData.showMarkactionable" (click)="openCategoryDialog('ticketCategory')" > <!-- [mdePopoverTriggerFor]="ticketCategory" -->
+                <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" [ngClass]="{ 'colored__red': post.ticketCatColor === getSentiment.Negative ||  post.ticketCatColor === getSentiment.Mixed,'colored__green--dark': post.ticketCatColor === getSentiment.Positive,
+                  'colored__yellow--dark': post.ticketCatColor === getSentiment.Neutral}"  aria-hidden="false" aria-label="local activity">local_activity</mat-icon>
+                  <span class="post__foot--label">{{ post.ticketCategoryTop }}</span>
+                  <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #ticketCategory="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                      <div class="custom__tooltip--item">
+                          <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">local_activity</mat-icon>Ticket Category</span>
+                          <span class="custom__tooltip--label">{{ post.ticketCategoryTop }}</span>
+                      </div>
+                  </mde-popover> -->
+              </div>
+              <div class="post__foot--item" *ngIf="post.mentionCategoryTop && post.mentionCategoryTop != '' && !ticketHistoryData.showMarkactionable" (click)="openCategoryDialog('mentionCategory')" > <!-- [mdePopoverTriggerFor]="mentionCategoryTop"-->
+                  <mat-icon class="post__foot--icon " [ngClass]="{ 'colored__red': post.mentionCatColor === getSentiment.Negative || post.mentionCatColor === getSentiment.Mixed,'colored__green--dark': post.mentionCatColor === getSentiment.Positive,
+                  'colored__yellow--dark': post.mentionCatColor === getSentiment.Neutral }"  fontSet="material-icons-outlined" aria-hidden="false" aria-label="speaker notes">speaker_notes</mat-icon>
+                  <span class="post__foot--label">{{ post.mentionCategoryTop }}</span>
+                  <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #mentionCategoryTop="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                    <div class="custom__tooltip--item">
+                        <span class="custom__tooltip--value"> <mat-icon fontSet="material-icons-outlined">speaker_notes</mat-icon>Mention Category</span>
+                        <span class="custom__tooltip--label">{{ post.mentionCategoryTop }}</span>
+                    </div>
+                </mde-popover> -->
+              </div>
+              <!-- <div class="post__foot--item" [ngClass]="crmClass">
+                  <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="done">done</mat-icon>
+                  <span [matMenuTriggerFor]="menu" class="post__foot--label">CRM</span>
+              </div> -->
+              <div class="post__foot--item" *ngIf="!ticketHistoryData.showMarkactionable &&
+        (this.post?.ticketCategory?.ticketUpperCategory ||
+        this.post?.ticketCategory?.mentionUpperCategory)" > <!-- [mdePopoverTriggerFor]="upperCategory" -->
+                  <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="more">more</mat-icon>
+                    <!-- <mde-popover class="custom__tooltip--category mat-elevation-z4" #upperCategory="mdePopover" mdePopoverPositionY="above" [mdePopoverOverlapTrigger]="false">
+                        <div class="custom__tooltip--item" *ngIf="this.post?.ticketCategory?.ticketUpperCategory">
+                            <span class="custom__tooltip--value">Ticket Upper Category</span>
+                            <span class="custom__tooltip--label"><mat-icon class="post__foot--icon colored__purple--dark">local_activity</mat-icon> 
+                                {{this.post.ticketCategory.ticketUpperCategory}}</span>
+                        </div>
+                        <div class="custom__tooltip--item" *ngIf="this.post?.ticketCategory?.mentionUpperCategory">
+                            <span class="custom__tooltip--value">Mention Upper Category</span>
+                            <span class="custom__tooltip--label"><mat-icon class="post__foot--icon colored__purple--dark">message</mat-icon>
+                                {{ this.post.ticketCategory.mentionUpperCategory }}</span>
+                        </div>
+                    </mde-popover> -->
+                  <!-- <ul class="post__dropdown--list post__dropdown--listinfo p-12">
+                      <li class="post__dropdown--listitem" *ngIf="this.post?.ticketCategory?.ticketUpperCategory">
+                          <p class="text__label text-nowrap">Ticket Upper Category</p>
+                          <div class="d-flex-items-center">
+                              <mat-icon class="post__foot--icon colored__purple--dark">local_activity</mat-icon>
+                              <span class="text__sub">{{
+              this.post.ticketCategory.ticketUpperCategory
+            }}</span>
+                          </div>
+                      </li>
+                      <li class="post__dropdown--listitem" *ngIf="this.post?.ticketCategory?.mentionUpperCategory">
+                          <p class="text__label text-nowrap">Mention Upper Category</p>
+                          <div class="d-flex-items-center">
+                              <mat-icon class="post__foot--icon colored__purple--dark">message</mat-icon>
+                              <span class="text__sub">{{
+              this.post.ticketCategory.mentionUpperCategory
+            }}</span>
+                          </div>
+                      </li>
+                  </ul> -->
+              </div>
+          </div>
+          <div class="post__foot--wrapper ml-auto post__foot--wrapper--tabsize--right">
+              <div *ngIf="
+        userpostLink &&
+        !ticketHistoryData.isSimulationSSRE &&
+        !ticketHistoryData.isLiveSSRE &&
+        !ticketHistoryData.isApproveRejectMakerChecker
+      " class="post__foot--item post__foot--itemaction" matTooltip="Open post" matTooltipPosition="above" matTooltipClass="custom-tooltip">
+                  <a [href]="userpostLink" target="_blank">
+                      <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="open_in_new">open_in_new</mat-icon>
+                  </a>
+              </div>
+              <div *ngIf="
+        ticketHistoryData.isDirectCloseVisible &&
+        !ticketHistoryData.isSimulationSSRE &&
+        !ticketHistoryData.isLiveSSRE &&
+        !ticketHistoryData.isApproveRejectMakerChecker
+      " class="post__foot--item post__foot--itemaction" matTooltip="Direct close" matTooltipPosition="above" matTooltipClass="custom-tooltip">
+      
+                  <mat-icon (click)="directCloseTicket()" class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon>
+              </div>
+              <!-- brand & csd approve and reject -->
+              <div *ngIf="
+      ticketHistoryData.isworkflowApproveVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item  post__foot--itemaction" matTooltip="Approve" matTooltipPosition="above">
+    <a class="btn btn__positive" [matMenuTriggerFor]="workFlowApprovenote">Approve</a>
+    <mat-menu #workFlowApprovenote="matMenu" class="note-elem__dropdown">
+      <div class="note-elem pr-20 pl-20 pt-10">
+          <div class="note-elem__input" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="material__select">
+                  <mat-label class="text__label custom__input--label">Add Note</mat-label>
+                  <textarea matInput ngModel #note="ngModel" class="resize"></textarea>
+              </mat-form-field>
+          </div>
+          <div class="note-elem__actions">
+              <button mat-button color="accent" class="ml-auto">Cancel</button>
+              <button mat-button color="accent" (click)="workFlowApproved(note.value)">
+Save
+</button>
+          </div>
+      </div>
+  </mat-menu>
+                  <!-- <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon> -->
+              </div>
+
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="ticketHistoryData.setpriority">
+                  <mat-icon class="post__foot--actionicon mat-icon--transform" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">
+                      low_priority
+                  </mat-icon>
+              </div>
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="ticketHistoryData.sendmailallmention">
+                  <mat-icon class="post__foot--actionicon">mail_outline</mat-icon>
+              </div>
+              <div class="post__foot--item  post__foot--itemaction colored__locobuzz MakeActionable" (click)="makeactionable()" *ngIf="ticketHistoryData.showMarkactionable">
+                  <mat-icon class="post__foot--actionicon">new_label</mat-icon>
+                  <span class="post__foot--label w-112 ml-7">Make Actionable</span>
+              </div>
+
+              <div *ngIf="
+      ticketHistoryData.isworkflowRejectVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item  post__foot--itemaction" matTooltip="Reject" matTooltipPosition="above">
+    <a class="btn btn__negative mr-4" [matMenuTriggerFor]="workFlowRejectnote">Reject</a>
+    <mat-menu #workFlowRejectnote="matMenu" class="note-elem__dropdown">
+      <div class="note-elem pr-20 pl-20 pt-10">
+          <div class="note-elem__input" (click)="$event.stopPropagation()">
+              <label class="text__label custom__input--label">Add Note</label>
+              <textarea ngModel #note="ngModel" class="custom__input" placeholder="Enter note here"></textarea>
+          </div>
+          <div class="note-elem__actions">
+              <button mat-button color="accent" class="ml-auto">Cancel</button>
+              <button mat-button color="accent" (click)="workFlowRejected(note.value)">
+Save
+</button>
+          </div>
+      </div>
+  </mat-menu>
+                  <!-- <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon> -->
+              </div>
+
+              <!-- maker checker-buttons -->
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="ticketHistoryData.isApproveRejectMakerChecker">
+                  <a class="btn btn__negative mr-4" [matMenuTriggerFor]="rejectnote">Reject</a
+      >
+      <a class="btn btn__neutral mr-4" (click)="replyModified()">Modify</a>
+                  <a class="btn btn__positive" (click)="replyApproved()">Approve</a>
+                  <mat-menu #rejectnote="matMenu" class="note-elem__dropdown">
+                      <div class="note-elem pr-20 pl-20 pt-10">
+                          <div class="note-elem__input" (click)="$event.stopPropagation()">
+                              <label class="text__label custom__input--label">Add Note</label>
+                              <textarea ngModel #note="ngModel" class="custom__input" placeholder="Enter note here"></textarea>
+                          </div>
+                          <div class="note-elem__actions">
+                              <button mat-button color="accent" class="ml-auto">Cancel</button>
+                              <button mat-button color="accent" (click)="replyRejected(note.value)">
+              Save
+            </button>
+                          </div>
+                      </div>
+                  </mat-menu>
+
+              </div>
+              <!-- ssre-buttons live -->
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="ticketHistoryData.isLiveSSRE">
+                  <a class="btn btn__negative mr-4" (click)="ssreLiveWrongPopupLogic()">Wrong</a>
+                  <a class="btn btn__positive" (click)="ssreLiveRightVerified()">Right</a>
+              </div>
+              <!-- ssre-buttons simulation -->
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="ticketHistoryData.isSimulationSSRE">
+                  <a class="btn btn___negative mr-4" (click)="ssreSimulationWrongPopupLogic()">Wrong</a>
+                  <a class="btn btn__positive" (click)="ssreSimulationRightPopupLogic()">Right</a>
+              </div>
+
+              <div class="post__foot--item  post__foot--itemaction" *ngIf="postData.ticketInfoSsre && ticketHistoryData.isSSREVerified">
+                  <span>Verified by
+        {{ postData.ticketInfoSsre.ssreReplyVerifiedOrRejectedBy }}</span
+      >
+    </div>
+
+    <div
+      class="post__foot--item  post__foot--itemaction"
+      matTooltip="Open details"
+      matTooltipPosition="above" matTooltipClass="custom-tooltip"
+      (click)="openTicketDetail(this.post.ticketId)"
+      *ngIf="!ticketHistoryData.isApproveRejectMakerChecker && ticketHistoryData.showTicketWindow"
+    >
+      <mat-icon
+        class="post__foot--actionicon"
+        fontSet="material-icons-outlined"
+        aria-hidden="false"
+        aria-label="remove_red_eye"
+        >remove_red_eye</mat-icon
+      >
+    </div>
+    <div
+      *ngIf="
+        ticketHistoryData.isReplyVisible &&
+        !ticketHistoryData.isSimulationSSRE &&
+        !ticketHistoryData.isLiveSSRE &&
+        !ticketHistoryData.isApproveRejectMakerChecker
+      "
+      class="post__foot--item  post__foot--itemaction"
+      matTooltip="Reply post"
+      matTooltipPosition="above" matTooltipClass="custom-tooltip"
+    >
+      <mat-icon
+        class="post__foot--actionicon"
+        aria-hidden="false"
+        aria-label="reply"
+        (click)="replyPost()"
+        >reply</mat-icon
+      >
+    </div>
+    <div class="post__foot--item  post__foot--itemaction post__dropdown">
+        <mat-icon
+        class="post__foot--actionicon"
+        fontSet="material-icons-outlined"
+        aria-hidden="false" #button
+        aria-label="more_horiz" [matMenuTriggerFor]="menu" #moreOption="matMenuTrigger"
+        (mouseenter)="buttonEnter(moreOption)"
+        (mouseleave)="buttonLeave(moreOption, button)">more_horiz</mat-icon>
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+            <span (mouseenter)="menuenter()"
+            (mouseleave)="menuLeave(moreOption, button)">
+                <button mat-menu-item *ngIf="ticketHistoryData.isAssignVisible" (click)="assignTicket()">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Assign to</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isAttachTicketVisible" (click)="attachTicket()">
+                    <mat-icon>attach_file</mat-icon>
+                    <span>Attach Ticket</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isEscalateVisible" (click)="replyEscalate()">
+                    <mat-icon>escalator_warning</mat-icon>
+                    <span>Escalate</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isTrendsVisible">
+                    <mat-icon>trending_up</mat-icon>
+                    <span>Trends</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isCopyMoveVisible" (click)="openCopy_Move()">
+                    <mat-icon>outbond</mat-icon>
+                    <span>Copy/Move</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isDeleteFromLocobuzz">
+                    <mat-icon>delete_outline</mat-icon>
+                    <span>Delete from Locobuzz</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isDeleteFromChannel">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete from Channel</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isTranslationVisible" (click)="translateText()">
+                    <mat-icon>translate</mat-icon>
+                    <span>Translate</span>
+                </button>
+                <ng-template [ngIf]="ticketHistoryData.isEnableDisableMakercheckerVisible">
+                    <button mat-menu-item *ngIf="ticketHistoryData.isTicketAgentWorkFlowEnabled;
+                    else DisableMakerChecker" (click)="enableMakerChecker(true)">
+                        <mat-icon>spellcheck</mat-icon>
+                        <span>Enable Maker Checker</span>
+                    </button>
+                    <ng-template #DisableMakerChecker>
+                        <button mat-menu-item (click)="enableMakerChecker(false)">
+                            <mat-icon>spellcheck</mat-icon>
+                            <span>Disable Maker Checker</span>
+                        </button>
+                    </ng-template>
+                </ng-template>
+
+                <button mat-menu-item *ngIf="ticketHistoryData.isMarkInfluencerVisible" (click)="markInfluencer()">
+                    <mat-icon>campaign</mat-icon>
+                    <span>Mark Influencer</span>
+                </button>
+                <button mat-menu-item *ngIf="ticketHistoryData.isSendEmailVisible" (click)="sendPostEmail()">
+                    <mat-icon>email</mat-icon>
+                    <span>Send Email</span>
+                </button>
+                <button mat-menu-item (click)="openTicketDetailInNewTab()">
+                    <mat-icon>tab</mat-icon>
+                    <span>Open new tab</span>
+                </button>
+            </span>
+        </mat-menu>
+              </div>
+          </div>
+      </div>
+      <div class="post__foot" *ngIf="fromCall==2">
+          
+          <div class="post__foot--wrapper">
+              <div class="post__foot--item">
+                  <mat-checkbox></mat-checkbox>
+                  <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">local_activity</mat-icon>
+                  <span class="post__foot--label" [title]="postData.ticketInfo.ticketID">{{postData.ticketInfo.ticketID}}</span>
+              </div>
+              <div class="post__foot--item" *ngIf="ticketHistoryData.ismentionidVisible">
+                  <mat-icon class="post__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="question answer">question_answer</mat-icon>
+                  <span class="post__foot--label">{{ticketHistoryData.communicationLogProperty.mentionId}}</span>
+              </div>
+          </div>
+          <div class="post__foot--wrapper ml-auto">
+            <div class="post__foot--item post__foot--itemaction" *ngIf="postData.ticketInfo.isSubscribed">
+                <mat-icon class="post__foot--actionicon" class="colored__locobuzz" aria-hidden="false" aria-label="escalator_warning">notifications_active</mat-icon>
+            </div>
+
+              <div *ngIf="
+      ticketHistoryData.isDirectCloseVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item post__foot--itemaction">
+                  <mat-icon class="post__foot--actionicon" (click)="directCloseTicket()" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon>
+              </div>
+              <!-- brand & csd approve and reject -->
+              <div *ngIf="
+      ticketHistoryData.isworkflowApproveVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item" matTooltip="Approve" matTooltipPosition="above">
+                  <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon>
+              </div>
+
+
+              <div *ngIf="
+      ticketHistoryData.isworkflowRejectVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item post__foot--itemaction" matTooltip="Reject" matTooltipPosition="above">
+                  <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="cancel">cancel</mat-icon>
+              </div>
+              <!--brand & csd work pending     -->
+              <!-- maker checker-buttons -->
+              <div class="post__foot--item post__foot--itemaction" *ngIf="ticketHistoryData.isApproveRejectMakerChecker">
+                  <a class="btn btn__negative mr-4" [matMenuTriggerFor]="rejectnote">Reject</a
+  >
+  <a class="btn btn__neutral mr-4" (click)="replyModified()">Modify</a>
+                  <a class="btn btn__positive" (click)="replyApproved()">Approve</a>
+                  <mat-menu #rejectnote="matMenu" class="note-elem__dropdown">
+                      <div class="note-elem">
+                          <div class="note-elem__input" (click)="$event.stopPropagation()">
+                              <label class="text__label custom__input--label">Add Note</label>
+                              <textarea ngModel #note="ngModel" class="custom__input" placeholder="Enter note here"></textarea>
+                          </div>
+                          <div class="note-elem__actions">
+                              <button mat-stroked-button class="ml-auto mr-8">Cancel</button>
+                              <button mat-stroked-button (click)="replyRejected(note.value)">
+          Save
+        </button>
+                          </div>
+                      </div>
+                  </mat-menu>
+              </div>
+              <!-- ssre-buttons live -->
+              <div class="post__foot--item post__foot--itemaction" *ngIf="ticketHistoryData.isLiveSSRE">
+                  <a class="btn bt__negative mr-4" (click)="ssreLiveWrongPopupLogic()">Wrong</a>
+                  <a class="btn btn__positive" (click)="ssreLiveRightVerified()">Right</a>
+              </div>
+              <!-- ssre-buttons simulation -->
+              <div class="post__foot--item post__foot--itemaction" *ngIf="ticketHistoryData.isSimulationSSRE">
+                  <a class="btn btn___negative mr-4" (click)="ssreSimulationWrongPopupLogic()">Wrong</a>
+                  <a class="btn btn__positive" (click)="ssreSimulationRightPopupLogic()">Right</a>
+              </div>
+
+              <div class="post__foot--item post__foot--itemaction" *ngIf="postData.ticketInfoSsre && ticketHistoryData.isSSREVerified">
+                  <span>Verified by
+    {{ postData.ticketInfoSsre.ssreReplyVerifiedOrRejectedBy }}</span
+  >
+</div>
+      <div class="post__foot--item post__foot--itemaction">
+          <mat-icon class="post__foot--actionicon forward-icon"  aria-hidden="false" (click)="sendPostEmail()" aria-label="forward">reply</mat-icon>
+      </div>
+      <div  *ngIf="
+      ticketHistoryData.isReplyVisible &&
+      !ticketHistoryData.isSimulationSSRE &&
+      !ticketHistoryData.isLiveSSRE &&
+      !ticketHistoryData.isApproveRejectMakerChecker
+    " class="post__foot--item post__foot--itemaction">
+          <mat-icon class="post__foot--actionicon" (click)="replyPost()" aria-hidden="false" aria-label="reply">reply</mat-icon>
+      </div>
+      <mat-menu #CreateTicketNote="matMenu" class="note-elem__dropdown">
+        <div class="note-elem">
+          <div class="note-elem__input" (click)="$event.stopPropagation()">
+            <label class="text__label custom__input--label">Add Note</label>
+            <textarea
+              ngModel
+              #note="ngModel"
+              class="custom__input"
+              placeholder="Enter note here"
+            ></textarea>
+          </div>
+          <div class="note-elem__actions">
+            <button mat-stroked-button class="ml-auto mr-8">Cancel</button>
+            <button mat-stroked-button (click)="createTicket(note.value)">
+              Save
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+      <div class="post__foot--item post__foot--itemaction post__dropdown">
+          <mat-icon class="post__foot--actionicon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="more_vert">more_vert</mat-icon>
+          <ul class="post__dropdown--list">
+                <li *ngIf="ticketHistoryData.isDeleteFromLocobuzz" mat-menu-item>
+                  <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
+                  <span>Delete From Locobuzz</span>
+                  </li>
+                  <li *ngIf="ticketHistoryData.isTranslationVisible" (click)="translateText()" mat-menu-item>
+                      <mat-icon fontSet="material-icons-outlined">translate</mat-icon>
+                      <span> See Translation</span>
+                  </li>
+                  <li mat-menu-item (click)="openSubscribePopup()">
+                      <mat-icon fontSet="material-icons-outlined">notifications_active</mat-icon>
+                      <span> Subscribe</span>
+                  </li>
+                  <li mat-menu-item *ngIf="
+        userpostLink &&
+        !ticketHistoryData.isSimulationSSRE &&
+        !ticketHistoryData.isLiveSSRE &&
+        !ticketHistoryData.isApproveRejectMakerChecker
+      ">
+                      <a [href]="userpostLink" target="_blank">
+                          <mat-icon fontSet="material-icons-outlined">launch</mat-icon>
+                          <span> Open Link </span></a>
+                  </li>
+                  <li *ngIf="ticketHistoryData.isCreateTicketVisible" (click)="createTicketCall()" [matMenuTriggerFor]="CreateTicketNote" #clickTicketMenuTrigger="matMenuTrigger" mat-menu-item>
+                      <mat-icon fontSet="material-icons-outlined">local_activity</mat-icon>
+                      <span> Create Ticket</span>
+                  </li>
+                  <li mat-menu-item *ngIf="ticketHistoryData.isAttachTicketVisible" (click)="attachTicket()">
+                      <mat-icon fontSet="material-icons-outlined">attach_file</mat-icon>
+                      <span>Attach Ticket</span>
+                  </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+        <div class="post__foot post__reply--block" style="overflow: hidden;" *ngIf="postReplyBlock" [@expandCollapse]>
+            <app-post-reply class="w-full" (replyEvent)="callReplyEvent($event)"></app-post-reply>
+        </div>
+  </div>
+
+
+
+  <!-- crm search -->
+
+  <mat-menu #menu="matMenu" yPosition="below" xPosition="before" class="crm">
+      <div class="crm--data" (click)="$event.stopPropagation();">
+          <div class="crm--data--filed1">
+              <div class="select_country_code">
+                  <mat-form-field appearance="outline" class="select--code material__select--border--right">
+                      <!-- <mat-label>mobile number</mat-label>  -->
+                      <mat-select [(value)]="selected">
+                          <mat-option value="+91">+91</mat-option>
+                          <mat-option value="+91">+91</mat-option>
+                          <mat-option value="+91">+91</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="mobile_number">
+                  <mat-form-field appearance="outline" class="mobile material__select--border--left">
+                      <mat-label class="mat-label">mobile number</mat-label>
+                      <input matInput>
+                  </mat-form-field>
+              </div>
+          </div>
+
+          <div class="crm--data--filed1">
+              <mat-form-field appearance="outline" class="material__select material__select--adaptive" fxFLex="100%">
+                  <mat-label class="mat-label">credit card number</mat-label>
+                  <input matInput>
+              </mat-form-field>
+          </div>
+
+          <div class="crm--data--filed1 mt-14">
+              <button mat-button mat-dialog-close class="ml-auto">Cancel</button>
+              <button mat-button mat-dialog-close color="accent" (click)="openCrmDialog()">Search</button>
+          </div>
+
+      </div>
+  </mat-menu>

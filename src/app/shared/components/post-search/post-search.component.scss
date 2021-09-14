@@ -1,0 +1,38 @@
+.post-search{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    
+    &__content{
+        height: 100%;
+        display: flex;
+        align-items: center;  
+    }
+
+    &__menu{
+        width: 24px;
+        height: 24px;
+        display:flex;
+        align-items: center;
+        border-radius: 50%;
+    }
+    &__text{
+        display:flex;
+        align-items: center;
+    }
+    &__options{
+        &--content{
+            padding: 20px;
+        }  
+
+        &--foot{
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }  
+    }  
+    
+}

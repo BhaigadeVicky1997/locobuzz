@@ -1,0 +1,28 @@
+<ul class="navigation__wrapper vertical-scroll">
+  <ng-container *ngFor="let item of navigation">
+    <li class="navigation__item">
+      <a [ngStyle]="{'ponter-events': expression}"
+        class="navigation__link"
+        [routerLink]="[item.url]"
+        [routerLinkActive]="['active', 'active']"
+      >
+        <mat-icon
+          class="navigation__icon"
+          fontSet="material-icons-outlined"
+          aria-hidden="false"
+          aria-label="dashboard icon"
+          *ngIf="item.icon"
+          >{{ item.icon }}</mat-icon
+        >
+        <span class="navigation__title hideonfold">{{ item.title }}</span>
+        <mat-icon
+          class="navigation__pin"
+          fontSet="material-icons-outlined"
+          aria-hidden="false"
+          aria-label="push_pin icon"
+          >push_pin</mat-icon
+        >
+      </a>
+    </li>
+  </ng-container>
+</ul>

@@ -1,0 +1,54 @@
+@import "app/@locobuzz/scss/partials/_breakpoints.scss";
+
+.smart-response{
+    height: 71vh;
+    &__sidebar{
+        flex: 0 0 22vw !important;
+        @include media-breakpoint('xl'){
+            flex: 0 0 18vw !important;
+        }    
+        & .mat-form-field-flex{
+            height: 43px;
+            padding: 0 10px 0 10px;
+        }    
+    }
+    &__content{
+        overflow-y: auto;
+
+       
+        &--listitem{
+            padding: 4px 8px 4px 8px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: inline-block;
+            line-height: 1.7;
+            cursor: pointer;
+
+            &:not(:last-child){
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    &__category{
+        &--title{
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+    } 
+
+    & .custom__pill{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        &--item{
+            cursor: pointer;
+            transition: .2s all;
+            &:not(:last-child){
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}

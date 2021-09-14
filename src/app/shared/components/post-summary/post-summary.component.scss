@@ -1,0 +1,58 @@
+.sidebar {
+&__content {
+    color: #7a89a0;
+    flex:1;
+    &--brand {
+      padding: 20px;
+    }
+
+    &--scrollable{
+      overflow-y: auto;
+    }
+
+    &--group {
+      list-style: none;
+      padding: 1rem 20px;      
+    }
+
+    &--item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      position: relative;
+    }
+
+    &--value {
+      margin-left: auto;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    &--action {
+      margin-left: auto;
+    }
+
+    &--brandmenu {
+      white-space: nowrap;  
+      flex: 0 0 100%;
+    }
+
+    .brandmenu {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0px;
+
+      &__icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50px;
+        text-align: center;
+        line-height: 1;
+        padding: 5px;
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+

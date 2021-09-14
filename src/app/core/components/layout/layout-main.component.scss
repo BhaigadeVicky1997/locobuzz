@@ -1,0 +1,138 @@
+@import "app/@locobuzz/scss/partials/_breakpoints.scss";
+
+app-layout-main{
+    display: flex;
+    flex: 1 1 auto;    
+    width: 100%;
+    height: 100%;
+
+    .app__main{
+        position: relative;
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+        min-width: 0;
+
+        .app__wrapper{
+            position: relative;
+            display: flex;
+            flex: 1 1 0%;
+            width: 100%;
+            min-height: 0;
+            min-width: 0;
+        }
+
+        .app__sidebar{
+            & .sidebar__content--icon{
+               opacity: 0;
+               width: 0;
+               visibility: hidden;
+               transition: .2s all;
+                 & > mat-icon{
+                    font-size: 15px;
+                    width: 15px;
+                    height: 15px;
+                    min-width: 15px;
+                    min-height: 15px;
+                 }                  
+                 
+            }
+
+            & .sidebar__content--label:not(.hideonfold){ 
+                transition: .2s all;
+                margin-right: 1rem;
+                display: inline-block;
+                opacity: 1;
+                visibility: visible;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-width: 50px;
+                &.sidebar__content--wrapped{    
+                    width: 130px;
+                    flex: 0 0 135px;
+                    white-space: normal;
+                }
+             }
+
+             &.app__sidebar--folded{
+                & .sidebar__head--toggle{
+                    transform: rotate(0deg);
+                }
+
+                & .sidebar__content--group{
+                    padding: 1rem;
+                }
+
+                & .sidebar__content--icon{
+                    display: inline-flex;
+                    margin-right: 1rem;
+                    opacity: 1;
+                    width: auto;
+                    visibility: visible;
+                }
+
+               & .sidebar__content--item{
+                    justify-content: center;
+                }
+
+                & .sidebar__content--label:not(.hideonfold){
+                    transition: .2s all; 
+                    width:0;
+                    max-width: 0;
+                    min-width: 0;
+                    height: 0;
+                    overflow: hidden;
+                    visibility: hidden;
+                    opacity: 0; 
+                    transform: scale(0);
+
+                }
+                
+
+                & .sidebar__content--value{
+                    margin-left: 0;
+                    min-width: 25px;
+                }
+             }
+        }
+
+        .app__content{
+            position: relative;
+            display: flex;
+            flex: 1 1 0%;
+            flex-direction: column;
+            min-width: 0;
+            width: 78%;
+            max-width: 100%;
+            @include media-breakpoint('xs'){
+                margin-top: 1rem;
+            }
+            @include media-breakpoint('xl'){
+                width: 82%;
+                max-width: 100%;
+            }
+
+            .app__nav{
+                // z-index: 2;
+            }
+
+            &--scrollable{
+                position: relative;
+                display: flex;
+                flex: 1 1 0%;
+                flex-direction: column;
+                -webkit-overflow-scrolling: touch;
+                top: -2px;
+                overflow: auto;
+            }
+            // &--overflow--inherit{
+            //     height: 90vh;
+            // }
+        }
+    }
+
+}

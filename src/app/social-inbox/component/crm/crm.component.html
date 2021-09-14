@@ -1,0 +1,102 @@
+<div class="modal__head">
+    <h3 class="modal__title">CRM</h3>
+    <span class="modal__action">
+        <mat-icon mat-button mat-dialog-close fontSet="material-icons-outlined">close</mat-icon>
+    </span>
+</div>
+<div class="modal__body dialog_body">
+    <div class="left_side">
+        <div class="left_side_list">
+            <ul>
+                <li class="">
+                    <mat-form-field appearance="outline" class="outline--none material__select material__select--adaptive"> 
+                        <mat-label>CRM Details Of</mat-label>
+                        <mat-select>
+                            <mat-option value="9876543211">9876543211</mat-option>
+                            <mat-option value="9876543211">9876543211</mat-option>
+                            <mat-option value="9876543211">9876543211</mat-option>
+                            <mat-option value="9876543211">9876543211</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </li>
+                <li *ngFor="let crmList of crmLists" (click)="openTab(crmList)">{{ crmList }}</li>
+                <span mat-raised-button color="primary">
+                    <button mat-button mat-dialog-close color="primary" class="new--sr--btn" (click)="newSRDialog()">Create New SR  </button><mat-icon mat-button [matMenuTriggerFor]="newsr" fontSet="material-icons-outlined" class="down_arow">keyboard_arrow_down</mat-icon>
+                </span>
+                
+                <mat-menu #newsr="matMenu" yPosition="above">
+                    <button mat-menu-item>Create New SR</button>
+                    <button mat-menu-item>Create FTR</button>
+                    <button mat-menu-item>Create Lead</button>
+                    <button mat-menu-item>Create Query</button>
+                    <button mat-menu-item>Create Complain</button>
+                  </mat-menu>
+            </ul>
+        </div>
+    </div> 
+    <div class="right_side" [ngClass]="{'bg__grey': selectedTab ==='SR Details(5)'}" [ngClass]="{'bg__grey': selectedTab ==='FTR Details(15)'} ">
+             <mat-dialog-content class="mat-typography profile" *ngIf="selectedTab === 'Customer Details' ">
+                <div class="profile--header margin-bottom">
+                    <img class="profile--pic" src="assets/images/agentimages/sample-image.jpg" alt="">
+                    <span class="profile--name">Anna Disolve</span>
+                    <span class="profile--id">@annadisolve</span>
+                    <svg id="Verified" xmlns="http://www.w3.org/2000/svg" width="10" height="10.995" viewBox="0 0 20 19.995">
+                        <g id="Layer_1" data-name="Layer 1">
+                        <path id="Path_9228" data-name="Path 9228" d="M13.179,2.317h0a3.341,3.341,0,0,1,4.5,4.5h0a3.339,3.339,0,0,1,0,6.359h0a3.342,3.342,0,0,1-4.5,4.5h0a3.33,3.33,0,0,1-6.346,0h0a3.345,3.345,0,0,1-4.516-4.494h0a3.33,3.33,0,0,1,0-6.346h0a3.347,3.347,0,0,1,4.5-4.516h0A3.342,3.342,0,0,1,13.179,2.317Z" transform="translate(0.003 0.003)" fill="#27c2ff"/>
+                        <path id="Path_9229" data-name="Path 9229" d="M24.857,34.117l-2.931-2.931a.627.627,0,1,1,.883-.89l2.046,2.046L30.306,26.9a.629.629,0,1,1,.885.893Z" transform="translate(-16.561 -20.273)" fill="#fff"/>
+                        </g>
+                    </svg>
+                </div>            
+                 <ul class="profile--data--left">
+                   
+                     <li>
+                         <span class="profile--data--list text__label">DOB</span>
+                         <span class="profile--data--list1">02-feb-1999</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Contact Number</span>
+                        <span class="profile--data--list1">9987878788</span>
+                   </li>
+                   <li>
+                         <span class="profile--data--list text__label">Alternate Number</span>
+                         <span class="profile--data--list1">0120889898</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Address</span>
+                        <span class="profile--data--list1">Room No. A-301 Gayatri Dham CHS Plot No 45 kamothe Sector 20 Near Aishwarya Hotel Kamothe Node IN</span>
+                   </li>
+                    <li>
+                        <span class="profile--data--list text__label">Pref Lang</span>
+                        <span class="profile--data--list1">English</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Segment</span>
+                        <span class="profile--data--list1">9 | 025001, Customer_Category | 0001, 1 | 015001 26-Nov-2016 200020408361 1 Mumbai</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Activation Date</span>
+                        <span class="profile--data--list1">02-feb-1999</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Customer ID</span>
+                        <span class="profile--data--list1">76543235789</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Subscriber Type</span>
+                        <span class="profile--data--list1">1</span>
+                    </li>
+                    <li>
+                        <span class="profile--data--list text__label">Circle</span>
+                        <span class="profile--data--list1">Mumbai</span>
+                    </li>
+                 </ul>            
+            </mat-dialog-content> 
+
+            <!-- CRM Customer Details -->
+            <app-crm-customer class="customer_data" *ngIf="selectedTab === 'Product List (3)' "></app-crm-customer>
+            <app-crm-sr-details *ngIf="selectedTab === 'SR Details(5)' "></app-crm-sr-details>
+            <app-crm-ftr-details *ngIf="selectedTab === 'FTR Details(15)' "></app-crm-ftr-details>
+            <app-crm-recom-product *ngIf="selectedTab === 'Recommended Products(2)' "></app-crm-recom-product>
+
+    </div>   
+</div>

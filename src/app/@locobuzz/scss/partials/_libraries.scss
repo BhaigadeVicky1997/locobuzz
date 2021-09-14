@@ -1,0 +1,43 @@
+// nouislider
+@import "~nouislider/distribute/nouislider.min.css";
+@import '~@ctrl/ngx-emoji-mart/picker';
+@mixin library-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $is-dark: map-get($theme, is-dark);
+
+
+  .noUi-target {
+    border: none;
+    box-shadow: none;
+   @if ($is-dark) {
+        background: map-get($background, background);
+      } @else {
+        background: var(--color-lighter-grey);
+      }
+  }
+
+  .noUi-horizontal {
+    height: 8px !important;
+  }
+
+  .noUi-connect {
+    background: var(--color-green-light);
+  }
+
+  .noUi-horizontal .noUi-handle {
+    width: 5px;
+    height: 15px;
+    right: -3px;   
+    top: -4px;
+    cursor: pointer;
+    background: var(--color-green-light);
+    border: none;
+    box-shadow: none;
+
+    &:after,
+    &:before {
+      display: none;
+    }
+  }
+}

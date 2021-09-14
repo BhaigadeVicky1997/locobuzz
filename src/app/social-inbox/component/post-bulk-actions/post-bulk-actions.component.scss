@@ -1,0 +1,21 @@
+@import "app/@locobuzz/scss/partials/_breakpoints.scss";
+.post-bulkselect{
+    display: flex;
+    position: fixed;
+    bottom: 80px;
+    align-items: center;
+    padding: 1rem;
+    width: 74%;
+    border-radius: 4px;
+    margin: 0 20px;
+    z-index: 10;
+    transition: .2s all;
+    // transform: translateY(-50px);
+
+    &__item:not(:last-child){
+        margin-right: 1rem;
+    }
+    @include media-breakpoint('xl'){
+        width: 80%;
+    }
+}

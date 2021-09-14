@@ -1,0 +1,414 @@
+<div class="widget" [id]="'widget_'+widgetObj.widgetID" *ngIf="uiJson.WidgetDesignType; else noWidgetType">
+  <div class="widget__head">
+    <div class="widget__head--editable">
+      <span class="addwidget__check" matRipple>
+        <span>1</span>
+      </span>
+    </div>
+    <h3 class="widget__head--title">{{widgetObj.widgetName}}</h3>
+    <div class="widget__head--actions">
+      <div class="widget__head--actiongroup" *ngFor="let chartType of configJson.AllowedCharts;let groupIndex = index">
+        <ng-container *ngIf="isArray(chartType)">
+
+          <a class="widget__head--actionItem" href="javascript:void(0)"
+            *ngFor="let typeItem of chartType;let itemIndex = index"
+            [ngClass]="{'active': typeItem === uiJson.ShowChartType[groupIndex]}"
+            (click)="changeChartType(typeItem, groupIndex)" matRipple>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Pie">pie_chart
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Bar">bar_chart
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Donut">donut_small
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Line">trending_up
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.DualAxis">
+              multiline_chart
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Table">table_chart
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Count">looks_one
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Column">view_column
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Area">area_chart
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.SpiderWeb">device_hub
+            </mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="typeItem === widgetChartTypeEnum.Polar">insights
+            </mat-icon>
+          </a>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- widget 1 -->
+  <div class="widget__body widget__body--horizontal" *ngIf="uiJson.WidgetDesignType === 1">
+    <ng-container *ngFor="let section of uiJson.ShowChartType">
+      <div class="widget__body--section" *ngIf="section === widgetChartTypeEnum.Count">
+        <div class="widget__stat" *ngFor="let widgetCountItem of this.widgetData;"
+          [ngClass]="{'widget__stat--positive': widgetCountItem.seriesName.includes('Positive'),'widget__stat--neutral': widgetCountItem.seriesName.includes('Neutral'),'widget__stat--negative': widgetCountItem.seriesName.includes('Negative')}">
+          <p class="widget__stat--label">{{widgetCountItem.seriesName}}</p>
+          <div class="widget__stat--content">
+            <span class="widget__stat--value">{{widgetCountItem.otherValue.Count}} / <span
+                class="text-underline">{{widgetCountItem.otherValue.AvgCount}}</span></span>
+          </div>
+          <mat-icon class="widget__stat--status-icon" *ngIf="widgetCountItem.seriesName.includes('Positive')"
+            fontSet="material-icons-outlined">sentiment_satisfied</mat-icon>
+          <mat-icon class="widget__stat--status-icon" *ngIf="widgetCountItem.seriesName.includes('Neutral')"
+            fontSet="material-icons-outlined">sentiment_neutral</mat-icon>
+          <mat-icon class="widget__stat--status-icon" *ngIf="widgetCountItem.seriesName.includes('Negative')"
+            fontSet="material-icons-outlined">sentiment_dissatisfied</mat-icon>
+        </div>
+
+
+        <!-- <div class="widget__stat widget__stat--positive">
+          <p class="widget__stat--label">Positive / Avg per Day</p>
+          <div class="widget__stat--content">
+            <span class="widget__stat--value">1371 / <span class="text-underline">0.73</span></span>
+          </div>
+          <mat-icon class="widget__stat--status-icon" fontSet="material-icons-outlined">sentiment_satisfied</mat-icon>
+        </div>
+        <div class="widget__stat widget__stat--negative">
+          <p class="widget__stat--label">Negative / Avg Day</p>
+          <div class="widget__stat--content">
+            <span class="widget__stat--value">1371 / <span class="text-underline">0.73</span></span>
+          </div>
+          <mat-icon class="widget__stat--status-icon" fontSet="material-icons-outlined">sentiment_dissatisfied</mat-icon>
+        </div>
+        <div class="widget__stat widget__stat--neutral">
+          <p class="widget__stat--label">Overall Neutral</p>
+          <div class="widget__stat--content">
+            <span class="widget__stat--value">1371 /<span class="text-underline">0.73</span></span>
+          </div>
+          <mat-icon class="widget__stat--status-icon" fontSet="material-icons-outlined">sentiment_neutral </mat-icon>
+        </div> -->
+      </div>
+      <div class="widget__body--section widget__body--section-full"
+        *ngIf="section === widgetChartTypeEnum.Pie || section === widgetChartTypeEnum.Bar || section === widgetChartTypeEnum.Donut || section === widgetChartTypeEnum.Line || section === widgetChartTypeEnum.DualAxis;">
+        <app-chart [highchartOptions]="chartOptions" [updateFlag]="updateChart"></app-chart>
+      </div>
+    </ng-container>
+
+
+  </div>
+
+  <!-- widget 2 -->
+  <div class="widget__body widget__body--horizontal" *ngIf="uiJson.WidgetDesignType === 2">
+    <div class="widget__body--section">
+      <div class="widget__stat">
+        <p class="widget__stat--label">Best Time</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">1 Min, 6 Secs</span>
+        </div>
+        <span class="widget__stat--deviation widget__stat--up">
+          <mat-icon>arrow_drop_up</mat-icon>32.28%
+        </span>
+      </div>
+      <div class="widget__stat widget__stat--single">
+        <p class="widget__stat--label">Best Time</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">1 Min, 6 Secs</span>
+        </div>
+        <span class="widget__stat--deviation widget__stat--up">
+          <mat-icon>arrow_drop_up</mat-icon>32.28%
+        </span>
+      </div>
+      <div class="widget__stat widget__stat--single">
+        <p class="widget__stat--label">Average Time</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">5d, 14h, 0M, 19s</span>
+        </div>
+        <span class="widget__stat--deviation widget__stat--up">
+          <mat-icon>arrow_drop_up</mat-icon>32.28%
+        </span>
+      </div>
+      <div class="widget__stat widget__stat--single">
+        <p class="widget__stat--label">Worst Time</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">16d, 17h, 48M, 15s</span>
+        </div>
+        <span class="widget__stat--deviation widget__stat--down">
+          <mat-icon>arrow_drop_down</mat-icon>32.28%
+        </span>
+      </div>
+    </div>
+    <div class="widget__body--section widget__body--section-full">Section 2</div>
+  </div>
+
+  <!-- widget 3 -->
+  <div class="widget__body widget__body--horizontal" *ngIf="uiJson.WidgetDesignType === 3">
+    <div class="widget__body--section widget__stat--wrapper">
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Incoming Mentions</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Engagement</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Outgoing Mentions</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Engagament Rate</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="widget__body--section widget__body--section-full">Section 2</div>
+  </div>
+
+  <!-- widget 4 -->
+  <div class="widget__body widget__body--vertical" *ngIf="uiJson.WidgetDesignType === 4">
+    <div class="widget__body--section widget__stat--wrapper">
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Incoming Mentions</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Engagement</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Outgoing Mentions</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+      <div class="widget__stat widget__stat--multiple">
+        <p class="widget__stat--label">Engagament Rate</p>
+        <div class="widget__stat--content">
+          <span class="widget__stat--value">6.5k</span>
+          <span class="widget__stat--deviation widget__stat--up">
+            <mat-icon>arrow_drop_up</mat-icon>32.28%
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="widget__body--section widget__body--section-full">Section 2</div>
+  </div>
+
+  <!-- widget 5 -->
+  <div class="widget__body widget__body--horizontal" *ngIf="uiJson.WidgetDesignType === 5">
+    <div class="widget__body--section">
+      <div class="widget__stat">
+        <div class="widget__stat--combined">
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Incoming Mentions</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">6.5k</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Avg Daily Growth</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">14</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="widget__stat--info">
+          <a href="javascript:void(0)" class="text__label">com.locobuzz.analyticsdashboard</a>
+        </div>
+      </div>
+      <div class="widget__stat">
+        <div class="widget__stat--combined">
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Incoming Mentions</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">6.5k</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Avg Daily Growth</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">14</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="widget__stat--info">
+          <a href="javascript:void(0)" class="text__label">com.locobuzz.analyticsdashboard</a>
+        </div>
+      </div>
+      <div class="widget__stat">
+        <div class="widget__stat--combined">
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Incoming Mentions</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">6.5k</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Avg Daily Growth</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">14</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="widget__stat--info">
+          <img class="img__fluid" [src]="channelImage.Instagram">
+          <a href="javascript:void(0)" class="text__label">SBI_official</a>
+        </div>
+      </div>
+      <div class="widget__stat">
+        <div class="widget__stat--combined">
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Incoming Mentions</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">6.5k</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+          <div class="widget__stat--combinedItem">
+            <p class="widget__stat--label">Avg Daily Growth</p>
+            <div class="widget__stat--content">
+              <span class="widget__stat--value">14</span>
+              <span class="widget__stat--deviation widget__stat--up">
+                <mat-icon>arrow_drop_up</mat-icon>32.28%
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="widget__stat--info">
+          <img class="img__fluid" [src]="channelImage.Facebook">
+          <a href="javascript:void(0)" class="text__label">SBI_official_img</a>
+        </div>
+      </div>
+    </div>
+    <div class="widget__body--section widget__body--section-full">Section 2</div>
+  </div>
+
+  <!-- widget 6 -->
+  <div class="widget__body widget__body--horizontal" *ngIf="uiJson.WidgetDesignType === 6">
+    <div class="widget__body--section widget__body--section-full">Section 1</div>
+    <div class="widget__body--section">
+      <p class="text__title--fontslab">Top Cities</p>
+      <ul>
+        <li class="d-flex-items-center mb-15">
+          <span>MUMBAI(8,399)</span>
+          <span class="status__bar">
+            <span class="status__bar--fill"></span>
+          </span>
+          <span class="text__label">99.9%</span>
+        </li>
+        <li class="d-flex-items-center mb-15">
+          <span>MUMBAI(8,399)</span>
+          <span class="status__bar">
+            <span class="status__bar--fill"></span>
+          </span>
+          <span class="text__label">99.9%</span>
+        </li>
+        <li class="d-flex-items-center mb-15">
+          <span>MUMBAI(8,399)</span>
+          <span class="status__bar">
+            <span class="status__bar--fill"></span>
+          </span>
+          <span class="text__label">99.9%</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- widget 7 -->
+  <div class="widget__body" *ngIf="uiJson.WidgetDesignType === 7">
+    <div class="widget__body--section widget__body--section-full">
+      <table mat-table [dataSource]="dataSource" class="w-100-p">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Weight </th>
+          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Symbol </th>
+          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="widget__foot">
+    <p class="text__light mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis. Iaculis urna id volutpat lacus
+      laoreet. Mauris vitae ultricies leo integer malesuada. Ac odio tempor orci dapibus ultrices in.</p>
+  </div>
+</div>
+<ng-template #noWidgetType>
+  <h2 class="text__title"> Widget type not mentioned</h2>
+</ng-template>

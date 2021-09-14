@@ -1,0 +1,40 @@
+import { SocialAuthor } from "app/core/abstractclasses/SocialAuthor";
+import { EmailAuthor } from "../../authors/email/EmailAuthor";
+import { Mention } from "../locobuzz/Mention";
+
+export interface EmailMention extends Mention {
+    concreteClassName?: string;
+    fromMail?: string;
+    toMail?: string;
+    toMailList?: string[];
+    bCCMailList?: string[];
+    cCMailList?: string[];
+    replytoEmail?: string;
+    messageID?: string;
+    subject?: string;
+    deliveredTo?: string;
+    ccList?: string;
+    bccList?: string;
+    cc?: string;
+    bcc?: string;
+    emailContent?: string;
+    emailContentHtml?: string;
+    attachmentCount?: number;
+    attachmentsName?: string;
+    attachmentType?: string;
+    attachmentInfo?: string;
+    sentMailGUID?: string;
+    brandID?: number;
+    brandName?: string;
+    categoryID?: number;
+    categoryName?: string;
+    inReplyToMail?: string;
+    actionTaken?: string;
+    actionTakenAt?: string;
+    emailType?: number;
+    createdAt?: string;
+    insertedAt?: string;
+    messageUID?: string;
+    mailboxName?: string;
+    author?: SocialAuthor | EmailAuthor;
+}

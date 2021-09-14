@@ -1,0 +1,48 @@
+<ng-template [ngIf]="LogCondition==1">
+    <div class="post-log" [ngClass]="cssClass">
+        <p class="post-log__content"><span [innerHTML]="logMessage.logText | safehtml"></span> <span class="post-log__colored"> </span> on <span class="post-log__highlight"> {{logMessage.mentionTime | datetimeFormatter:'DD-MMMM-YYYY HH:mm a'}}</span></p>
+        <div *ngIf="logMessage.note" class="post-log__strip">
+            <span><span class="post-log__strip--label">Added Note </span>: <span [innerHTML]="logMessage.note | safehtml"></span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template [ngIf]="LogCondition==2">
+    <div class="post-log" [ngClass]="cssClass">
+        <p class="post-log__content"><span [innerHTML]="logMessage.logText | safehtml"></span> <span class="post-log__colored"> </span> on <span class="post-log__highlight"> {{logMessage.mentionTime | datetimeFormatter:'DD-MMMM-YYYY HH:mm a'}}</span></p>
+        <div *ngIf="logMessage.note" class="post-log__strip">
+            <span><span class="post-log__strip--label">Added Note </span>: <span [innerHTML]="logMessage.note"></span></span>
+        </div>
+    </div>
+</ng-template>
+<ng-template [ngIf]="LogCondition==3">
+
+    <div class="post-log">
+        <p class="post-log__content"><span [innerHTML]="logMessage.logText | safehtml"></span> <span class="post-log__colored"> </span> on <span class="post-log__highlight"> {{logMessage.mentionTime | datetimeFormatter:'DD-MMMM-YYYY HH:mm a'}}</span></p>
+    </div>
+</ng-template>
+
+
+
+<!-- <div class="post-log post-log__success">
+    <p class="post-log__content"><span class="post-log__highlight post-log__user">John deo {{logMessage.assignedToUsername}}</span>has <span class="post-log__colored">approved </span> <span class="post-log__highlight post-log__user">john doe</span>'s reply and closed this <span class="post-log__highlight">ticket(ID-{{logMessage.ticketID}})</span> on <span class="post-log__highlight">23 Aug 2020 at 2:38 pm</span></p>
+</div>
+
+<div class="post-log post-log__warning">
+    <p class="post-log__content"><span class="post-log__highlight post-log__user">John deo {{logMessage.assignedToUsername}}</span>has <span class="post-log__colored">approved </span> <span class="post-log__highlight post-log__user">john doe</span>'s reply and closed this <span class="post-log__highlight">ticket(ID-{{logMessage.ticketID}})</span> on <span class="post-log__highlight">23 Aug 2020 at 2:38 pm</span></p>
+</div>
+
+<div class="post-log post-log__danger">
+    <p class="post-log__content"><span class="post-log__highlight post-log__user">Sandeep Puruvelli{{logMessage.assignedToUsername}}</span>has <span class="post-log__colored">rejected </span> <span class="post-log__highlight post-log__user">john doe</span>'s reply and closed this <span class="post-log__highlight">ticket(ID-{{logMessage.ticketID}})</span> and added <span class="post-log__highlight colored__blue">this note </span>on <span class="post-log__highlight">23 Aug 2020 at 2:38 pm</span></p>
+    <div class="post-log__strip">
+        <span><span class="post-log__strip--label">Rejection Note </span>: This guy has some issues regarding debit card.</span>
+    </div>
+</div>
+
+
+<div class="post-log">
+    <p class="post-log__content"><span class="post-log__highlight post-log__user">Sandeep Puruvelli{{logMessage.assignedToUsername}}</span>has <span class="post-log__colored">rejected </span> <span class="post-log__highlight post-log__user">john doe</span> has added <span class="post-log__highlight colored__blue">this note </span>on <span class="post-log__highlight">23 Aug 2020 at 2:38 pm</span></p>
+    <div class="post-log__strip">
+        <span><span class="post-log__strip--label">Added Note </span>: This guy has some issues regarding debit card.</span>
+    </div>
+</div> -->
+

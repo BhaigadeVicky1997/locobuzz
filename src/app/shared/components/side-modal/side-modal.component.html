@@ -1,0 +1,18 @@
+<div class="side-modal">
+    <div class="side-modal--head">
+        <span class="side-modal--close" [mat-dialog-close]="true">
+            <mat-icon>close</mat-icon>
+        </span>
+        <div class="side-modal--head__title text__title" *ngIf="title">{{title}}</div>
+        <div class="side-modal--head__action" #sidemodalHeadingActions [hidden]="!showActions">
+            <ng-content select="[actions]" ></ng-content>
+        </div>
+    </div>
+    <div class="side-modal--body">
+        <ng-content></ng-content>
+    </div>
+    <div class="side-modal--foot" #sidemodalfoot [hidden]="!showFoot">
+        <ng-content select="[foot]"></ng-content>
+    </div>
+</div>
+ 

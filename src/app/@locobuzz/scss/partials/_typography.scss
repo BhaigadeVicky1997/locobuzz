@@ -1,0 +1,378 @@
+html {
+    // This defines what 1rem is
+    @include media-breakpoint('gt-md'){
+        font-size: 56.25%; //1 rem = 9px, 9/16 = 50%
+    }
+
+    @include media-breakpoint('gt-sm'){
+        font-size: 50%; //1 rem = 8px, 8/16 = 50%
+    }
+
+    @include media-breakpoint('gt-xs'){
+        font-size: 50%; //1 rem = 8px, 8/16 = 50%
+    }
+}
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@mixin typography-theme($theme) {
+
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    $accent: map-get($theme, accent);
+    $is-dark: map-get($theme, is-dark);
+
+    // a {
+    //     color: map-get($accent, default);
+    // }
+
+    .text{
+      &__sm{
+        font-size: 1.2rem;
+      }
+
+      &__md{
+        font-size: 1.4rem;
+      }
+
+      &__lg{
+        font-size: 1.6rem;
+      }
+    }
+
+
+    // Classes
+    .text__light{
+        color:  map-get($foreground, light-text);
+
+        &--md{
+            font-size: 1.4rem;
+        }
+
+
+        &--lg{
+            color:  map-get($foreground, light-text);
+            font-size: 1.6rem;
+        }
+
+        &--sm{
+            color:  map-get($foreground, light-text);
+            font-size: 1.2rem;
+        }
+    }
+
+
+    .text__regular{
+        color: map-get($foreground, text);
+
+        &--md{
+            font-size: 1.4rem;
+            color: map-get($foreground, text);
+        }
+
+        &--lg{
+            color: map-get($foreground, text);
+            font-size: 1.6rem;
+        }
+
+        &--sm{
+            color: map-get($foreground, text);
+            font-size: 1.2rem;
+        }
+    }
+
+    .text__sub{
+        color:  map-get($foreground, secondary-text);
+
+        &--md{
+            font-size: 1.4rem;
+            color:  map-get($foreground, secondary-text);
+        }
+
+
+        &--lg{
+            color:  map-get($foreground, secondary-text);
+            font-size: 1.6rem;
+        }
+
+        &--sm{
+            color:  map-get($foreground, secondary-text);
+            font-size: 1.2rem;
+        }
+    }
+
+    .text__dark{
+        color:map-get($foreground, text);
+
+        &--md{
+            font-size: 1.4rem;
+            color:map-get($foreground, text);
+        }
+
+        &--lg{
+            color:map-get($foreground, text);
+            font-size: 1.6rem;
+        }
+
+        &--sm{
+            color:map-get($foreground, text-dark);
+            font-size: 1.2rem;
+        }
+    }
+
+    .text__label{
+        color:map-get($foreground, text-dark);
+
+        &--md{
+            font-size:14px;
+            color:map-get($foreground, text-dark);
+        }
+
+        font-weight: 600;
+
+        &--lg{
+            color:map-get($foreground, text-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        &--sm{
+            color:map-get($foreground, text-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+    }
+
+    .text__title{
+        color:map-get($foreground, text-dark);
+        font-size: 1.6rem;
+        font-weight: 600;
+        &--font{
+          color:map-get($foreground, text-dark);
+          font-size: 1.6rem;
+          font-weight: 600;
+          font-family: 'Roboto Slab', serif;
+        }
+
+        &--fontslab{
+          font-size: 1.6rem;
+          font-family: 'Roboto Slab', serif;
+          font-weight: 600;
+          color:map-get($foreground, text-dark);
+        }
+
+        &--fontxl{
+          font-size: 2.2rem;
+          color:map-get($foreground, text-dark);
+          font-weight: 600;
+          font-family: 'Roboto Slab', serif;
+        }
+    }
+
+    .text__highlight {
+      background: var(--color-yellow);
+    }
+
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Typography
+// -----------------------------------------------------------------------------------------------------
+html {
+    font-size: 62.5%;
+    font-family:  'Inter, Helvetica Neue, Arial, sans-serif',;
+    line-height: 1.4 !important;
+    letter-spacing: -0.1px !important;
+}
+
+body {
+    font-size: 1.4rem;
+}
+
+html, body {
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: normal;
+}
+
+h1, .h1 {
+    font-size: 2.4rem;
+}
+
+h2, .h2 {
+    font-size: 2rem;
+}
+
+h3, .h3 {
+    font-size: 1.6rem;
+}
+
+h4, .h4 {
+    font-size: 1.5rem;
+}
+
+h5, .h5 {
+    font-size: 1.3rem;
+}
+
+h6, .h6 {
+    font-size: 1.2rem;
+}
+
+// Links
+a {
+    text-decoration: none;
+
+    &:not(.mat-button):not(.mat-raised-button):not(.mat-flat-button):not(.mat-stroked-button):not(.mat-icon-button):not(.mat-fab):not(.mat-mini-fab) {
+
+        &:hover, &:active {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Abbr
+abbr {
+    cursor: help;
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.54);
+}
+
+// Text format helpers
+.text-italic {
+    font-style: italic;
+}
+
+.text-regular {
+    font-weight: 400;
+}
+
+.text-semibold {
+    font-weight: 600;
+}
+
+.text-bold,
+strong {
+    font-weight: 700;
+}
+
+.text-strike {
+    text-decoration: line-through;
+}
+
+.text-super {
+    vertical-align: super;
+}
+
+.text-sub {
+    vertical-align: sub;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+// Text align helpers
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+// Font weight helpers
+@for $weight from 1 through 9 {
+
+    .font-weight-#{$weight * 100} {
+        font-weight: #{$weight * 100};
+    }
+}
+
+// Font size helpers
+@for $size from 1 through 60 {
+
+    .font-size-#{$size * 2} {
+        font-size: #{$size * 2}px;
+    }
+}
+
+// Line height helpers
+@for $lineHeight from 1 through 60 {
+
+    .line-height-#{$lineHeight * 2} {
+        line-height: #{$lineHeight * 2}px;
+    }
+}
+
+.line-height-1 {
+    line-height: 1;
+}
+
+.line-height-1\.25 {
+    line-height: 1.25;
+}
+
+.line-height-1\.5,
+.line-height-1\.50 {
+    line-height: 1.5;
+}
+
+.line-height-1\.75 {
+    line-height: 1.75;
+}
+
+// Letter spacing helpers
+.letter-spacing-condensed {
+    letter-spacing: -0.02em;
+}
+
+.letter-spacing-normal {
+    letter-spacing: normal;
+}
+
+.letter-spacing-relaxed {
+    letter-spacing: 0.02em;
+}
+
+// Boxed text
+.text-boxed {
+    border-radius: 2px;
+    padding: 4px 8px;
+    margin: 0 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+// Truncate
+.text-truncate {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Nowrap
+.text-nowrap {
+    white-space: nowrap;
+}
+

@@ -1,0 +1,44 @@
+// This file meant to be imported only once! Use locobuzz.scss to access
+// to the core Locobuzz and Angular Material mixins
+
+// css variables
+@import "partials/variables";
+
+// Locobuzz
+@import "locobuzz";
+
+// Theme
+@import "theme";
+
+
+
+// Include core Angular Material styles
+@include mat-core();
+
+// Partials
+@import "partials/normalize";
+@import "partials/scrollbars";
+@import "partials/icons";
+@import "partials/helpers";
+@import "partials/general";
+@import "partials/colors";
+@import "partials/material";
+@import "partials/angular-material-fix";
+@import "partials/animations";
+@import "partials/typography";
+@import "partials/components";
+@import "partials/libraries";
+@import "partials/modal";
+@import "partials/page-layouts";
+@import "partials/filter";
+@import "partials/post";
+@import "partials/side-modal";
+@import "partials/sidebar";
+@import "partials/navigation";
+@import "partials/chatbot";
+@import "partials/widget";
+@import "partials/_highchart";
+@import "partials/forms";
+@import "partials/print";
+
+

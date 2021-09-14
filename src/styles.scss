@@ -1,0 +1,12 @@
+
+@import "app/@locobuzz/scss/core";
+@import "app/app.theme.scss";
+
+html, body { height: 100%; }
+app-root{
+    display: block;
+    width: 100%;
+}
+
+
+

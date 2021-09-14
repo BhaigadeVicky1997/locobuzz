@@ -1,0 +1,21 @@
+<div class="send-email">
+    <div class="send-email__item">
+        <mat-form-field appearance="outline" class="material__select">
+            <mat-label>Subject</mat-label>
+            <input matInput>
+            <span matSuffix class="d-flex-items-center" class="material__select--suffix">
+                <a class="mr-4">+ Cc</a>
+                <a >+ Bcc</a>
+            </span>
+          </mat-form-field>
+    </div>
+    <div class="send-email__item">
+        <mat-form-field appearance="outline" class="material__select">
+            <mat-label>To</mat-label>
+            <input matInput>
+          </mat-form-field>
+    </div>
+    <div class="send-email__item">
+        <ckeditor  [editor]="Editor" [config]="editorConfig"></ckeditor>
+    </div>
+</div>

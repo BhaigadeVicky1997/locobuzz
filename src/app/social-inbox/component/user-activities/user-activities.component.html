@@ -1,0 +1,47 @@
+<div class="user-activities">
+    <div class="user-activities__summary">
+        <div class="user-activities__summary--item">
+            <label class="user-activities__summary--label text__label">First User Activity</label>
+            <div *ngIf="this.userOneViewModel && this.userOneViewModel.firstActivity" class="user-activities__summary--value">
+                <span class="user-activities__summary--img">
+                    <img class="img__fluid"
+                        [src]="userOneViewModel.channelIcon">
+                </span>
+                <span >{{this.userOneViewModel.firstActivity}}</span>
+                <span class="colored__green"> ({{this.userOneViewModel.firstSentiment}})</span>
+            </div>
+        </div>
+        <div class="user-activities__summary--item">
+            <label class="user-activities__summary--label text__label">Last User Activity</label>
+            <div *ngIf="this.userOneViewModel && this.userOneViewModel.lastActivity" class="user-activities__summary--value">
+                <span class="user-activities__summary--img">
+                    <img class="img__fluid"
+                        [src]="userOneViewModel.channelIcon">
+                </span>
+                <span>{{this.userOneViewModel.lastActivity }}</span>
+                <span class="colored__red">({{this.userOneViewModel.lastSentiMent}})</span>
+            </div>
+        </div>
+    </div>
+    <div>
+          <mat-form-field color="accent" appearance="outline" class="material__select">
+            <mat-label>All User Activities</mat-label>
+            <!-- (selectionChange)="CallTicketTimeLine($event.value)" -->
+            <mat-select (selectionChange)="getUserTimelineByChannel($event.value)">
+                <mat-option  [value]="0"> All User Activities
+                </mat-option>
+                <ng-template [ngIf]="customActivityCount && customActivityCount.length > 0">
+                    <mat-option  *ngFor="let item of customActivityCount" [value]="item.channelGroup">{{ item.channelName }} ({{item.count }})
+                    </mat-option>
+                </ng-template>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="user-activities__timeline" *ngIf= "userOneViewDTO && userOneViewDTO.length > 0">
+        <ul class="post-timeline">
+            <li class="post-timeline__item" *ngFor="let timeline of userOneViewDTO">
+              <app-post-minimal [timeline]="timeline"></app-post-minimal>
+            </li>
+          </ul>
+    </div>
+</div>

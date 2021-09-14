@@ -1,0 +1,179 @@
+ <mat-icon class="ml-44 mobile__option__select" (click)="OptionSelect()">toc</mat-icon>
+<div class="option__select post__search--wrapper" *ngIf="optionMobTab">
+
+    <ng-container *ngIf="userRole && userRole === userRoleEnum.SupervisorAgent && currentPostType === getPostType.Tickets">
+        <ng-container *ngIf="supervisorNavTicketCount">
+            <div *ngFor="let item of supervisorNavTicketCount.countProperties">
+                <a *ngIf="item.level === 1" class="option__item option__item--text" [ngClass]="{ active: selectedItem == item.dbValue }" (click)="onClickNav(item,item.dbValue)">{{ item.name }} 
+                    <span *ngIf="item.value > 0; else noTickets">({{ item.value }})</span>
+                    <ng-template #noTickets>
+                        <span>(NA)</span>
+                    </ng-template>                   
+                </a>
+            </div>
+            <a class="option__item" [ngClass]="{'active': selectedTicketOption.dbvalue === selectedItem}" [matMenuTriggerFor]="menu">{{selectedTicketOption.label}} <mat-icon>keyboard_arrow_down</mat-icon></a>
+            <mat-menu #menu="matMenu">
+                <ng-container *ngFor="let item of supervisorNavTicketCount.countProperties">
+                    <button mat-menu-item *ngIf="item.level === 2" (click)="onClickNav(item,item.dbValue)">
+                    {{ item.name }} <span *ngIf="item.value > 0; else noTicket">({{ item.value }})</span>
+                <ng-template #noTicket>
+                    <span>(NA)</span>
+                </ng-template>  
+          </button>
+                </ng-container>
+            </mat-menu>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="userRole && userRole === userRoleEnum.AGENT &&  currentPostType === getPostType.Tickets">
+        <ng-container *ngIf="agentNavTicketCount">
+            <div *ngFor="let item of agentNavTicketCount.countProperties">
+                <a *ngIf="item.level === 1"  class="option__item" [ngClass]="{ active: selectedItem === item.dbValue}" (click)="onClickNav(item,item.dbValue)">{{ item.name }} <span>({{ item.value }})</span></a>
+            </div>
+            <a class="option__item" [matMenuTriggerFor]="menu"  appHoverDropdown
+            [menu]="postMenu"
+            [hoverTrigger]="menuTrigger">{{selectedTicketOption.label}} <mat-icon>keyboard_arrow_down</mat-icon></a>
+            <mat-menu #menu="matMenu">
+                <ng-container *ngFor="let item of agentNavTicketCount.countProperties">
+                    <button mat-menu-item *ngIf="item.level === 2" (click)="onClickNav(item,item.dbValue)">
+            {{ item.name }} <span>({{ item.value }})</span>
+          </button>
+                </ng-container>
+            </mat-menu>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="currentPostType === getPostType.Mentions">
+        <div>
+            <a class="option__item option__item--text" [ngClass]="{ active: selectedItem === 2}" (click)="onClickNav('',2)">User Activity <span>({{ mentionCount.userActivityCount }})</span></a>
+        </div>
+        <div>
+            <a class="option__item option__item--text" [ngClass]="{ active: selectedItem === 1}" (click)="onClickNav('',1)">Brand Activity <span>({{ mentionCount.brandActivityCount }})</span></a>
+        </div>
+        <mat-divider vertical></mat-divider>
+        <ng-container *ngIf="selectedItem === 2">
+            <div>
+                <mat-checkbox [checked]="actionchk" (change)="toggleActionable($event)" class="checklist-leaf-node">Actionable ({{mentionCount.actionable}})</mat-checkbox>
+            </div>
+            <div>
+                <mat-checkbox [checked]="nonactionchk" (change)="toggleNonActionable($event)" class="checklist-leaf-node">Non Actionable ({{mentionCount.nonActinable}})</mat-checkbox>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="selectedItem === 1">
+            <div>
+                <mat-checkbox [checked]="brandpost" (change)="togleBrandReplies($event)" class="checklist-leaf-node">Brand Reply ({{mentionCount.brandReply}})</mat-checkbox>
+            </div>
+            <div>
+                <mat-checkbox [checked]="brandreply" (change)="togleBrandPost($event)" class="checklist-leaf-node">Brand Post ({{mentionCount.brandPost}})</mat-checkbox>
+            </div>
+        </ng-container>
+    </ng-container>
+    <app-post-search *ngIf="toggleSearch" (selectedData)="searchFormFill($event)">
+    </app-post-search>
+</div>
+<div class="option__actions ml-auto">
+    <a *ngIf="toggleSearch" class="option__item option__item--backBtn" mat-icon-button>
+        <mat-icon fontSet="material-icons-outlined" (click)="toggleSearch = false">arrow_back</mat-icon>
+    </a>
+    <a *ngIf="toggleSearch" class="option__item option__item--after--border mr-25" mat-icon-button>
+        <mat-icon fontSet="material-icons-outlined" (click)="toggleSearch = false">close</mat-icon>
+    </a>
+    <a class="option__item" mat-icon-button>
+        <mat-icon fontSet="material-icons-outlined" (click)="isApply()" (click)="toggleSearch = true">search</mat-icon>
+    </a>
+    <a class="option__item" mat-icon-button>
+        <mat-icon fontSet="material-icons-outlined" class="filter-icon" (click)="openDialog()">filter_alt</mat-icon>
+    </a>
+    <!-- The Modal -->
+  <!-- <div id="myModal" class="modalBhai" [ngClass]="{'showModalBhai': IsDisplayBlock}">
+    <div class="modal-contentBhai">
+        <app-filter [additionalData]="addFilterData"></app-filter>
+    </div>
+  </div> -->
+
+    <!-- <ng-template cdk-portal #overlayTemplate="cdkPortal"> -->
+        <!-- <div *ngIf="false" >
+            <app-filter [additionalData]="addFilterData"></app-filter>
+        </div> -->
+        
+    <!-- </ng-template> -->
+    <!-- <div style="display: none;">
+        <app-filter [additionalData]="additionalData"></app-filter>
+    </div> -->
+    <a class="option__item" mat-icon-button [matMenuTriggerFor]="sortmenu">
+        <mat-icon fontSet="material-icons-outlined">sort</mat-icon>
+    </a>
+    <mat-menu [formGroup]="optionForm" #sortmenu="matMenu" xPosition="before">
+        <ul class="sort-dropdown" (click)="$event.stopPropagation()">
+            <li class="sort-dropdown__item">
+                <span class="text__label">Sort By</span>
+                <mat-radio-group formControlName="sortBy" aria-label="Select an option">
+                    <div class="sort-dropdown__item--input">
+                        <mat-radio-button value="createdDate">Created Date</mat-radio-button>
+                    </div>
+                    <div class="sort-dropdown__item--input">
+                        <mat-radio-button value="lastUpdated"> Last Updated</mat-radio-button>
+                    </div>
+                    <div class="sort-dropdown__item--input">
+                        <mat-radio-button value="authorName"> Author Name</mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </li>
+            <li class="sort-dropdown__item">
+                <span class="text__label">Sort Order</span>
+                <mat-radio-group formControlName="sortOrder" aria-label="Select an option">
+                    <div class="sort-dropdown__item--input">
+                        <mat-radio-button value="0">Ascending</mat-radio-button>
+                    </div>
+                    <div class="sort-dropdown__item--input">
+                        <mat-radio-button value="1">Descending</mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </li>
+        </ul>
+    </mat-menu>
+    <a class="option__item btn__hover custom__dropdown" mat-icon-button [matMenuTriggerFor]="rendermenu">
+        <mat-icon mat-icon-button fontSet="material-icons-outlined" class="btn__hover">more_vert</mat-icon>
+    </a>
+    <mat-menu #rendermenu="matMenu" xPosition="before">
+        <ul (click)="$event.stopPropagation()" class="rendermenu">
+            <li  class="rendermenu__item">
+                <span class="text__label">Tickets Rendering</span>
+                <mat-radio-group aria-label="Select an option">
+                    <div class="rendermenu__item--input">
+                        <mat-radio-button value="1" (change)="setAutoRender($event)">Ask Before Render</mat-radio-button>
+                    </div>
+                    <div class="rendermenu__item--input">
+                        <mat-radio-button value="2" (change)="setAutoRender($event)">Auto Render</mat-radio-button>
+                    </div>
+                    <div class="rendermenu__item--input">
+                        <mat-radio-button value="3" (change)="setAutoRender($event)">Render after 30 sec</mat-radio-button>
+                    </div>
+                    <div class="rendermenu__item--input">
+                        <mat-radio-button value="4" (change)="setAutoRender($event)">Render after 1 min</mat-radio-button>
+                    </div>
+                    <div class="rendermenu__item--input">
+                        <mat-radio-button value="5" (change)="setAutoRender($event)">Render after 2 min</mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            </li>
+            <li class="rendermenu__item">
+                <mat-radio-group aria-label="Select an option">
+                    <div class="rendermenu__item--input">
+                        <mat-slide-toggle>Auto Close Window</mat-slide-toggle>
+                    </div>
+                </mat-radio-group>
+            </li>
+        </ul>
+    </mat-menu>
+</div>
+<!-- <div class="custom-overlay cdk-overlay-container" [ngStyle]="{'display': (filetrOverlay==true) ? 'block' : 'none'}">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing"></div>
+    <div class="cdk-global-overlay-wrapper" dir="ltr" style="justify-content: center; align-items: center;">
+        <div class="cdk-overlay-pane" *ngIf="callFilterComp" style="max-width: 80vw; pointer-events: auto; position: static;">
+            <app-filter class="filter-overlay"></app-filter>
+        </div>        
+    </div>
+</div> -->
+<div class="custom-overlay" *ngIf="callFilterComp">
+    <div class="cdk-overlay-backdrop cdk-overlay-dark-backdrop cdk-overlay-backdrop-showing" (click)="onNoClick()"></div>
+    <app-filter [tab]="postDetailTab.tab" class="filter-overlay"></app-filter>
+</div>

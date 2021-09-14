@@ -1,0 +1,46 @@
+<!-- <div class="modal__head">
+    <span class="modal__action">
+        <mat-icon mat-button mat-dialog-close fontSet="material-icons-outlined">close</mat-icon>
+    </span>
+</div> -->
+
+<div class="modal__body">
+    <span class="modal--close" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </span>
+    <!-- <div class="video__block">
+        <video layout-fill  autoplay="autoplay" control="control" preload="auto" class="video__block--player">
+            <source src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" type="video/mp4"/>
+            </video>
+    </div> -->
+
+    <div class="image__block image__block--single">
+        <ng-container *ngIf="attachmentData && attachmentData.length === 1; else slider">
+            <img *ngIf="attachmentData[0].mediaType ===  MediaEnum.IMAGE || attachmentData[0].mediaType === MediaEnum.ANIMATEDGIF" [src]="attachmentData[0].mediaUrl"  [alt]="attachmentData[0].name" class="image__block--image">
+            <video class="w-100-p" controls *ngIf="attachmentData[0].mediaType === MediaEnum.VIDEO" style="border-radius: 10px;">
+              <source [src]="attachmentData[0].mediaUrl" type="video/mp4">
+              <source [src]="attachmentData[0].mediaUrl" type="video/ogg">
+              Your browser does not support HTML video.
+            </video>
+        </ng-container>
+        <ng-template #slider>
+            <mat-tab-group headerPosition="below" class="image__block--tab--header" >
+                <mat-tab class="image__block--tab--label" *ngFor="let attachmentitem of attachmentData">
+                    <ng-template mat-tab-label>
+                        <div  class="image__block--tab--images">
+                            <img class="img__fluid" *ngIf="attachmentitem.mediaType === MediaEnum.IMAGE || attachmentitem.mediaType === MediaEnum.ANIMATEDGIF" [src]="attachmentitem.mediaUrl" [alt]="attachmentitem.name">
+                            <video class="w-100-p" controls *ngIf="attachmentitem.mediaType === MediaEnum.VIDEO" style="border-radius: 10px;">
+                              <source [src]="attachmentitem.mediaUrl" type="video/mp4">
+                              <source [src]="attachmentitem.mediaUrl" type="video/ogg">
+                              Your browser does not support HTML video.
+                            </video>
+                        </div>
+                    </ng-template>
+                    <div  class="image__block--tab--preview">
+                        <img  class="img__fluid" [src]="attachmentitem.mediaType ===  MediaEnum.IMAGE ? attachmentitem.mediaUrl : attachmentitem.thumbUrl" [alt]="attachmentitem.name">
+                    </div>
+                    </mat-tab>
+            </mat-tab-group>
+        </ng-template>
+    </div>
+</div>

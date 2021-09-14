@@ -1,0 +1,503 @@
+<div class="modal__head">
+    <h3 class="modal__title">{{whoCalled.requiredFor}}</h3>
+    <span class="modal__action">
+    <mat-icon fontSet="material-icons-outlined" (click)="onNoClick()">close</mat-icon>
+  </span>
+</div>
+<div class="modal__body">
+    <div class="filter">
+        <div class="filter__options">
+            <!-- <div *ngIf="addNewTab" class="p-10" fxLayout="row" row-gap="20px" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutAlign="flex-start center">
+                <div fxFlex="65%" fxFlex.sm="100%">
+                    <mat-form-field appearance="outline" fxFlex="100%" class="outline--none material__select material__select--adaptive">
+                        <mat-label class="num-label text-capitalize">tab name</mat-label>
+                        <input matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div *ngIf="addNewTab" class="p-10 description-textarea" fxLayout="column" row-gap="20px" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutAlign="flex-start center">
+                <div fxFlex="100%" fxFlex.sm="100%" class="mr-auto description-textarea--width">
+                    <a class="colored__blue text-capitalize cursor-pointer" (click)="HeaderTabDescription = !HeaderTabDescription">
+                        <mat-icon>{{ HeaderTabDescription ? 'add' : 'remove' }}</mat-icon>
+                        {{ HeaderTabDescription ? 'add description' : 'hide description' }}
+                    </a>
+                    <mat-form-field class="example-full-width mt-15" appearance="outline" [ngClass]="{'hidden':HeaderTabDescription}">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput placeholder="" style="resize: none;"></textarea>
+                    </mat-form-field>
+                </div>
+            </div> -->
+            <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class="mr-4">
+              <mat-icon fontSet="material-icons-outlined custom__icon">filter_alt</mat-icon>
+            </span>
+                        <span>Basic Filter</span>
+                    </ng-template>
+                    <form [formGroup]="filterForm">
+                        <mat-accordion class="accordian_headers">
+                            <mat-expansion-panel *ngFor="let group of Object.keys(filterData); first as isFirst" [formGroupName]='group' [expanded]="isFirst">
+                                <mat-expansion-panel-header class="filter__accordian--header" [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+                                    <mat-panel-title>{{filterData[group].displayName}}</mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                <div class="filter__accordian--body" fxLayout="row wrap" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="16px grid" fxLayoutAlign="center" fxLayoutGap="12px
+                                    grid" fxLayoutAlign="flex-start">
+
+                                    <div class="filter__accordian--group" [ngClass]="{'hidden':ticketsFlag && filterData[group][items]['type'] === 'checkbox' && items !='Mentions'}" [ngClass]="{'hidden':filterForm.controls[group].controls[items].disabled}" [fxFlex]="(filterData[group][items]['type'] === 'chips'|| filterData[group][items]['type'] === 'chips-radio' || filterData[group][items]['type'] === 'chips1' || filterData[group][items]['type'] === 'search') ? '100%' : '50%'"
+                                        *ngFor="let items of Object.keys(filterData[group]).slice(1,Object.keys(filterData[group]).length);">
+                                        <!-- Select -->
+                                        <mat-form-field color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'select'" appearance="outline" class="material__select material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-select [disabled]="filterData[group][items]['options'].length == 0" [formControlName]="items" panelClass="dropdown__bordered">
+                                                <mat-option *ngFor="let item of
+                                                    filterData[group][items]['options']" [value]='item.id'>
+                                                    {{item.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+                                        <!-- Rating -->
+                                        <app-rating *ngIf="filterData[group][items]['type'] === 'rating'" [label]="filterData[group][items].displayName" [options]="filterData[group][items]['options']" [default]="filterForm.controls[group].controls[items]" (selectedData)="setRatingValue(group,items,$event)"></app-rating>
+
+
+                                        <!-- Slidder -->
+                                        <app-slidder *ngIf="filterData[group][items]['type'] === 'slidder'" (selectedData)="setSlidderValue(group,items,$event)" [label]='filterData[group][items].displayName' [formVal]="filterForm.controls[group].controls[items].value" [min]="filterData[group][items]['options'][0]"
+                                            [max]="filterData[group][items]['options'][1]"></app-slidder>
+
+
+                                        <!-- Duration -->
+                                        <mat-form-field formGroupName="Duration" class="material__select" *ngIf="filterData[group][items]['type']
+                                            === 'Duration'" appearance="outline">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <input *ngIf="durationlabel" class="cursor-pointer" [formControlName]='"StartDate"' (menuClosed)="durationTouched(false)" matInput type="text" placeholder="Select Duration" readonly [formControlName]="items" [(ngModel)]="durationlabel" [matMenuTriggerFor]="durationmenu">
+                                            <input [formControlName]='"EndDate"' hidden>
+                                            <mat-menu #durationmenu="matMenu">
+                                                <!-- [ngStyle]="{'width': getWidth(elementIWantWidthOf)}" -->
+                                                <div style="width:260px">
+                                                    <ng-container *ngFor="let item of filterData[group][items]['options']">
+                                                        <div mat-menu-item *ngIf="item?.label !== 'Custom'; else customTemplate" (click)="setDurationValue(item,$event);">{{item.label}}</div>
+                                                        <ng-template #customTemplate>
+                                                            <div mat-menu-item (click)="$event.stopPropagation();customDurationToggle = !customDurationToggle">
+                                                                {{item.label}}</div>
+                                                        </ng-template>
+                                                    </ng-container>
+                                                    <div (click)="$event.stopPropagation()" *ngIf="customDurationToggle" class="custom__select">
+                                                        <div class="custom__select--input">
+                                                            <mat-date-range-input [rangePicker]="rangepicker">
+                                                                <input matStartDate placeholder="Start date" (dateChange)="customDurationStartdate($event)">
+                                                                <input matEndDate placeholder="End date" (dateChange)="customDurationEnddate($event)">
+                                                            </mat-date-range-input>
+                                                            <mat-datepicker-toggle matSuffix [for]="rangepicker"></mat-datepicker-toggle>
+                                                            <mat-date-range-picker #rangepicker></mat-date-range-picker>
+                                                        </div>
+                                                        <div class="custom__select--action">
+                                                            <a class="colored__locobuzz cursor-pointer ml-auto" (click)='filledCustomDuration()'>Apply</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-menu>
+                                        </mat-form-field>
+
+
+                                        <!-- Multi-select -->
+                                        <app-multiple-select [ngClass]="{'hidden': filterForm.controls[group].controls[items].disabled}" *ngIf="filterData[group][items]['type']
+                                        === 'multi-select'" [formval]="filterForm.controls[group].controls[items]" [label]="filterData[group][items].displayName" [formcondition]="filterForm.controls[group].controls[items+'condition']" [Options]="filterData[group][items]['options']"
+                                            (selectedData)="setMultiSelectValue(group,items,$event)"></app-multiple-select>
+                                        <!-- <mat-form-field [ngClass]="{'hidden':
+                                            filterForm.controls[group].controls[items].disabled}" color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'multi-select'" appearance="outline" class="material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-select [formControlName]="items" multiple>
+                                                <mat-option *ngFor="let item of
+                                                    filterData[group][items]['options']" [value]="item.id">{{item.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                        <!-- Action Statuses
+                                        <mat-form-field color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'Action Statuses'" appearance="outline" class="material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-select [formControlName]="items" multiple>
+                                                <mat-option #allSelectedActionStatus (click)="toggleAllActionStatus()" [value]='"All" '>All
+                                                </mat-option>
+                                                <mat-option *ngFor="let item of
+                                                    filterData[group][items]['options']" (click)="tosslePerActionStatus()" [value]="item.id">{{item.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+
+                                        <!-- Ssre Statuses
+                                        <mat-form-field color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'Ssre Statuses'" appearance="outline" class="material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-select [formControlName]="items" multiple>
+                                                <mat-option #allSelectedSsreStatus (click)="toggleAllSsreStatus()" [value]='"All" '>All
+                                                </mat-option>
+                                                <mat-option *ngFor="let item of
+                                                    filterData[group][items]['options']" (click)="tosslePerOneSsreStatus()" [value]="item.id">{{item.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                        <!-- INPUT TEXT -->
+                                        <!-- <mat-form-field *ngIf="filterData[group][items]['type'] === 'input-text'" appearance="outline" class="material__select material__select--adaptive">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <input [formControlName]="items" matInput>
+                                        </mat-form-field> -->
+
+                                        <app-auto-complete *ngIf="filterData[group][items]['type'] === 'auto-complete'" [URL]="filterData[group][items]['URL']" [BrandID]="filterForm.controls.brandDateDuration.controls.selectBrand.value" [StartDateEpoch]="filterForm.controls.brandDateDuration.controls.Duration.controls.StartDate.value"
+                                            [EndDateEpoch]="filterForm.controls.brandDateDuration.controls.Duration.controls.EndDate.value" [allOptions]="" [label]="filterData[group][items].displayName" (selectedData)="setAutoCompleteValue(group,items,$event)"></app-auto-complete>
+
+                                        <!-- brand -->
+                                        <mat-form-field color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'brand'" appearance="outline" class="material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-select (openedChange)="brandTouched($event)" [formControlName]="items" multiple>
+                                                <mat-option #allSelectedBrand (click)="toggleAllBrandSelection()" [value]='"All"'>All
+                                                </mat-option>
+                                                <mat-option *ngFor="let item of
+                                                    filterData[group][items]['options']" (click)="tosslePerOneBrand()" [value]="item.id">{{item.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <!-- tree-checklist Channel -->
+                                        <mat-form-field [ngClass]="{'element__disable': Object.keys(filterData[group][items]['options'])?.length === 0}" fxFlex="calc(50% -
+                                            20px)" *ngIf="filterData[group][items]['type']
+                                            === 'tree-checklist'" appearance="outline" class="material__select">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <input [disabled]="Object.keys(filterData[group][items]['options'])?.length === 0" class="cursor-pointer" matInput [value]="filterForm.value[group][items]?.length === 0 ? 'All' : 'Selected:'+ filterForm.value[group][items]?.length" readonly [matMenuTriggerFor]="treemenu">
+                                            <mat-menu #treemenu="matMenu">
+                                                <div class="treemenu__dropdown" (click)="$event.stopPropagation();">
+                                                    <app-tree-checklist *ngIf="items === 'Channel'" [formVal]="filterForm.controls[group].controls[items]" [treeData]="filterData[group][items]['options']" (selectedData)="assignChannelData($event)">
+                                                    </app-tree-checklist>
+
+
+
+                                                    <!-- HERE IF Category. Need Radio button on top -->
+                                                    <div [ngClass]="{'hidden': filterForm.controls[group].controls[items+'condition'].disabled}" class="p-4" *ngIf="items === 'Category' && Object.keys(filterData[group][items]['options']).length > 0">
+                                                        <mat-radio-group aria-label="Select an Type" [formControlName]="filterData[group][items].displayName+'condition'">
+                                                            <mat-radio-button [value]="true">Ticket</mat-radio-button>
+                                                            <mat-radio-button [value]="false">Mention</mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                    <app-tree-checklist *ngIf="items === 'Category'" [formVal]="filterForm.controls[group].controls[items]" [treeData]="filterData[group][items]['options']" (selectedData)="assignCategoryData($event)"></app-tree-checklist>
+                                                </div>
+                                            </mat-menu>
+                                        </mat-form-field>
+
+                                        <!-- Radio button -->
+                                        <div class="filter__accordian--input" *ngIf="filterData[group][items]['type']
+                                            === 'radio'">
+                                            <label class="text__label">{{filterData[group][items].displayName}}</label>
+                                            <div class="d-flex-items-center">
+                                                <mat-radio-group *ngIf="items
+                                                    === 'whatToMonitor'" [formControlName]="items">
+                                                    <mat-radio-button *ngFor="let item of
+                                                        filterData[group][items]['options']" (click)="switchTicketsAndMentions(item.label)" [value]='item.id'>
+                                                        {{item.label}}
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                                <mat-radio-group *ngIf="items !=
+                                                    'whatToMonitor'" [formControlName]="items">
+                                                    <mat-radio-button *ngFor="let item of
+                                                        filterData[group][items]['options']" [value]='item.id'>
+                                                        {{item.label}}
+                                                    </mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <!-- Mension-Special-checkBOX -->
+                                        <div [ngClass]="{'hidden': filterForm.controls[group].controls[items].disabled}" class="filter__accordian--input" *ngIf="filterData[group][items]['type']
+                                            === 'checkbox' && items ===
+                                            'Mentions'" [formGroupName]='items'>
+                                            <label class="text__label">{{filterData[group][items].displayName}}</label>
+                                            <mat-checkbox (click)="switchTicketsAndMentions(item.label)" fxLayout.xs="column" fxLayout.sm="column" *ngFor="let item of
+                                                filterData[group][items]['options']" [formControlName]="item.label" [value]='item.id'>
+                                                {{item.label}}</mat-checkbox>
+                                        </div>
+
+
+                                        <!-- checkBOX -->
+                                        <div [ngClass]="{'hidden':ticketsFlag}" class="filter__accordian--input" *ngIf="filterData[group][items]['type']
+                                            === 'checkbox' && items !=
+                                            'Mentions'" [formGroupName]='items'>
+                                            <label class="text__label">{{filterData[group][items].displayName}}</label>
+                                            <mat-checkbox [disabled]="!filterForm.controls[group].controls['Mentions'].controls[filterData[group][items].displayName].value" *ngFor="let item of
+                                                filterData[group][items]['options']" [formControlName]="item.label" [value]='item.id'>
+                                                {{item.label}}</mat-checkbox>
+                                        </div>
+
+                                        <!-- AND /OR -->
+                                        <mat-form-field color="accent" class="filter__chips
+                                            material__input" *ngIf="filterData[group][items]['type']
+                                            === 'chips-radio'" [formGroupName]='items' appearance="outline" floatLabel="always">
+                                            <mat-label>All these words(AND)</mat-label>
+                                            <mat-chip-list #chipList aria-label="Filter selection">
+                                                <mat-radio-group formControlName="category" class="filter__chips--radio">
+                                                    <mat-radio-button value="AND">AND</mat-radio-button>
+                                                    <mat-radio-button value="OR">OR</mat-radio-button>
+                                                </mat-radio-group>
+                                                <mat-chip *ngFor="let filter of
+                                                    andArray" [selectable]="andSelectable" [removable]="andRemovable" (removed)="ANDChipRemove(filter)" class="material__input">
+                                                    {{filter.name}}
+                                                    <mat-icon matChipRemove *ngIf="andRemovable">cancel</mat-icon>
+                                                </mat-chip>
+                                                <input [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="andAddOnBlur" (matChipInputTokenEnd)="ANDChipAdd($event)">
+                                            </mat-chip-list>
+                                        </mat-form-field>
+
+                                        <!-- OR -->
+                                        <mat-form-field color="accent" class="filter__chips
+                                            material__input" *ngIf="filterData[group][items]['type']
+                                            === 'chips'" [formGroupName]='items' appearance="outline" class="material__input">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-chip-list #chipList aria-label="Filter selection">
+                                                <mat-chip *ngFor="let filter of
+                                                    orArray" [selectable]="orSelectable" [removable]="orRemovable" (removed)="ORChipRemove(filter)">
+                                                    {{filter.name}}
+                                                    <mat-icon matChipRemove *ngIf="orRemovable">cancel</mat-icon>
+                                                </mat-chip>
+                                                <input [placeholder]="items" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="orAddOnBlur" (matChipInputTokenEnd)="ORChipAdd($event)">
+                                            </mat-chip-list>
+                                        </mat-form-field>
+
+                                        <!-- DONot -->
+                                        <mat-form-field color="accent" class="filter__chips
+                                            material__input" *ngIf="filterData[group][items]['type']
+                                            === 'chips1'" [formGroupName]='items' appearance="outline" class="material__input">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <mat-chip-list #chipList aria-label="Filter selection">
+                                                <mat-chip *ngFor="let filter of
+                                                    donotArray" [selectable]="donotSelectable" [removable]="donotRemovable" (removed)="DoNotChipRemove(filter)">
+                                                    {{filter.name}}
+                                                    <mat-icon matChipRemove *ngIf="donotRemovable">cancel</mat-icon>
+                                                </mat-chip>
+                                                <input [placeholder]="items" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="donotAddOnBlur" (matChipInputTokenEnd)="DoNotChipadd($event)">
+                                            </mat-chip-list>
+                                        </mat-form-field>
+
+
+                                        <!-- Exclude Search -->
+                                        <mat-form-field color="accent" *ngIf="filterData[group][items]['type']
+                                            === 'search'" class="material__input
+                                            mb-12" appearance="outline">
+                                            <mat-label>{{filterData[group][items].displayName}}</mat-label>
+                                            <input #excludeInput type="text" aria-label="Number" matInput [formControl]="excludeFilterForm" [matAutocomplete]="auto">
+                                            <mat-icon matSuffix fontSet="material-icons-outlined">search</mat-icon>
+                                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="excludeFilterSelection()">
+                                                <mat-option *ngFor="let option
+                                                    of filteredOptions | async" [value]="option">
+                                                    {{option}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                        <!-- Exclude Form -->
+                                        <form [formGroup]="excludeFiltersForm">
+                                            <!-- {{excludeDisplay | json}} -->
+                                            <div *ngIf="group === 'excludeFilters'" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="16px grid" fxLayoutAlign="center" fxLayoutGap="20px grid" fxLayoutAlign="flex-start">
+                                                <!-- Display Each exclude Data Dynamically -->
+                                                <div class="filter__accordian--group" fxFlex="50%" *ngFor="let
+                                                    exclude of
+                                                    Object.keys(excludeDisplay)">
+                                                    <!-- Select  -->
+                                                    <mat-form-field color="accent" *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'select'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [disabled]="excludeDisplay[exclude]['options'].length == 0" [formControlName]="exclude">
+                                                            <mat-option *ngFor="let item
+                                                                of
+                                                                excludeDisplay[exclude]['options']" [value]='item.id'>
+                                                                {{item.label}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <!-- INPUT TEXT -->
+                                                    <mat-form-field *ngIf="excludeDisplay[exclude]['type'] === 'input-text'" appearance="outline" class="material__select material__select--adaptive">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <input [formControlName]="exclude" matInput>
+                                                        <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <app-auto-complete *ngIf="excludeDisplay[exclude]['type'] === 'auto-complete'" [URL]="excludeDisplay[exclude]['URL']" [BrandID]="filterForm.controls.brandDateDuration.controls.selectBrand.value" [StartDateEpoch]="filterForm.controls.brandDateDuration.controls.Duration.controls.StartDate.value"
+                                                        [EndDateEpoch]="filterForm.controls.brandDateDuration.controls.Duration.controls.EndDate.value" [label]="excludeDisplay[exclude].displayName" (selectedData)="setExcludeAutoCompleteValue(exclude,$event)"></app-auto-complete>
+                                                    <!-- Action Statuses
+                                                    <mat-form-field color="accent" *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'Action Statuses'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [formControlName]="exclude" multiple>
+                                                            <mat-option #excludeAllSelectedActionStatus (click)="toggleAllExcludeActionStatus()" [value]='"All"
+                                                                '>All
+                                                            </mat-option>
+                                                            <mat-option *ngFor="let item
+                                                                of
+                                                                excludeDisplay[exclude]['options']" (click)="tosslePerExcludeActionStatus()" [value]="item.id">{{item.label}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field> -->
+
+                                                    <!-- Ssre Statuses
+                                                    <mat-form-field color="accent" *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'Ssre Statuses'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [formControlName]="exclude" multiple>
+                                                            <mat-option #excludeAllSelectedSsreStatus (click)="toggleAllExcludeSsreStatus()" [value]='"All"
+                                                                '>All
+                                                            </mat-option>
+                                                            <mat-option *ngFor="let item
+                                                                of
+                                                                excludeDisplay[exclude]['options']" (click)="tosslePerOneExcludeSsreStatus()" [value]="item.id">{{item.label}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field> -->
+
+                                                    <!-- Multi-select -->
+                                                    <mat-form-field color="accent" *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'multi-select'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [disabled]="excludeDisplay[exclude]['options'].length == 0" [formControlName]="exclude" multiple>
+                                                            <div class="p-4" *ngIf="exclude === 'Upper Category'">
+                                                                <mat-radio-group aria-label="Select an Type" formControlName="Upper Categorycondition">
+                                                                    <mat-radio-button [value]="true">Ticket</mat-radio-button>
+                                                                    <mat-radio-button [value]="false">Mention</mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </div>
+                                                            <mat-option *ngFor="let item
+                                                                of
+                                                                excludeDisplay[exclude]['options']" [value]="item.id">
+                                                                <div *ngIf="item.ImageUrl" class="d-flex-items-center">
+                                                                    <div class="matmenu__img">
+                                                                        <img class="img__fluid" [src]="item.ImageUrl">
+                                                                    </div>
+                                                                    <span>{{item.label}}</span>
+                                                                </div>
+                                                                <div *ngIf="!item.ImageUrl">{{item.label}}</div>
+
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-icon matSuffix class="matsuffix__close" fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <!-- Slidder -->
+                                                    <app-slidder *ngIf="excludeDisplay[exclude]['type'] === 'slidder'" [isExclude]="true" (DelExclude)="removeExcludeFilter($event)" (selectedData)="setExcludeSlidderValue(exclude,$event)" [label]='excludeDisplay[exclude].displayName' [min]="excludeDisplay[exclude]['options'][0]"
+                                                        [formVal]="excludeFiltersForm.controls[exclude].value" [max]="excludeDisplay[exclude]['options'][1]"></app-slidder>
+
+
+
+                                                    <!-- Channel And Category -->
+                                                    <mat-form-field *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'tree-checklist'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [formControlName]="exclude">
+                                                            <mat-option class="hidden-option">
+                                                            </mat-option>
+                                                            <app-tree-checklist *ngIf="exclude === 'Channel'" [treeData]="excludeDisplay[exclude]['options']" (selectedData)="assignExcludeChannelData($event)"></app-tree-checklist>
+                                                            <!-- HERE WE NEED RADIO BUTTON -->
+                                                            <div class="p-4" *ngIf="exclude === 'Category'">
+                                                                <mat-radio-group aria-label="Select an Type" [formControlName]="exclude + 'condition'">
+                                                                    <mat-radio-button [value]="true">Ticket</mat-radio-button>
+                                                                    <mat-radio-button [value]="false">Mention</mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </div>
+                                                            <app-tree-checklist *ngIf="exclude === 'Category'" [treeData]="excludeDisplay[exclude]['options']" (selectedData)="assignExcludeCategoryData($event)"></app-tree-checklist>
+                                                        </mat-select>
+                                                        <mat-icon matSuffix class="matsuffix__close" fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <!-- Social Profile -->
+
+                                                    <!-- HERE WE NEED PROFILE IMAGE -->
+                                                    <mat-form-field *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'Social Profile'" appearance="outline" class="material__select">
+                                                        <mat-label>{{excludeDisplay[exclude].displayName}}</mat-label>
+                                                        <mat-select [disabled]="excludeDisplay[exclude]['options'].length == 0" [formControlName]="exclude" multiple>
+                                                            <!-- <mat-option #excludeAllSelectedProfile (click)="toggleExcludeAllProfileSelection()" [value]='"All"
+                                                                '>All(click)="tosslePerOneProfile()"
+                                                            </mat-option> -->
+                                                            <mat-option *ngFor="let item of
+                                                            excludeDisplay[exclude]['options']" [value]="item.id">
+                                                                <div class="d-flex-items-center">
+                                                                    <div class="matmenu__img">
+                                                                        <img class="img__fluid" [src]="item.ImageUrl">
+                                                                    </div>
+                                                                    <span>{{item.label}}</span>
+                                                                </div>
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-icon matSuffix fontSet="material-icons-outlined" class="matsuffix__close" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </mat-form-field>
+
+                                                    <!-- This is for Every Check box -->
+                                                    <div class="filter__accordian--input" *ngIf="excludeDisplay[exclude]['type']
+                                                        === 'checkbox'" [formGroupName]='exclude' class="material__input">
+                                                        <label class="text__label">{{excludeDisplay[exclude].displayName}}</label>
+                                                        <mat-checkbox *ngFor="let item of
+                                                            excludeDisplay[exclude]['options']" [formControlName]="item" [value]='item.id'>
+                                                            {{item.label}}</mat-checkbox>
+                                                        <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </form>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <span class=" mr-4">
+              <mat-icon class="custom__icon" fontSet="material-icons-outlined">filter_alt</mat-icon>
+            </span>
+                        <span>Advance Filter</span>
+                    </ng-template>
+                    <app-advance-filter></app-advance-filter>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+        <div class="filter__summary">
+            <p class="text__content">The following number appears after you filter it.</p>
+            <ul *ngIf="filterCount">
+                <li>
+                    <span>My Tickets</span>
+                    <span>{{filterCount.totalCount}}</span>
+                </li>
+                <li>
+                    <span>Open</span>
+                    <span>{{filterCount.openTicketCount}}</span>
+                </li>
+                <li>
+                    <span>Pending</span>
+                    <span>{{filterCount.pendingTicketCount}}</span>
+                </li>
+                <li>
+                    <span>Closed</span>
+                    <span>{{filterCount.closedTicketCount}}</span>
+                </li>
+                <!-- <li>
+                    <span>Shared With Me</span>
+                    <span>{{filterCount.closedTicketCount}}</span>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <!-- <app-component-loader [section]="'post-filter'"></app-component-loader> -->
+</div>
+<div class="modal__foot justify-content-flex-end">
+    <button mat-stroked-button (click)="resetBothFilter()" class="mr-auto colored__blue">Reset</button>
+    <mat-checkbox class="w-24" (change)="onSaveFilterChecked($event)"></mat-checkbox>
+    <span class="mr-15" style="font-size: 1.4rem;">{{saveAndApplyLabel}}</span>
+    <button mat-stroked-button (click)="closeDialog()" class="mr-14 colored__blue">Cancel</button>
+    <button mat-flat-button color="accent" (click)="filterFormSubmited(false)">{{whoCalled.submit}}</button>
+</div>

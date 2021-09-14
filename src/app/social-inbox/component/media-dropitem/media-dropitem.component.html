@@ -1,0 +1,48 @@
+<div class="modal__head" *ngIf="inModal">
+    <h3 class="modal__title font-semibold d-flex-items-center">
+       Edit Image
+    </h3>
+    <span class="modal__action">
+        <mat-icon mat-dialog-close fontSet="material-icons-outlined">close</mat-icon>
+    </span>
+</div>
+<div class="dropzone__item--wrapper" [ngClass]="{'modal__body': inModal}">
+    <div class="dropzone__item--image">
+        <ng-container *ngIf="onUpload; else staticImage">
+            <ngx-dropzone-image-preview class="dropzone__item--imagepreview"
+                ngProjectAs="ngx-dropzone-preview" [file]="image"></ngx-dropzone-image-preview>
+            <div class="dropzone__item--overlay"
+                (click)="onImageRemoved(image)">
+                <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+            </div>
+        </ng-container>
+        <ng-template #staticImage>
+            <img [src]="image" alt="Image">
+        </ng-template>
+    </div>
+    <div class="dropzone__item--content">
+        <span class="text__label">Rate it</span>
+        <app-star-rating [rating]="ugcMention?.rating || 0" class="mb-8"  [id]="file?.name || displayName"></app-star-rating>
+        <!-- <textarea class="custom__input" placeholder="Post Tags" rows="5"></textarea> -->
+        <div class="dropzone__item--tags">
+            <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                <mat-label>Post Tags</mat-label>
+                <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                  [removable]="removable" (removed)="remove(tag)">
+                    {{tag}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="New tag..."
+                         [matChipInputFor]="chipList"
+                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                         (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+              </mat-form-field>
+        </div>
+    </div>
+</div>
+<div class="modal__foot" *ngIf="inModal">
+    <button mat-button class="mr-12 ml-auto" mat-dialog-close>Cancel</button>
+    <button type="button" (click)="UpdateFileToServer()" mat-flat-button color="accent">Save</button>
+</div>

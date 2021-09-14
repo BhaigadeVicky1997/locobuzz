@@ -1,0 +1,45 @@
+<mat-form-field appearance="outline" class="material__select">
+    <mat-label>{{label}}</mat-label>
+    <input type="text" matInput #inputElement [matAutocomplete]="auto" [(ngModel)]="selectedOption" [value]="selectedOption" (ngModelChange)="filterOptions($event)">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="filterSelection($event)" class="ticket__agentName__select">
+        <mat-option (click)="setFormValue('Any User')" class="autocomplete-option" [value]="'Any User'">
+            <div class="autocomplete-option__item">
+                <mat-icon class="autocomplete-option__item--status colored__green" fontSet="material-icons-outlined">how_to_reg</mat-icon>
+                <span class="autocomplete-option__item--label text-semibold">Any
+        Available Users</span>
+                <mat-icon class="autocomplete-option__item--usercheck colored__green">check_circle</mat-icon>
+            </div>
+        </mat-option>
+        <ng-container *ngFor="let option of Object.keys(filteredOptions)">
+            <ng-container *ngIf="option === 'null'; else userlist">
+                <mat-option (click)="setFormValue(user.agentID)" class="autocomplete-option" *ngFor="let user of filteredOptions[option]" [value]="user.agentName">
+                    <!-- {{user| json}} -->
+                    <div class="autocomplete-option__item">
+                        <mat-icon class="autocomplete-option__item--status ml-18" [ngClass]="{'colored__green': user.logIn_Status ==
+            1,'colored__grey': user.logIn_Status !== 1}">fiber_manual_record</mat-icon>
+                        <mat-icon class="autocomplete-option__item--usericon" [ngClass]="{'colored__yellow':user.userRole ==
+            12,'colored__grey':user.userRole !== 12}" fontSet="material-icons-outlined">person</mat-icon>
+                        <span class="autocomplete-option__item--label">{{user.agentName}}</span>
+                    </div>
+                </mat-option>
+            </ng-container>
+            <ng-template #userlist>
+                <mat-optgroup>
+                    <span class="d-flex-items-center">
+        <mat-icon class="colored__locobuzz mr-14">group</mat-icon>
+        <span>{{option}}</span>
+                    </span>
+                    <mat-option (click)="setFormValue(user.agentID)" class="autocomplete-option" *ngFor="let user of filteredOptions[option]" [value]="user.agentName">
+                        <div class="autocomplete-option__item">
+                            <mat-icon class="autocomplete-option__item--status ml-18 mr-10" [ngClass]="{'colored__green': user.logIn_Status ==
+            1,'colored__grey': user.logIn_Status !== 1}">fiber_manual_record</mat-icon>
+                            <mat-icon class="autocomplete-option__item--usericon" [ngClass]="{'colored__yellow':user.userRole ==
+            12,'colored__grey':option.userRole !== 12}" fontSet="material-icons-outlined">person</mat-icon>
+                            <span class="autocomplete-option__item--label">{{user.agentName}}</span>
+                        </div>
+                    </mat-option>
+                </mat-optgroup>
+            </ng-template>
+        </ng-container>
+    </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,36 @@
+<div class="post-shortened">
+    <div class="post-shortened__head">
+        <div class="post-shortened__profile" [ngClass]="{'align-center': !data.Userinfo.screenName}">
+          <div class="position-relative">
+            <div class="post-shortened__profile--channelImage">
+              <img class="img__fluid" [src]="data.channelImage">
+            </div>
+            <img class="post-shortened__profile--img" [src]="data.Userinfo.image">
+          </div>
+            <div>
+                <div class="post-shortened__profile--name">{{data.Userinfo.name}}</div>
+                <div class="post-shortened__profile--handle"  *ngIf="data.Userinfo.screenName"><span class="text__sm">{{data.channelName}}</span></div>
+                <!-- <span class="text__sm">({{data.Userinfo.screenName}})</span> -->
+            </div>
+        </div>
+        <div class="post-shortened__time">{{ data.ticketTime.timetoshow}}</div>
+    </div>
+    <div class="post-shortened__body">
+        <img class="post-shortened__brand-logo" [src]="data.brandLogo">
+        <p class="post-shortened__content">{{data.ticketDescription}}</p>
+    </div>
+    <div class="post-shortened__foot">
+        <div class="post-shortened__foot--item">
+            <mat-icon class="post-shortened__foot--icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">local_activity</mat-icon>
+            <span class="post-shortened__foot--label">{{data.ticketId}}</span>
+        </div>
+        <div class="post-shortened__foot--item">
+            <mat-icon class="post-shortened__foot--icon colored__blue" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">folder</mat-icon>
+            <span class="post-shortened__foot--label">{{data.ticketStatus}}</span>
+        </div>
+        <div class="post-shortened__foot--item">
+            <mat-icon class="post-shortened__foot--icon colored__red" fontSet="material-icons-outlined" aria-hidden="false" aria-label="local activity">low_priority</mat-icon>
+            <span class="post-shortened__foot--label">{{data.ticketPriority}}</span>
+        </div>
+    </div>
+</div>

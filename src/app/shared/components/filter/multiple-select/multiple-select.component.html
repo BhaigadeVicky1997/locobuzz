@@ -1,0 +1,25 @@
+<form [formGroup]="Form">
+    <mat-form-field color="accent" appearance="outline" class="material__select">
+        <mat-label>{{label}}</mat-label>
+        <mat-select [disabled]="Options.length == 0" formControlName="options" multiple>
+            <div [ngClass]="{'hidden': Form.controls.condition.disabled}" class="p-4" *ngIf="label === 'Upper Category'">
+                <mat-radio-group aria-label="Select an Type" formControlName="condition">
+                    <mat-radio-button [value]="true">Ticket</mat-radio-button>
+                    <mat-radio-button [value]="false">Mention</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <mat-option #allSelected (click)="toggleAllSelection()" value="All">All
+            </mat-option>
+            <mat-option *ngFor="let item of Options" (click)="tosslePerOne()" [value]="item.id">
+                <div class="d-flex-items-center" *ngIf="item.ImageUrl">
+                    <div class="matmenu__img">
+                        <img class="img__fluid" [src]="item.ImageUrl">
+                    </div>
+                    <span>{{item.label}}</span>
+                </div>
+                <div *ngIf="!item.ImageUrl">{{item.label}}</div>
+            </mat-option>
+
+        </mat-select>
+    </mat-form-field>
+</form>

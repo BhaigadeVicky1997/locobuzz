@@ -1,0 +1,63 @@
+<app-side-modal title="Your saved filters" [@slideInOut]>
+    <ng-container *ngIf="savedFilterTab.length > 0">
+    <ul class="saved-filters" >
+        <li class="saved-filters__item" [ngClass]="{'active':ind === activeTabIndex}" (click)="selectTab(ind)" *ngFor="let tab of savedFilterTab; let ind = index">
+            <div class="saved-filters__icon">
+                <mat-icon fontSet="material-icons-outlined" aria-hidden="false" aria-label="filter_alt icon ">filter_alt</mat-icon>
+            </div>
+            <div class="saved-filters__content">
+                <span class="saved-filters__content--label text__label">{{tab.tabName}}</span>
+                <span class="saved-filters__content--description">{{tab.tabDescription}}</span>
+                <span class="saved-filters__content--summary">
+                    <span class="text__sub--sm text-semibold">Created On : </span><span class="text__light--sm">{{tab.createdDate | datetimeFormatter:'D MMM YYYY'}}</span>
+                </span>
+                <span>
+                    <mat-icon fontSet="material-icons-outlined" class="mr-8 cursor-pointer">mode_edit</mat-icon>
+                    <mat-icon fontSet="material-icons-outlined" class="cursor-pointer">delete_outline</mat-icon>
+                </span>
+            </div>
+        </li>
+        <!-- <li class="saved-filters__item">
+            <div class="saved-filters__icon">
+                <mat-icon fontSet="material-icons-outlined" aria-hidden="false" aria-label="filter_alt icon ">filter_alt</mat-icon>
+            </div>
+            <div class="saved-filters__content">
+                <span class="saved-filters__content--label text__label">New Ticket Filter</span>
+                <span class="saved-filters__content--description">Lorem ipsum dolor sit amet, consetetur sadi ps cing elitr, sed diam nonumy eirmod tempor.</span>
+                <span class="saved-filters__content--summary">
+                    <span class="text__sub--sm text-semibold">Created On : </span><span class="text__light--sm">Jan 2, 2020</span>
+                </span>
+            </div>
+        </li>
+        <li class="saved-filters__item">
+            <div class="saved-filters__icon">
+                <mat-icon fontSet="material-icons-outlined" aria-hidden="false" aria-label="filter_alt icon ">filter_alt</mat-icon>
+            </div>
+            <div class="saved-filters__content">
+                <span class="saved-filters__content--label text__label">New Ticket Filter</span>
+                <span class="saved-filters__content--description">Lorem ipsum dolor sit amet, consetetur sadi ps cing elitr, sed diam nonumy eirmod tempor.</span>
+                <span class="saved-filters__content--summary">
+                    <span class="text__sub--sm text-semibold">Created On : </span><span class="text__light--sm">Jan 2, 2020</span>
+                </span>
+            </div>
+        </li>
+        <li class="saved-filters__item">
+            <div class="saved-filters__icon">
+                <mat-icon fontSet="material-icons-outlined" aria-hidden="false" aria-label="filter_alt icon ">filter_alt</mat-icon>
+            </div>
+            <div class="saved-filters__content">
+                <span class="saved-filters__content--label text__label">New Ticket Filter</span>
+                <span class="saved-filters__content--description">Lorem ipsum dolor sit amet, consetetur sadi ps cing elitr, sed diam nonumy eirmod tempor.</span>
+                <span class="saved-filters__content--summary">
+                    <span class="text__sub--sm text-semibold">Created On : </span><span class="text__light--sm">Jan 2, 2020</span>
+                </span>
+            </div>
+        </li> -->
+    </ul>
+</ng-container>
+    <div foot class="ml-auto">
+        <a  mat-stroked-button  color="accent" [mat-dialog-close]="true">Cancel</a>
+        <a href="javascript:void(0)" (click)="activateTab()" class="ml-12" mat-flat-button color="accent">Add</a>
+    </div>
+</app-side-modal>
+

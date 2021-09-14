@@ -1,0 +1,233 @@
+<!-- <strong>Upper Category</strong> -->
+<div class="modal__head">
+  <span class="modal__title">Tag Category</span>
+  <span class="modal__action">
+    <mat-icon fontSet="material-icons-outlined" (click)="onNoClick()">close</mat-icon>
+  </span>
+</div>
+
+<div class="modal__body modal__body--height">
+  <div class="modal__body--wrapper">
+    <div class="modal__body--section" style="flex: 2;">
+      <div class="input__wrapper">
+        <mat-form-field appearance="outline" fxFlex="100" class="material__select">
+          <mat-label class="input__label">Upper Category</mat-label>
+          <mat-select [(value)]="DefaultSelected" #selectValue placeholder="Select upper category">
+            <!-- <mat-option [value]="default">Select The Category</mat-option> -->
+
+            <mat-option (click)="upperSelect(option)" *ngFor="let option of upperCategories" [id]="option.id"
+              [value]="option.name">{{option.name}}</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="category">
+        <div class="category__search">
+          <input class="custom__input" name="search" autocomplete="off" placeholder="Type to search"
+            [(ngModel)]="inputValue" (input)="filter(inputValue)">
+        </div>
+        <div class="category__tree--wrapper category__tree--wrapper--height">
+          <div class="category__tree" *ngFor="let data of dataSource; let i = index">
+            <div class="category__tree--listitem">
+              <div class="category__tree--group">
+                <mat-checkbox (change)="onParentClick(checkBox,data, i)" name={{data.category}} #checkBox>
+                  {{data.category}}</mat-checkbox>
+              </div>
+              <mat-radio-group ngModel #pradio="ngModel" name={{data.category}}
+                *ngIf="data.sentiment != null && checkBox._checked" aria-label="Select an option"
+                (change)="radio(pradio.value, data.category, 'parent', data)">
+                <mat-radio-button class="radio-positive" #parentradio value='1'>Positive</mat-radio-button>
+                <mat-radio-button class="radio-negative" #parentradio value='2'>Negative</mat-radio-button>
+                <mat-radio-button class="radio-neutral" #parentradio value='0' >Neutral</mat-radio-button>
+
+              </mat-radio-group>
+            </div>
+            <div *ngIf="checkBox._checked">
+              <div class="category__tree--nested"
+                [ngClass]="{'category__tree--nestedlast': data.depatments.length - 1 == i}"
+                *ngFor="let nestdata of data.depatments; let i = index">
+                <div #divi class="category__tree--listitem">
+                  <mat-checkbox (change)="onchildClick(nestdata, nestCheckbox,data, data.category)"
+                    name={{nestdata.departmentName}} #nestCheckbox>
+                    {{nestdata.departmentName}}</mat-checkbox>
+                  <mat-radio-group ngModel #nestedRadio="ngModel" name={{nestdata.departmentName}}
+                    *ngIf="nestdata.departmentSentiment != null && nestCheckbox._checked" aria-label="Select an option"
+                    (change)="radio(nestedRadio.value, nestdata.departmentName, 'child', data)">
+
+                    <mat-radio-button class="radio-positive" #subRadio value='1'>Positive</mat-radio-button>
+                    <mat-radio-button class="radio-negative" #subRadio value='2'>Negative</mat-radio-button>
+                    <mat-radio-button class="radio-neutral" #subRadio value='0'>Neutral</mat-radio-button>
+
+                  </mat-radio-group>
+                </div>
+                <div *ngIf="nestCheckbox._checked">
+                  <div class="category__tree--nested" *ngFor="let subdata of nestdata.subCategories">
+
+                    <div class="category__tree--listitem">
+                      <mat-checkbox name={{subdata.subCategoryName}} #dnestedCheck
+                        (change)="ondNestedChildClick(subdata ,dnestedCheck,nestdata, dnestedCheck.name, data)">
+                        {{subdata.subCategoryName}}
+                      </mat-checkbox>
+                      <mat-radio-group ngModel #dnestedRadio="ngModel" name={{subdata.subCategoryName}}
+                        *ngIf="dnestedCheck._checked && subdata.subCategorySentiment != null"
+                        aria-label="Select an option"
+                        (change)="radio(dnestedRadio.value, subdata.subCategoryName, 'subchild', data)">
+                        
+
+                        <mat-radio-button class="radio-positive" #subsubRadios value='1'>Positive</mat-radio-button>
+                        <mat-radio-button class="radio-negative" #subsubRadios value='2'>Negative</mat-radio-button>
+                        <mat-radio-button class="radio-neutral" #subsubRadios value='0'>Neutral</mat-radio-button>
+
+                      </mat-radio-group>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal__body--section">
+      <div class="ticket__category">
+        <div class="ticket__category--item">
+          <p class="text__content mb-8 font-weight-600"> Selected Upper Category</p>
+          <div class="category-pill category-pill--NA ">
+            <div class="category-pill__item category-pill__item--noItem" *ngIf="selectedUpper == '' ">
+              <span class="category-pill__label">N/A</span>
+            </div>
+            <div class="category-pill__item w-290 position-relative" *ngIf="selectedUpper != ''">
+              <span class="category-pill__label">{{selectedUpper}}</span>
+              <span class="category-pill__close" (click)="removeUpperCate()">
+                <mat-icon>close</mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="ticket__category--item">
+          <p class="text__content mb-8 font-weight-600">Selected Category</p>
+          <div *ngFor="let item of categoryCards" class="category-pill__wrapper">
+            <div *ngIf="item.sentiment != null && item.subCategories.length == 0" class="category-pill w-300 position-relative">
+              <div class="category-pill__item">
+                <span class="category-pill__label">{{item.name}}</span>
+                <span *ngIf="item.subCategories.length == 0" class="category-pill__sentiment"> -
+                  <span [ngClass]="{'colored__green': item?.sentiment == '1'}" *ngIf="item?.sentiment == '1'">
+                    Positive
+                  </span>
+                  <span [ngClass]="{'colored__red': item?.sentiment == '2'}" *ngIf="item?.sentiment == '2'">
+                    Negative
+                  </span>
+                  <span [ngClass]="{'colored__yellow--dark': item?.sentiment == '0'}" *ngIf="item?.sentiment == '0'">
+                    Neutral
+                  </span>
+                </span>
+                <div class="category-pill__close" (click)="removeCard(item)">
+                  <mat-icon>close</mat-icon>
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let subitem of item.subCategories" class="category-pill w-300 position-relative">
+              <div *ngIf="subitem.subSubCategories.length != 0">
+                <div class="category-pill__item">
+                  <span class="category-pill__label text-semibold">{{item.name}}</span>
+                  <div class="category-pill__close" (click)="removeCard(subitem)">
+                    <mat-icon>close</mat-icon>
+                  </div>
+                </div>
+                <div *ngIf="subitem.subSubCategories.length != 0">
+                  <span class="category-pill__label text-semibold">{{subitem.name}}</span>
+                  <span *ngIf="subitem.subSubCategories.length == 0"
+                    class="category-pill__sentiment">
+                    - <span [ngClass]="{'colored__green': subitem?.sentiment == '1'}" *ngIf="subitem?.sentiment == '1'">
+                      Positive
+                    </span>
+                    <span [ngClass]="{'colored__red': subitem?.sentiment == '2'}" *ngIf="subitem?.sentiment == '2'">
+                      Negative
+                    </span>
+                    <span [ngClass]="{'colored__yellow--dark': subitem?.sentiment == '0'}"
+                      *ngIf="subitem?.sentiment == '0'">
+                      Neutral
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div *ngIf="subitem.subSubCategories.length == 0">
+                <div class="category-pill__item">
+                  <span class="category-pill__sublabel text-semibold">{{item.name}}</span>
+                  <div class="category-pill__close" (click)="removeCard(subitem)">
+                    <mat-icon>close</mat-icon>
+                  </div>
+                </div>
+                <div class="category-pill__item">
+                  <span class="category-pill__sublabel">{{subitem.name}}</span>
+                  <span class="category-pill__sentiment" *ngIf="subitem.subSubCategories.length == 0"> -
+
+                    <span [ngClass]="{'colored__green': subitem?.sentiment == '1'}" *ngIf="subitem?.sentiment == '1'">
+                      Positive
+                    </span>
+                    <span [ngClass]="{'colored__red': subitem?.sentiment == '2'}" *ngIf="subitem?.sentiment == '2'">
+                      Negative
+                    </span>
+                    <span [ngClass]="{'colored__yellow--dark': subitem?.sentiment == '0'}"
+                      *ngIf="subitem?.sentiment == '0'">
+                      Neutral
+                    </span>
+
+                  </span>
+                </div>
+              </div>
+              <div *ngFor="let subsubitem of subitem.subSubCategories">
+                <span class="category-pill__sublabel">{{subsubitem.name}}</span>
+                <span class="category-pill__sentiment"> -
+
+                  <span [ngClass]="{'colored__green': subsubitem?.sentiment == '1'}"
+                    *ngIf="subsubitem?.sentiment== '1'">
+                    Positive
+                  </span>
+                  <span [ngClass]="{'colored__red': subsubitem?.sentiment == '2'}" *ngIf="subsubitem?.sentiment == '2'">
+                    Negative
+                  </span>
+                  <span [ngClass]="{'colored__yellow--dark': subsubitem?.sentiment == '0'}"
+                    *ngIf="subsubitem?.sentiment == '0'">
+                    Neutral
+                  </span>
+
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal__foot modal__foot--tabsize">
+  <div class="modal__foot--item">
+    <button mat-stroked-button color="accent" (click)="clearall()">Clear All</button>
+  </div>
+  <div class="modal__foot--item ml-auto" (click) = 'TaggingRequestParameters(mentionCheck, "setToAllMention")'>
+    <div class="input__wrapper">
+      <mat-checkbox #mentionCheck>Set to all mentions under ticket Id</mat-checkbox>
+    </div>
+  </div>
+  <div class="modal__foot--item" *ngIf = "categoryType !== 'ticketCategory'" (click) = 'TaggingRequestParameters(tagTweetCheck, "tagTweet")'>
+    <div class="input__wrapper">
+      <mat-checkbox #tagTweetCheck>Tag Tweet/Retweet</mat-checkbox>
+    </div>
+  </div>
+  <div class="modal__foot--item" *ngIf = "categoryType !== 'ticketCategory'" (click) = 'TaggingRequestParameters(ticketCheck, "setToTicket")'>
+    <div class="input__wrapper">
+      <mat-checkbox #ticketCheck>Set to ticket as well</mat-checkbox>
+    </div>
+  </div>
+  <div class="modal__foot--item">
+    <button class="mr-12" mat-stroked-button color="accent" (click)="onNoClick()">Cancel</button>
+    <button mat-flat-button color="accent" (click)="Submit()">Submit</button>
+  </div>
+</div>

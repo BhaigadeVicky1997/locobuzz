@@ -1,0 +1,12 @@
+.user-overview{
+    &__stats{
+        padding: 12px;
+        padding-bottom: 0px;
+        margin-bottom: 0px !important;
+        flex-wrap: wrap;
+    }
+
+    &__charts{
+      flex: 1;
+    }
+}

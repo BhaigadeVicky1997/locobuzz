@@ -1,0 +1,134 @@
+<div class="dashboard">
+  <div class="dashboard__content">
+    <div class="dashboard__content--head">
+      <div class="dashboard__content--head--info">
+          <div class="dashboard__content--head--info--logo">
+            <img class="img__fluid" src="assets/analytics/bars.svg">
+          </div>
+          <div class="dashboard__content--head--info--field">
+            <mat-form-field appearance="outline" fxFlex="100%" class="outline--none material__select material__select--adaptive">
+              <mat-label class="num-label text-capitalize">dashboard name</mat-label>
+              <input matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="100%" class="outline--none material__select material__select--adaptive">
+              <mat-label class="num-label text-capitalize">dashboard description</mat-label>
+              <textarea matInput></textarea>
+            </mat-form-field>
+          </div>
+          <!-- <button (click)="dashboardSidebar()">click</button> -->
+      </div>
+      <mat-divider></mat-divider>
+      <div class="dashboard__content--head--topicName">
+        <span>Audience</span>
+        <span>Engagement</span>
+        <span>Sentiment</span>
+        <span>Performance</span>
+        <span><mat-icon>add</mat-icon> Add New Topic</span>
+      </div>
+    </div>
+    <div class="dashboard__content--body">
+      <span class="dashed-border">
+        <span class="topic text-capitalize" [matMenuTriggerFor]="addTopic"><mat-icon>add</mat-icon> add topic</span>
+      </span>   
+      <div class="audience">
+        <mat-icon>drag_indicator</mat-icon>
+        <div class="audience--content">
+          <h3 class="mb-7">Audience</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio quis, quod numquam beatae nobis dolorum mollitia 
+          voluptates aliquam consequuntur cumque. Quaerat enim tenetur expedita quod sint maxime reprehenderit doloribus officiis?
+          </p>          
+        </div>
+        <div class="audience--filter">
+          <div class="audience--filter--block">
+            <mat-icon class="material-icons-outlined">filter_alt</mat-icon>
+            <span class="ml-5">filter</span>
+          </div>         
+        </div>
+      </div> 
+<<<<<<< HEAD
+      <!-- </span> -->
+=======
+>>>>>>> ede7a535b33084e967517b3c70951de0a87744aa
+      <div style="height: 1000px;">
+        <gridster [options]="options">
+          <gridster-item [item]="item" *ngFor="let item of dashboard">
+            <div class="button-holder">
+              <div class="gridster-item-content" *ngIf="item.hasContent">
+                <div class="stuff">
+                  <span>Some content to select and click without dragging the widget</span>
+                  <a href="https://www.google.com" target="_blank">Link to Google</a>
+                </div>
+              </div>
+              <div class="item-buttons" *ngIf="item.hasContent">
+                <button mat-icon-button mat-raised-button class="drag-handler">
+                  <mat-icon>open_with</mat-icon>
+                </button>
+                <button mat-icon-button mat-raised-button class="remove-button" (mousedown)="removeItem($event, item)"
+                        (touchstart)="removeItem($event, item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <label *ngIf="!item.hasContent">{{item.label}}</label>
+              <button mat-mini-fab *ngIf="!item.hasContent" (mousedown)="removeItem($event, item)"
+                      (touchstart)="removeItem($event, item)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </gridster-item>
+        </gridster>
+      </div>    
+      <div class="dashboard__content--body--widget">
+        <span (click)="openWidgetContainer()" class="add-icon"></span>
+        <span>Click to add widget</span>
+      </div>    
+    </div>
+    <div class="dashboard__content--foot">
+        <app-dashboard-action class="dashboard__action">
+          <div left class="left-side">
+            <div class="filter mr-30 cursor-pointer" (click)="globalFilter()">
+              <mat-icon class="material-icons-outlined">filter_alt</mat-icon>
+              <span class="ml-5">Global filter</span>
+              <span class="filter--info">3</span>
+            </div>
+            <div class="export cursor-pointer">
+              <mat-icon class="material-icons-outlined">cloud_download</mat-icon>
+              <span class="ml-6">Export</span>
+            </div>
+          </div>
+          <div right class="right-side">
+            <button mat-stroked-button class="colored__blue mr-8">Cancel</button>
+              <button mat-stroked-button class="mat-btn-dropdown" [matMenuTriggerFor]="saveForPublic">Save For Public 
+                <mat-icon mat-button fontSet="material-icons-outlined" class="down_arow">keyboard_arrow_down</mat-icon>
+              </button>
+            <mat-menu #saveForPublic="matMenu" yPosition="above">    
+              <button mat-menu-item> Save For Public</button>
+              <button mat-menu-item>Save Individual</button>
+              <button mat-menu-item>Save As Copy</button>
+              <button mat-menu-item>Save As Draft</button>
+              <button mat-menu-item>Save And Create Report</button>
+            </mat-menu>
+          </div>
+        </app-dashboard-action> 
+    </div>
+  </div>
+  <div class="dashboard__sidebar" *ngIf="dashboardSide">
+    <app-widget-filter [@slideInRight]></app-widget-filter>
+  </div>
+</div>
+
+<mat-menu #addTopic="matMenu" yPosition="below" xPosition="before" class="mat">
+  <div class="mat--data" (click)="$event.stopPropagation();">
+      <div class="mat--data--filed1">
+          <mat-form-field appearance="outline" class="material__select material__select--adaptive" fxFLex="100%">
+              <mat-label class="mat-label text-capitalize">topic name</mat-label>
+              <input matInput>
+          </mat-form-field>
+      </div>
+      <div class="mat--data--filed1 flex-end mt-4">
+          <button mat-button mat-dialog-close color="accent" class="ml-auto">Cancel</button>
+          <button mat-button mat-dialog-close color="accent">Save</button>
+      </div>
+
+  </div>
+</mat-menu>

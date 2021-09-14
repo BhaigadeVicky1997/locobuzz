@@ -1,0 +1,87 @@
+<form [formGroup]="searchForm">
+    <div class="post-search">
+        <div class="post-search__content position-relative">
+            <input class="pl-45" formControlName='Search' id="post-search-input" type="text" placeholder="Search" (keyup.enter)="search($event,true)" (input)="search($event,false)" fxFlex>
+            <!-- <a class="post-search__menu" [matMenuTriggerFor]="postSearchOption">
+                <mat-icon class="s-24 secondary-text">keyboard_arrow_down</mat-icon>
+
+            </a> -->
+            <span class="post-search__text text-capitalize">
+                <span class="s-24 secondary-text colored__grey">press enter to search</span>
+            </span>
+        </div>
+        <!-- <mat-menu #postSearchOption="matMenu" xPosition="before" class="post-search__options">
+            <div class="post-search__options--wrapper">
+                <div class="post-search__options--content" (click)="$event.stopPropagation();">
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px" class="post-search__options--row" fxLayoutAlign="flex-start center">
+                        <div class="post-search__options--input" fxFlex="50%">
+                            <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                                <mat-label>Author Name</mat-label>
+                                <input formControlName='AuthorName' matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="post-search__options--input" fxFlex="50%">
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="1rem" fxLayoutAlign="flex-start center">
+                                <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                                    <mat-label>Date Within</mat-label>
+                                    <mat-select formControlName="DateWithin">
+                                        <mat-option (click)="dateSelected('dropdown',6)" value="6">7 Days</mat-option>
+                                        <mat-option (click)="dateSelected('dropdown',14)" value="14">15 Days</mat-option>
+                                        <mat-option (click)="dateSelected('dropdown',30)" value="29">30 days</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <span>OR</span>
+                                <div class="custom__select--input">
+                                    <mat-date-range-input [rangePicker]="rangepicker">
+                                        <input formControlName="StartDate" matStartDate placeholder="Start date" (dateChange)="dateSelected('Custom start',$event)">
+                                        <input formControlName="EndDate" matEndDate placeholder="End date" (dateChange)="dateSelected('Custom end',$event)">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="rangepicker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #rangepicker></mat-date-range-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-search__options--row">
+                        <div class="post-search__options--input">
+                            <app-custom-chips [label]="'Has Word'" [formval]="searchForm.value['HasWords']" (outputEvent)="setChipsValue('HasWords',$event)"></app-custom-chips>
+                        </div>
+                    </div>
+                    <div class="post-search__options--row">
+                        <div class="post-search__options--input">
+
+                            <app-custom-chips label="Doesn't have" [formval]="searchForm.value['NotWords']" (outputEvent)="setChipsValue('NotWords',$event)"> </app-custom-chips>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px" class="post-search__options--row" fxLayoutAlign="flex-start center">
+                        <div class="post-search__options--input">
+                            <mat-form-field appearance="outline" class="material__select">
+                                <mat-label>Channels</mat-label>
+                                <input class="cursor-pointer" matInput formControlName="Channels" [value]="'Selected:'+ this.searchForm.value.Channels?.length" readonly [matMenuTriggerFor]="treemenu">
+                                <mat-menu #treemenu="matMenu">
+                                    <div class="treemenu__dropdown" (click)="$event.stopPropagation();">
+                                        <app-tree-checklist [treeData]="channelDisplayData" (selectedData)="treeCheckList('Channels',$event)">
+                                        </app-tree-checklist>
+                                    </div>
+                                </mat-menu>
+                            </mat-form-field>
+                        </div>
+                        <div class="post-search__options--input" fxLayout="row" fxLayout.xs="column" fxLayoutGap="1rem" fxLayoutAlign="flex-start center">
+                            <div class="input__wrapper">
+                                <mat-checkbox formControlName='HasAttached'>Has Image/video Attached</mat-checkbox>
+                            </div>
+                            <div class="input__wrapper">
+                                <mat-checkbox formControlName='NotAttached'>Don't Have Image/Video Attached</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-search__options--foot">
+                    <button mat-button class="ml-auto">Cancel</button>
+                    <button mat-raised-button color="accent">Search</button>
+                </div>
+            </div>
+        </mat-menu> -->
+    </div>
+</form>

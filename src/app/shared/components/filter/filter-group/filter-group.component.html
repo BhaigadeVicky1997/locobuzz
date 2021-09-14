@@ -1,0 +1,27 @@
+<div class="modal">
+    <div class="modal__head">
+        <div class="modal__title">Save this tab for use it again in future</div>
+        <span _ngcontent-grf-c319="" class="modal__action">
+            <mat-icon fontSet="material-icons-outlined" (click)="closeDialog()">close</mat-icon>
+        </span>
+    </div>
+    <div class="modal__body">
+        <div class="modal__body--section">            
+            <form [formGroup]='filterGroupForm'>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Tab Name</mat-label>
+                    <input matInput formControlName="GroupName" placeholder="" value="">
+                </mat-form-field>
+        
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="Description" placeholder=""></textarea>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    <div class="modal__foot">
+        <button mat-stroked-button (click)="closeDialog()" class="ml-auto colored__blue mr-16">Cancel</button>
+        <button mat-raised-button (click)="submit()" color="accent">Submit</button>
+    </div>
+</div>

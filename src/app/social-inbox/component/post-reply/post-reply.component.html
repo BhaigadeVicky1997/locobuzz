@@ -1,0 +1,506 @@
+<div class="post-reply">
+    <!-- vagish commented this -->
+    <!-- <div class="post-reply__head">
+        <span *ngIf= "!onlyEscalation; else escalateText" class="post-reply__head--title">Reply</span>
+        <ng-template #escalateText>
+            <span  class="post-reply__head--title">Escalate</span>
+        </ng-template>
+        <span class="post-reply__head--action">
+      <mat-icon (click)="closePostReply()">close</mat-icon>
+    </span>
+    </div> -->
+    <form novalidate (ngSubmit)="saveReply()" [formGroup]="replyForm">
+        <div class="post-reply__body post__reply--block--body">
+
+            <!-- Post Reply  -->
+            <div class="post__reply--block--conversation" fxLayout="row" *ngIf="(showReplySection && !onlySendMail) || (isEmailChannel && showEscalateview && !onlySendMail)">
+                <div class="custom__column custom__column--left right-border" fxFlex="30%">
+                    <ng-template [ngIf]="!showEscalateview && !isEmailChannel">
+                        <ng-template [ngIf]="this.ticketReplyDTO.replyOptions">
+                            <mat-form-field class="material__select material__select--adaptive" appearance="outline" [disabled]="ssreSimulationRight ? 'true' : null">
+                                <mat-label>Reply Type</mat-label>
+                                <mat-select formControlName="replyType" [(ngModel)]="selectedReplyType" (selectionChange)="replyTypeChange($event.value)">
+                                    <mat-option *ngFor="let item of
+                    this.ticketReplyDTO.replyOptions" [value]="item.id">{{ item.value }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </ng-template>
+                        <ng-template [ngIf]="this.ticketReplyDTO.handleNames">
+                            <mat-form-field class="material__select material__select--adaptive" appearance="outline">
+                                <mat-label>Reply Handle</mat-label>
+                                <mat-select formControlName="replyHandler">
+                                    <mat-option *ngFor="let item of
+                    this.ticketReplyDTO.handleNames" [value]="item.socialId">{{ item.handleName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </ng-template>
+                    </ng-template>
+                    <!-- <ng-template  [ngIf]="showEscalateview"> -->
+
+                    <div *ngIf="customAgentList?.length > 0" [disabled]="ssreSimulationRight ? 'true' : null" [style.display]="showEscalateview ? 'block':'none'">
+                        <!-- <label class="text__label">Reply Handle</label> -->
+                        <app-assign-user-dropdown formControlName="escalateUsers" [value]="escalateUsers" [options]="customAgentList" [label]="'Escalate To'" (selectedData)="setEscalateUsers($event)"></app-assign-user-dropdown>
+                    </div>
+                    <!-- <mat-form-field [disabled]="ssreSimulationRight ? 'true' : null" [style.display]="showEscalateview ? 'block':'none'" appearance="outline">
+                        <mat-label>Escalate To</mat-label>
+                        <mat-select formControlName="escalateUsers">
+                            <mat-option *ngFor="let item of customAgentList" [value]="item.agentID">{{ item.agentName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <!-- new place UI left side -->
+                    <ng-template [ngIf]="!showEscalateview && !isEmailChannel">
+                        <div [disabled]="ssreSimulationRight ? 'true' : null" *ngIf="taggedUsersAsync$ | async as taggedUsers" class="d-flex-items-center mb-20 custom__column--replyTag">
+                            <label class="text__label--sm mr-12">Tag Users : </label>
+                            <div *ngFor="let item of taggedUsers" class="input__wrapper input__wrapper--sm">
+                                <mat-checkbox [disabled]="item.Disabled || ssreSimulationRight ? 'true' : null" [value]="item.Userid" [checked]="item.Checked" (change)="onTaggedUserChange($event)"><span class="text__regular--sm">{{ item.Name }}</span></mat-checkbox>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </div>
+                <div class="custom__column custom__column--right flex-parent right-scroll" fxFlex="70%">
+                    <!-- <app-reply-loader></app-reply-loader> -->
+                    <!-- <ng-template [ngIf]="!showEscalateview && !isEmailChannel">
+                        <div [disabled]="ssreSimulationRight ? 'true' : null" *ngIf="taggedUsersAsync$ | async as taggedUsers" class="d-flex-items-center mb-20">
+                            <label class="text__label">Tag Users : </label>
+                            <div *ngFor="let item of taggedUsers" class="input__wrapper input__wrapper--sm ml-12">
+                                <mat-checkbox [disabled]="item.Disabled || ssreSimulationRight ? 'true' : null" [value]="item.Userid" [checked]="item.Checked" (change)="onTaggedUserChange($event)">{{ item.Name }}</mat-checkbox>
+                            </div>
+                        </div>
+                    </ng-template> -->
+
+                    <div class="textarea-featured flex-parent__main" *ngIf="!showEscalateview">
+                        <div [disabled]="ssreSimulationRight ? 'true' : null" class="textarea-featured__body" [ngClass]="{'mt-10': textAreaCount.length > 1}" *ngIf="!isEmailChannel" #newTextArea>
+                            <!-- <textarea formControlName="replyText" [(ngModel)]="replyTextInitialValue" [maxlength]="this.ticketReplyDTO.maxlength" rows="5" (input)="ReplyInputChanges($event)" class="textarea-featured__input customClassReplyText"></textarea>
+
+                                <a class="textarea-featured__emoji"  [matMenuTriggerFor]="emojiMenu" mat-icon-button href="javacript:void(0)">
+                                    <mat-icon>sentiment_satisfied_alt</mat-icon>
+                                </a>
+                                <mat-menu #emojiMenu="matMenu" class="custom__matmenu"  xPosition="before" yPosition="above">
+                                    <div (click)="$event.stopPropagation();$event.preventDefault();">
+                                        <emoji-mart [set]="emojiSet" [emojisToShowFilter]="filterEmojis" [showPreview]="false" (emojiSelect)="selectEmoji($event)"></emoji-mart>
+                                    </div>
+                                </mat-menu> -->
+
+                                <!-- new place UI for textarea -->
+                                <!-- <ng-template ngFor let-item [ngForOf]="textAreaCount"> -->
+                                <div *ngFor="let item of textAreaCount;let index = index;trackBy:trackByIndex;">
+                                <div class="textarea-featured__block">
+                                    <!-- <textarea formControlName="replyText" [(ngModel)]="replyTextInitialValue" (input)="ReplyInputChanges($event)" class="textarea-featured__input customClassReplyText"></textarea>   -->
+                                    <!-- <textarea [ngModelOptions]="{standalone: true}" (paste)="ReplyInputChangesModified($event,item.id)" [maxlength]="item.maxPostCharacters"  [(ngModel)]="textAreaCount[index].text" (input)="ReplyInputChangesModified($event,item.id)"  class="textarea-featured__input customClassReplyText" #txtArea>{{item.text}}</textarea>  -->
+                                    <textarea [ngModelOptions]="{standalone: true}" [(ngModel)]="textAreaCount[index].text" (input)="ReplyInputChangesModified($event,item.id)"  class="textarea-featured__input customClassReplyText" #txtArea placeholder="Write Reply">{{item.text}}</textarea>
+                                <div class="textarea-featured__left">
+                                    <a class="textarea-featured__left--emoji"  [matMenuTriggerFor]="emojiMenu" mat-icon-button href="javacript:void(0)">
+                                        <mat-icon>sentiment_satisfied_alt</mat-icon>
+                                    </a>
+                                    <span *ngIf = "item.showAttachmentText" class="textarea-featured__left--warn"><mat-icon>error_outline</mat-icon> Attachment will be link with this reply</span>
+                                </div>
+                                <div class="textarea-featured__right">
+                                    <span *ngIf = "item.showAddNewReply" class="hover__text--blue" style="cursor: pointer;" (click)="addNewElement(item.id)">Add New Reply
+                                        <span class="ml-8"> | </span>
+                                    </span>
+                                    <span class="ml-8" *ngIf = "item.showPost">{{item.postCharacters}} Reply Characters remaining out of {{maxLengthInput}}
+                                        <!-- <span *ngIf = "item.showTotal">| </span> -->
+                                     </span>
+                                    <!-- <span *ngIf = "item.showTotal" class="textarea-featured__right--character">{{maxLengthInput}} Total Characters remaining</span> -->
+                                </div>
+                                <mat-menu #emojiMenu="matMenu" class="custom__matmenu"  xPosition="after" yPosition="above">
+                                    <div (click)="$event.stopPropagation();$event.preventDefault();">
+                                        <emoji-mart [set]="emojiSet" [darkMode]="false"  [emojisToShowFilter]="filterEmojis" [showPreview]="false" (emojiSelect)="selectEmoji($event,item.id)"></emoji-mart>
+                                    </div>
+                                </mat-menu>
+                                <span *ngIf ="item.showSpan" class="previewTextarea__count">{{item.spanCount}}</span>
+                                </div>
+                            </div>
+                            <!-- </ng-template> -->
+                                <!-- <div class="textarea-featured__block">
+                                    <textarea class="textarea-featured__input customClassReplyText"></textarea>
+                                <div class="textarea-featured__left">
+                                    <a class="textarea-featured__left--emoji"  [matMenuTriggerFor]="emojiMenu" mat-icon-button href="javacript:void(0)">
+                                        <mat-icon>sentiment_satisfied_alt</mat-icon>
+                                    </a>
+                                    <span class="textarea-featured__left--warn"><mat-icon>error_outline</mat-icon> Attachment will be link with this reply</span>
+                                </div>
+                                <div class="textarea-featured__right">
+                                    <span class="textarea-featured__right--character">0 post characters remaining</span>
+                                </div>
+                                <mat-menu #emojiMenu="matMenu" class="custom__matmenu"  xPosition="before" yPosition="above">
+                                    <div (click)="$event.stopPropagation();$event.preventDefault();">
+                                        <emoji-mart [set]="emojiSet" [showPreview]="false" (emojiSelect)="selectEmoji($event)"></emoji-mart>
+                                    </div>
+                                </mat-menu>
+                                <span class="previewTextarea__count">1/2</span>
+                                </div> -->
+
+                        </div>
+                        <!-- <div class="textarea-featured__body" *ngIf="isEmailChannel">
+              <app-send-email></app-send-email>
+            </div> -->
+                        <div class="textarea-featured__foot pl-0" *ngIf="!isEmailChannel">
+                            <!-- new place UI -->
+                            <!-- <div class="textarea-featured__foot--item">
+                                <a [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--icon" href="javascript:void(0)" (click)="openMediaDialog()">
+                                    <mat-icon fontSet="material-icons-outlined">insert_photo</mat-icon> Attached Media (2)
+                                </a>
+                                <a href="javascript:void(0)" class="textarea-featured__foot--icon">
+                                    UGC
+                                </a>
+                            </div> -->
+
+                            <div class="textarea-featured__foot--item" *ngIf="showMediaButton">
+                                <!-- <a [ngClass]="{'element__disable' : ssreSimulationRight }" href="javascript:void(0)" (click)="openMediaDialog()">
+                                    <mat-icon fontSet="material-icons-outlined">insert_photo</mat-icon>
+                                </a> -->
+                                <a [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--icon text__regular--sm" href="javascript:void(0)" (click)="openMediaDialog()">
+                                    <mat-icon fontSet="material-icons-outlined custom__icon--md">insert_photo</mat-icon>
+                                   <span>Attach Media</span>  <span *ngIf="selectedMedia.length > 0">({{selectedMedia.length}})</span>
+                                </a>
+                                <!-- <a href="javascript:void(0)" class="textarea-featured__foot--icon">
+                                    UGC
+                                </a> -->
+                            </div>
+                            <div [ngClass]="{'element__disable' : ssreSimulationRight }" *ngIf="!isEmailChannel" class="textarea-featured__foot--item
+                ml-auto" (click)="openSmartSuggestion()">
+                                <a href="javascript:void(0)" class="textarea-featured__foot--boxed text__regular--sm  colored__blue  ">Smart
+                  Suggestions</a>
+                            </div>
+                            <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--item" (click)="openCannedResponse()">
+                                <a href="javascript:void(0)" class=" text__regular--sm textarea-featured__foot--boxed">Canned Response</a>
+                            </div>
+                            <!-- <div class="textarea-featured__foot--item">
+                                <span *ngIf="ticketReplyDTO.maxlength != 8000 &&  !isEmailChannel" class="colored__grey--light" style="color:red !important;"> {{
+                  maxLengthInput }} CHARACTERS</span>
+                            </div> -->
+                        </div>
+
+                        <!-- new place UI for attached Media-->
+                        <div [ngClass]="{'element__disable' : ssreSimulationRight }" *ngIf="mediaSelectedAsync$ | async as MediaSelected"  class="textarea-featured__foot--item--media">
+                            <ng-template ngFor let-ugc [ngForOf]="MediaSelected">
+                            <span *ngIf="ugc.mediaType == 2" class="textarea-featured__foot--item--icon">
+                                <img class="media__img--icon" [src]="ugc.mediaPath" alt="">
+                                <mat-icon class="delete__img--icon" (click)="removeSelectedMedia(ugc)">delete_outline</mat-icon>
+                            </span>
+                            <span *ngIf="ugc.mediaType == 3" class="textarea-featured__foot--item--icon">
+                                <video controls class="media__img--icon">
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/m4v" />
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/mp4" />
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/mpeg" />
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/x-msvideo" />
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/x-ms-wmv" />
+                                    <source [src]="ugc.mediaPath" data-autoplay="false" type="video/avi" />
+                                </video>
+                                <mat-icon class="delete__img--icon" (click)="removeSelectedMedia(ugc)">delete_outline</mat-icon>
+                                <mat-icon class="play__img--icon" (click)="removeSelectedMedia(ugc)">play_circle_outline</mat-icon>
+                            </span>
+                        </ng-template>
+                        </div>
+
+                        <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="input__wrapper" *ngIf="replyLinkCheckbox && !showEscalateview
+                        && !showGroupsView && !isEmailChannel">
+                                <mat-checkbox *ngFor="let item of replyLinkCheckbox" [checked]="item.checked" [disabled]="item.disabled || ssreSimulationRight ? 'true' : null" [value]="item.replyLinkId" (change)="onReplyLinkChange($event)"><span class="text__regular--sm">{{item.name}}</span></mat-checkbox>
+                        </div>
+
+                    </div>
+                    <div class="textarea-featured flex-parent__main" [style.display]="showEscalateview ? 'block':'none'">
+                        <div class="textarea-featured__body">
+                            <textarea formControlName="replyEscalateNote" maxlength="8000" rows="5" class="textarea-featured__input" placeholder="Add Note"></textarea>
+                            <!-- <textarea class="textarea-featured__input"></textarea> -->
+                        </div>
+
+                    </div>
+                    <!-- <div [ngClass]="{'element__disable' : ssreSimulationRight }" *ngIf="mediaSelectedAsync$ | async as MediaSelected" class="post-reply__media">
+                        <div *ngFor="let ugc of MediaSelected" class="post-reply__media--item">
+                            <img class="w-20 mr-8" src="https://s3.amazonaws.com/locobuzz.socialimages/1178920845013475329.jpg" alt="">
+                            <span class="text__sub">{{ugc.displayFileName}}</span>
+                            <mat-icon class="post-reply__media--close" (click)="removeSelectedMedia(ugc)">highlight_off</mat-icon>
+                        </div>
+                    </div> -->
+
+
+
+                    <!-- <ng-container *ngIf="replyloader" >
+                        <app-reply-loader></app-reply-loader>
+                    </ng-container> -->
+
+                </div>
+                <!-- <app-reply-loader></app-reply-loader> -->
+            </div>
+
+            <!-- Reply Group -->
+            <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="reply-group p-12" *ngIf="showGroupsView">
+                <label class="post-reply__body--title">Send to Email Group</label>
+                <!-- <div *ngIf ="groupEmailListAsync$ | async as customGroupEmailList"> -->
+                    <mat-form-field class="example-chip-list">
+                        <mat-label>Favorite Fruits</mat-label>
+                        <mat-chip-list #chipList aria-label="Fruit selection">
+                          <mat-chip
+                            *ngFor="let item of customGroupEmailList"
+                            [selectable]="selectable"
+                            [removable]="removable"
+                            (removed)="remove(item.groupID)">
+                            {{item.groupName}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                          </mat-chip>
+                          <input
+                            placeholder="New fruit..."
+                            #fruitInput
+                            [formControl]="fruitCtrl"
+                            [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                          <mat-option *ngFor="let item of customGroupEmailList | async" [value]="item.groupID">
+                            {{item.groupName}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      
+                <mat-form-field class="custom-input-size" appearance="outline">
+                    <mat-label>Send to Email Group</mat-label>
+                    <mat-select (selectionChange)="emailGroupChange($event)">
+                        <mat-option *ngFor="let item of customGroupEmailList" [value]="item.groupID">{{ item.groupName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+           
+                <mat-form-field class="custom-input-size" appearance="outline">
+                    <mat-label>To</mat-label>
+                    <mat-chip-list #groupToEmail>
+                        <mat-chip *ngFor="let mail of groupToEmails" [selectable]="selectable" [removable]="removable" (removed)="removePill(mail,'to')">
+                            {{mail}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="New Email..." [matChipInputFor]="groupToEmail" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addPill($event,'to')">
+                    </mat-chip-list>
+                </mat-form-field>
+                <mat-form-field class="custom-input-size" appearance="outline">
+                    <mat-label>CC</mat-label>
+                    <mat-chip-list #groupccEmail>
+                        <mat-chip *ngFor="let mail of groupCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removePill(mail,'cc')">
+                            {{mail}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="New CC Email..." [matChipInputFor]="groupccEmail" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addPill($event,'cc')">
+                    </mat-chip-list>
+                </mat-form-field>
+                <mat-form-field class="custom-input-size" appearance="outline">
+                    <mat-label>BCC</mat-label>
+                    <mat-chip-list #groupbccEmail>
+                        <mat-chip *ngFor="let mail of groupBCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removePill(mail,'bcc')">
+                            {{mail}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="New BCC Email" [matChipInputFor]="groupbccEmail" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addPill($event,'bcc')">
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+            <!-- Send Email  -->
+            <div class="send-email p-12" *ngIf="onlySendMail && !showGroupsView">
+                <div class="send-email__item">
+                    <mat-form-field appearance="outline" class="material__select">
+                        <mat-label>Subject</mat-label>
+                        <input matInput [(ngModel)]="sendEmailSubject" [ngModelOptions]="{standalone: true}">
+                        <span matSuffix class="d-flex-items-center" class="material__select--suffix">
+              <a href="javascript:void(0)" class="mr-8" (click)="sendEmailcc=
+                true" *ngIf="!sendEmailcc">+ Cc</a>
+              <a href="javascript:void(0)" (click)="sendEmailBcc=
+                true" *ngIf="!sendEmailBcc">+ Bcc</a>
+            </span>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="send-email__item">
+                    <!-- <mat-form-field appearance="outline" class="material__select">
+                        <mat-label>To</mat-label>
+                        <mat-chip-list #chipList>
+                            <mat-chip [selectable]="true" [removable]="true">
+                                john.doe@gmail.com
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <input>
+                        </mat-chip-list>
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" class="material__select">
+                        <mat-label>To</mat-label>
+                        <mat-chip-list #sendtoemailchip>
+                            <mat-chip *ngFor="let mail of emailToEmail" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'to')">
+                                {{mail}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input [matChipInputFor]="sendtoemailchip" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'to')">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+                <div class="send-email__item" *ngIf="sendEmailcc">
+                    <mat-form-field appearance="outline" class="material__select">
+                        <mat-label>cc</mat-label>
+                        <mat-chip-list #emailchipList>
+                            <mat-chip *ngFor="let mail of emailCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'cc')">
+                                {{mail}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input [matChipInputFor]="emailchipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'cc')">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+                <div class="send-email__item" *ngIf="sendEmailBcc">
+                    <mat-form-field appearance="outline" class="material__select">
+                        <mat-label>Bcc</mat-label>
+                        <mat-chip-list #emailchipList>
+                            <mat-chip *ngFor="let mail of emailBCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'bcc')">
+                                {{mail}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input [matChipInputFor]="emailchipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'bcc')">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+                <div class="send-email__item">
+                    <ckeditor [editor]="Editor" formControlName="ckeditorText" [(ngModel)]="emailReplyText" [config]="editorConfig"></ckeditor>
+                    <div class="textarea-featured__foot--item insert_photo--ckeditor">
+                        <a [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--icon" href="javascript:void(0)" (click)="openMediaDialog()">
+                            <mat-icon fontSet="material-icons-outlined">attachment</mat-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <div [ngClass]="{'element__disable' : ssreSimulationRight }" *ngIf="mediaSelectedAsync$ | async as MediaSelected"  class="textarea-featured__foot--item--media">
+                    <ng-template ngFor let-ugc [ngForOf]="MediaSelected">
+                    <span *ngIf="ugc.mediaType == 2" class="textarea-featured__foot--item--icon">
+                        <img class="media__img--icon" [src]="ugc.mediaPath" alt="">
+                        <mat-icon class="delete__img--icon" (click)="removeSelectedMedia(ugc)">delete_outline</mat-icon>
+                    </span>
+                    <span *ngIf="ugc.mediaType == 3" class="textarea-featured__foot--item--icon">
+                        <img class="media__img--icon" [src]="ugc.mediaPath" alt="">
+                        <mat-icon class="delete__img--icon">delete_outline</mat-icon>
+                        <mat-icon class="play__img--icon" (click)="removeSelectedMedia(ugc)">play_circle_outline</mat-icon>
+                    </span>
+                </ng-template>
+                </div>
+                <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="input__wrapper mt-15" *ngIf="replyLinkCheckbox && !showEscalateview
+                        && !showGroupsView">
+                                <mat-checkbox *ngFor="let item of replyLinkCheckbox" [checked]="item.checked" [disabled]="item.disabled || ssreSimulationRight ? 'true' : null" [value]="item.replyLinkId" (change)="onReplyLinkChange($event)">{{item.name}}</mat-checkbox>
+                </div>
+            </div>
+
+            <!-- Reply Email  -->
+            <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="reply-email" *ngIf="showEmailView && !onlySendMail && !showGroupsView">
+                <div fxLayout="row" fxLayoutGap="15px">
+                    <div class="custom__column" fxFlex="30%">
+                        <div class="send-email__item">
+                            <ng-template [ngIf]="this.ticketReplyDTO.replyOptions">
+                                <mat-form-field appearance="outline" class="material__select">
+                                    <mat-label>Reply Type</mat-label>
+                                    <mat-select formControlName="replyType" [(ngModel)]="selectedReplyType" (selectionChange)="replyTypeChange($event.value)">
+                                        <mat-option *ngFor="let item of
+                      this.ticketReplyDTO.replyOptions" [value]="item.id">{{ item.value }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="custom__column" fxFlex="70%">
+                        <mat-form-field appearance="outline" class="material__select">
+                            <mat-label>To</mat-label>
+                            <mat-chip-list #toemailchipList>
+                                <mat-chip *ngFor="let mail of emailToEmail" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'to')">
+                                    {{mail}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input [matChipInputFor]="toemailchipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'to')">
+                            </mat-chip-list>
+                            <span matSuffix class="d-flex-items-center" class="material__select--suffix">
+                <a href="javascript:void(0)" class="mr-4" (click)="replyEmailcc=
+                  true" *ngIf="!replyEmailcc">+ Cc</a>
+                <a href="javascript:void(0)" (click)="replyEmailBcc= true"
+                  *ngIf="!replyEmailBcc">+ Bcc</a>
+              </span>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="material__select" *ngIf="replyEmailcc">
+                            <mat-label>cc</mat-label>
+                            <mat-chip-list #emailchipList>
+                                <mat-chip *ngFor="let mail of emailCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'cc')">
+                                    {{mail}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input [matChipInputFor]="emailchipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'cc')">
+                            </mat-chip-list>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="material__select" *ngIf="replyEmailBcc">
+                            <mat-label>Bcc</mat-label>
+                            <mat-chip-list #emailchipList>
+                                <mat-chip *ngFor="let mail of emailBCCEmails" [selectable]="selectable" [removable]="removable" (removed)="removeEmailPill(mail,'bcc')">
+                                    {{mail}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input [matChipInputFor]="emailchipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addEmailPill($event,'bcc')">
+                            </mat-chip-list>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="send-email__item">
+                    <ckeditor [editor]="Editor" formControlName="ckeditorText" [(ngModel)]="emailReplyText" [config]="editorConfig"></ckeditor>
+                </div>
+                <div class="textarea-featured__foot--item" >
+                    <a [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--icon" href="javascript:void(0)" (click)="openMediaDialog()">
+                        <mat-icon fontSet="material-icons-outlined">insert_photo</mat-icon>
+                    </a>
+                </div>
+                <div [ngClass]="{'element__disable' : ssreSimulationRight }" *ngIf="mediaSelectedAsync$ | async as MediaSelected"  class="textarea-featured__foot--item--media">
+                    <ng-template ngFor let-ugc [ngForOf]="MediaSelected">
+                    <span *ngIf="ugc.mediaType == 2" class="textarea-featured__foot--item--icon">
+                        <img class="media__img--icon" [src]="ugc.mediaPath" alt="">
+                        <mat-icon class="delete__img--icon" (click)="removeSelectedMedia(ugc)">delete_outline</mat-icon>
+                    </span>
+                    <span *ngIf="ugc.mediaType == 3" class="textarea-featured__foot--item--icon">
+                        <img class="media__img--icon" [src]="ugc.mediaPath" alt="">
+                        <mat-icon class="delete__img--icon">delete_outline</mat-icon>
+                        <mat-icon class="play__img--icon" (click)="removeSelectedMedia(ugc)">play_circle_outline</mat-icon>
+                    </span>
+                </ng-template>
+                </div>
+                <!-- <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="textarea-featured__foot--item" (click)="openCannedResponse()">
+                    <a href="javascript:void(0)" class="textarea-featured__foot--boxed">Canned Response</a>
+                </div> -->
+                <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="input__wrapper mt-15" *ngIf="replyLinkCheckbox && !showEscalateview
+                        && !showGroupsView">
+                                <mat-checkbox *ngFor="let item of replyLinkCheckbox" [checked]="item.checked" [disabled]="item.disabled || ssreSimulationRight ? 'true' : null" [value]="item.replyLinkId" (change)="onReplyLinkChange($event)">{{item.name}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <div class="post-reply__foot">
+            <!-- <div [ngClass]="{'element__disable' : ssreSimulationRight }" class="input__wrapper" *ngIf="replyLinkCheckbox && !showEscalateview
+        && !showGroupsView">
+                <mat-checkbox *ngFor="let item of replyLinkCheckbox" [checked]="item.checked" [disabled]="item.disabled || ssreSimulationRight ? 'true' : null" [value]="item.replyLinkId" (change)="onReplyLinkChange($event)">{{item.name}}</mat-checkbox>
+            </div> -->
+            <!-- <div class="input__wrapper">
+        <mat-checkbox>Send as DM</mat-checkbox>
+      </div>
+      <div class="input__wrapper">
+        <mat-checkbox>Send to Groups</mat-checkbox>
+      </div>
+      <div class="input__wrapper">
+        <mat-checkbox>Send For Approval</mat-checkbox>
+      </div> -->
+            <button type="button" (click)="closePostReply()" mat-stroked-button class="ml-auto mr-8 colored__blue">Cancel</button>
+            <button type="button" *ngIf="(IsreplyAndEscalate && showEscalateview && !onlyEscalation) ||
+        showGroupsView" (click)="SetBackClick()" mat-stroked-button class="colored__blue">Back</button>
+            <button *ngIf="(IsreplyAndEscalate && showEscalateview && !sendtoGroupsClicked)
+        || (sendtoGroupsClicked && showGroupsView) || (!IsreplyAndEscalate &&
+        !sendtoGroupsClicked)" type="submit" mat-flat-button class="ml-8" color="accent">Send</button>
+            <button *ngIf="(IsreplyAndEscalate && sendtoGroupsClicked && showEscalateview &&
+        !showGroupsView)
+        || (sendtoGroupsClicked && !showGroupsView) || (IsreplyAndEscalate &&
+        !sendtoGroupsClicked && !showEscalateview)" (click)="SetNextClick()" type="button" mat-flat-button class="ml-8" color="accent">Next</button>
+        </div>
+    </form>
+</div>

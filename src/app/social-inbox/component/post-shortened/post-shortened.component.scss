@@ -1,0 +1,121 @@
+.post-shortened{
+    padding: 12px;
+    font-size: 14px;
+    cursor: pointer;
+
+    &__head,
+    &__profile{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__profile{
+        margin-bottom: 1rem;
+        align-items: flex-start;
+        &--img{
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        &--channelImage{
+          width: 15px;
+          height: 15px;
+          position: absolute;
+          right: -7px;
+          top: -7px;
+          right: 7px;
+          top: -8px;
+          border: 1px solid var(--color-white);
+        }
+
+        &--name{
+            font-size: 14px;
+            font-weight: 600;
+            line-height: .8;
+        }
+
+        &--handle{
+          display: flex;
+          align-items: center;
+          max-width: 206px;
+          overflow-x: hidden;
+          white-space: nowrap;
+            & > span{
+                display: inline-block;
+                padding: 0 1rem;
+                &:first-child{
+                    padding-left: 0;
+                 }
+
+                &:last-child{
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+
+    &__body{
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &__content{
+        overflow: hidden;
+
+    }
+
+    &__brand-logo{
+        min-width: 20px;
+        margin-right: 1rem;
+        width: 20px;
+        height: 20px;
+        margin-right: 1rem;
+        max-width: 30px;
+        border-radius: 100%;
+    }
+
+    &__foot{
+        display: flex;
+        align-items: center;
+        padding-left: 30px;
+
+
+        &--item{
+            display: flex;
+            align-items: center;
+        }
+
+        &--label{
+            display: inline-block;
+            max-width: 72px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.2rem;
+        }
+
+        &--item{
+            & > mat-icon{
+                margin-right:5px;
+            }
+
+            &:not(:last-child){
+               margin-right: 1rem;
+            }
+        }
+    }
+
+    &__content{
+        flex: 1;
+        min-height: 26px;
+        max-height: 78px;
+    }
+
+    &__time{
+      font-size: 1.2rem;
+      align-self: flex-start;
+    }
+
+}

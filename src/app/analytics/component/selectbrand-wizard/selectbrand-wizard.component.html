@@ -1,0 +1,43 @@
+<div class="modal__head border-none">
+  <div class="arrow-back" mat-dialog-close>
+    <button mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+  <h3 class="modal__title">Select Report Type & Template</h3>
+</div>
+<div class="brandselect modal__body">
+  <div class="brandselect__icon">
+    <img class="img__fluid" src="assets/analytics/brand-badge.svg">
+  </div>
+  <div class="brandselect__wrapper">
+    <div class="brandselect__head">
+      <h3 class="brandselect__title text__title--fontxl">Select the brand to create dashboard.</h3>
+      <div class="brandselect__search">
+        <input [(ngModel)]="searchBoxVal" (keyup.enter)="search()" (input)="search()" type="text" class="custom__input" placeholder="Search Brand">
+        <a href="javascript:void(0)" (click)="search()" class="brandselect__search--btn" mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </a>
+      </div>
+    </div>
+    <div class="brandselect__content">
+      <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="flex-start space-between" fxLayoutGap="16px" *appIfOnDom>
+        <div fxLayout="column" *ngFor="let brand of brands; let i = index" [fxFlex]="100/2" [fxFlex.gt-xs]="100/2"[fxFlex.gt-md]="100/7">
+          <div class="brandselect__image" [ngClass]="{'active': brand.isCustomActive}"
+          #tooltip="matTooltip"
+          [matTooltip]="brand.brandName"
+           (click)="selectBrand(brand)">
+              <img  class="img__fluid " [src]="brand.rImageURL" onError="this.src='assets/social-mention/post/default_brand.svg'" alt="brand logo">
+              <span class="brandselect__image--check">
+                <mat-icon>check_circle</mat-icon>
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="brandselect__foot">
+      <div class="brandselect__faded"></div>
+      <button mat-flat-button color="accent" (click)="openBlankDashboard()">I'm ok with this brand</button>
+    </div>
+  </div>
+</div>

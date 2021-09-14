@@ -1,0 +1,10 @@
+.header__toolbar{
+  position: fixed;
+  height: 50px !important;
+  top: 40px;
+  box-shadow: 0px 2px 4px #C3CBD780;
+  z-index: 2;
+  app-post-options{
+      flex:0 0 100%;
+  }
+}

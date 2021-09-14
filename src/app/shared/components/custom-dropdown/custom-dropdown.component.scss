@@ -1,0 +1,46 @@
+.custom__selectmenu {
+  &--trigger {
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 5px 15px;
+    padding-right: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 36px;
+
+    &:after {
+      content: "";
+      border-style: solid;
+      border-width: 0 1px 1px 0;
+      display: inline-block;
+      padding: 3px;
+      transform: rotate(45deg);
+      margin-top: -1px;
+      margin-left: 14px;
+      margin-right: -16px;
+    }
+  }
+
+  &--menu {
+    width: 100%;
+    z-index: 2;
+  }
+
+  &--img{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+
+  &__label {
+    flex: 1;
+  }
+}

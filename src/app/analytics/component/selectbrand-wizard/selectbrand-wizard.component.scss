@@ -1,0 +1,78 @@
+.brandselect{
+  display: flex;
+  align-items: flex-start;
+  margin: 0 auto;
+  margin-top: 70px;
+  max-width: 900px;
+
+  &__title{
+    margin-top: 5px;
+    margin-bottom: 20px;
+  }
+
+  &__icon{
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+  }
+
+  &__wrapper{
+    flex: 1;
+  }
+
+  &__content{
+    overflow-y: auto;
+    margin-top: 30px;
+    height: calc(100vh - 320px);
+    position: relative;
+    flex: 1;
+  }
+
+  &__faded{
+    margin-top: -60px;
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(to top, rgba(251, 251, 251, 1) 0%, rgba(251, 251, 251, 0) 100%);
+  }
+
+
+  &__image{
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 16px;
+    border-radius: 5px;
+    overflow: hidden;
+    & > img{
+      height: 60px;
+      object-fit: cover;
+      object-position: center;
+    }
+
+
+    &--check{
+      transition: .3s all;
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-51%, -50%);
+    }
+
+
+  }
+
+  &__search{
+    position: relative;
+    border-radius: 5px;
+
+    &--btn{
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  &__foot{
+    position: relative;
+  }
+}

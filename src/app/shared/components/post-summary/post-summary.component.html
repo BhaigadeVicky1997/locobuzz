@@ -1,0 +1,162 @@
+
+<ng-container *ngIf="userRole && userRole === userRoleEnum.SupervisorAgent">
+  <ng-container *ngIf="supervisorTicketCountGrouped">
+    <ul class="sidebar__content--group" style="border-bottom: none;">
+      <li class="sidebar__content--item">
+        <span>
+          <mat-icon fontSet="material-icons-outlined" class="mr-11 colored__blue" aria-hidden="false"
+            aria-label="local_activity icon">
+            date_range
+          </mat-icon>
+        </span>
+         
+        <span class="sidebar__content--label colored__white">{{daysLabel}}</span>
+        <span class="ml-auto cursor-pointer" [matMenuTriggerFor]="menu">
+          <mat-icon class="colored__white" fontSet="material-icons-outlined" aria-hidden="false"
+            aria-label="local_activity icon">expand_more</mat-icon>
+        </span>
+        
+      </li>
+      <mat-menu #menu="matMenu" xPosition="before" class="text-capitalize custom__mat_menu">
+        <span class="font-weight-600">Ticket duartion</span>
+        <mat-divider class="mt-6 mb-6"></mat-divider>
+        <button (click)="changeDateFunction(1,'Todays Tickets')" mat-menu-item>Todays Tickets</button>
+        <button (click)="changeDateFunction(2,'Last 2 Days')" mat-menu-item>Last 2 Days</button>
+        <button (click)="changeDateFunction(7,'Last 7 Days')" mat-menu-item>Last 7 Days</button>
+        <button (click)="changeDateFunction(30,'Last 30 Days')" mat-menu-item>Last 30 Days</button>
+        <button (click)="changeDateFunction(60,'Last 60 Days')" mat-menu-item>Last 60 Days</button>
+      </mat-menu>
+    </ul>
+    <ng-container *ngFor="let group of Object.keys(supervisorTicketCountGrouped) ">
+      <ul class="sidebar__content--group">
+        <li class="sidebar__content--item" *ngFor="let item of supervisorTicketCountGrouped[group]">
+          <span class="sidebar__content--icon"   *ngIf="item?.icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon"            
+              >{{item.icon}}</mat-icon>
+          </span>
+          <span class="sidebar__content--label" [ngClass]="{'sidebar__content--wrapped': item.name.length > 20}">{{ item.name }}  <span *ngIf="item.unseenCount && item.unseenCount > 0" class="custom__badge custom__badge--blue">{{ item.unseenCount }}</span></span>         
+          <span class="sidebar__content--value" [ngClass]="item?.bgColor">{{ item.value }} <mat-icon *ngIf="item.arrow" class="custom__icon--md" [ngClass]="item?.bgColor">{{item.arrow}}</mat-icon></span>
+        </li>
+      </ul>
+      <!-- <ul class="sidebar__content--group" *ngIf="item.level === 2">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul>
+      <ul class="sidebar__content--group" *ngIf="item.level === 3">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul>
+      <ul class="sidebar__content--group" *ngIf="item.level === 4">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul> -->
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="userRole && userRole === userRoleEnum.AGENT">
+  <ng-container *ngIf="agentTicketCountGrouped">
+    <ng-container *ngFor="let group of Object.keys(agentTicketCountGrouped)">
+      <ul class="sidebar__content--group" >
+        <li class="sidebar__content--item" *ngFor="let item of agentTicketCountGrouped[group]">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+          <span *ngIf="item.unseenCount" class="sidebar__content--value"
+            >({{ item.unseenCount }})</span
+          >
+        </li>
+      </ul>
+      <!-- <ul class="sidebar__content--group" *ngIf="item.level === 2">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul>
+      <ul class="sidebar__content--group" *ngIf="item.level === 3">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul>
+      <ul class="sidebar__content--group" *ngIf="item.level === 4">
+        <li class="sidebar__content--item">
+          <span class="sidebar__content--icon">
+            <mat-icon
+              class="navigation__icon"
+              fontSet="material-icons-outlined"
+              aria-hidden="false"
+              aria-label="local_activity icon "
+              >local_activity</mat-icon
+            >
+          </span>
+          <span class="sidebar__content--label">{{ item.name }}</span>
+          <span class="sidebar__content--value">{{ item.value }}</span>
+        </li>
+      </ul> -->
+    </ng-container>
+  </ng-container>
+</ng-container>

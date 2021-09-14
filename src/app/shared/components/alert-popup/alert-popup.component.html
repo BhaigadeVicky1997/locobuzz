@@ -1,0 +1,20 @@
+
+  <div class="alert-modal">   
+    <div class="alert-modal__head">
+      <div class="alert-modal__title text__label">{{title}}</div>
+      <div class="alert-modal__close ">
+        <mat-icon class="custom__icon--md" (click)="onDismiss()"> close</mat-icon>
+      </div>
+    </div> 
+    <ng-container *ngIf="isHtml; else string">
+        <p class="alert-modal__content" [innerHtml]="message | safehtml"></p>        
+    </ng-container>
+    <ng-template #string>
+      <p class="alert-modal__content text__sub">{{message}}</p>        
+    </ng-template>
+    
+    <div class="alert-modal__actions">
+      <a class="colored__blue" (click)="onDismiss()">{{noText ? noText : 'No'}}</a>
+      <a class="colored__blue" (click)="onConfirm()">{{yesText ? yesText : 'Yes'}}</a>
+    </div>
+  </div>

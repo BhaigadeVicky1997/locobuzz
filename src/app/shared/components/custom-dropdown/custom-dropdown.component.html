@@ -1,0 +1,25 @@
+<div class="custom__selectmenu dropdown">
+    <button class="custom__selectmenu--trigger select-trigger" #menuTrigger="matMenuTrigger"  [matMenuTriggerFor]="customdropdown">
+    <img class="custom__selectmenu--img mr-7" src="assets/social-mention/post/default_brand.svg" alt=""> <!-- <mat-icon *ngIf="label.icon">{{label.icon}}</mat-icon>  -->
+    {{ label }} 
+    </button>
+    <mat-menu #customdropdown="matMenu" class="custom__selectmenu--menu" [style.maxHeight.px]="visibleOptions * 48" yPosition="below">
+      <input *ngIf="searchOptions" [formControl]="searchControl" placeholder="Search" autofocus (click)="$event.stopPropagation()">
+      <ul  class="m-0">
+        <li mat-menu-item  *ngIf="!options.length" class="no-results-item">
+          No results found...
+        </li>
+        <li mat-menu-item *ngFor="let option of options" (click)="select(option)" [class.active]="isActive(option)">
+          <ng-template [ngIf]="!optionTpl">
+            <div class="option">     
+              <mat-icon *ngIf="option.icon">{{option.icon}}</mat-icon>        
+              <img  *ngIf="option.image" [src]="option.image"/>               
+              <span class="option__label">{{option.label}}</span>
+            </div>
+          </ng-template>
+          <ng-template *ngTemplateOutlet="optionTpl; context: {$implicit: option}"></ng-template>
+        </li>
+      </ul>
+    </mat-menu>
+  </div>
+  

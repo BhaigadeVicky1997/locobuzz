@@ -1,0 +1,14 @@
+<div class="rating">
+    <ng-container *ngIf="editable; else noteditable">
+        <a (click)="onStarClick(i+1)" *ngFor="let ratingId of ratingArr;index as i" >
+            <mat-icon class="rating__item" [ngClass]="{'active': showIcon(i)}">star</mat-icon>
+        </a>
+    </ng-container>
+    <ng-template #noteditable>
+        <a *ngFor="let ratingId of ratingArr;index as i" >
+            <mat-icon class="rating__item" [ngClass]="{'active': showIcon(i)}">star</mat-icon>
+        </a>
+    </ng-template>
+    
+  
+</div>

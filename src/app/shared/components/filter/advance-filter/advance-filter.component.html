@@ -1,0 +1,223 @@
+<div class="filter-advance">
+    <form [formGroup]="brandDurationForm">
+        <div class="elem__row" fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="16px grid" fxLayoutAlign="center" fxLayoutGap="12px
+        grid" fxLayoutAlign="flex-start">
+            <div fxFlex="50%" *ngFor='let items of Object.keys(AdvanceFilterDisplayData.brandDateDuration).slice(1,Object.keys(AdvanceFilterDisplayData.brandDateDuration).length)' class="elem__col" fxFlex="50%">
+                <!-- Brand -->
+                <mat-form-field *ngIf="AdvanceFilterDisplayData.brandDateDuration[items]['type']=== 'brand'" appearance="outline" class="material__select">
+                    <mat-label>{{AdvanceFilterDisplayData.brandDateDuration[items].displayName}}</mat-label>
+                    <mat-select color="accent" (openedChange)="brandTouched($event)" [formControlName]="items" multiple>
+                        <mat-option #allSelectedBrand (click)="toggleAllBrandSelection()" [value]='"All"'>All
+                        </mat-option>
+                        <mat-option *ngFor="let item of AdvanceFilterDisplayData.brandDateDuration[items]['options']" (click)="tosslePerOneBrand()" [value]="item.id">
+                            {{item.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- Duration -->
+                <mat-form-field formGroupName="Duration" class="material__select" *ngIf="AdvanceFilterDisplayData.brandDateDuration[items]['type']=== 'Duration'" appearance="outline">
+                    <mat-label>{{AdvanceFilterDisplayData.brandDateDuration[items].displayName}}</mat-label>
+                    <input #elementIWantWidthOf [formControlName]='"StartDate"' class="cursor-pointer" (menuOpened)="durationTouched(true)" (menuOpened)="durationTouched(false)" matInput type="text" placeholder="Select Duration" readonly [formControlName]="items" [(ngModel)]="duratioLabel"
+                        [matMenuTriggerFor]="durationmenu">
+                    <input [formControlName]='"EndDate"' hidden>
+                    <mat-menu #durationmenu="matMenu">
+                        <!-- [ngStyle]="{'width': getWidth(elementIWantWidthOf)}" -->
+                        <div style="width:260px">
+                            <ng-container *ngFor="let item of AdvanceFilterDisplayData.brandDateDuration[items]['options']">
+                                <div mat-menu-item *ngIf="item?.label !== 'Custom'; else customTemplate" (click)="setDurationValue(item,$event);">{{item.label}}</div>
+                                <ng-template #customTemplate>
+                                    <div mat-menu-item (click)="$event.stopPropagation();customDurationToggle = !customDurationToggle">
+                                        {{item.label}}</div>
+                                </ng-template>
+                            </ng-container>
+                            <div (click)="$event.stopPropagation()" class="custom__select" *ngIf="customDurationToggle">
+                                <mat-date-range-input [rangePicker]="rangepicker">
+                                    <input matStartDate placeholder="Start date" (dateChange)="customDurationStartdate($event)">
+                                    <input matEndDate placeholder="End date" (dateChange)="customDurationEnddate($event)">
+                                </mat-date-range-input>
+                                <button (click)='filledCustomDuration()'>Apply</button>
+                                <mat-datepicker-toggle matSuffix [for]="rangepicker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #rangepicker></mat-date-range-picker>
+                            </div>
+                        </div>
+                    </mat-menu>
+                </mat-form-field>
+
+                <!-- Select -->
+                <mat-form-field appearance="outline" class="material__select" *ngIf="AdvanceFilterDisplayData.brandDateDuration[items]['type']=== 'select'">
+                    <mat-label>{{AdvanceFilterDisplayData.brandDateDuration[items].displayName}}</mat-label>
+                    <mat-select [formControlName]="items">
+                        <mat-option *ngFor="let item of AdvanceFilterDisplayData.brandDateDuration[items]['options']" [value]="item.id">{{item.label}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Radio -->
+                <div class="filter__accordian--input" *ngIf="AdvanceFilterDisplayData.brandDateDuration[items]['type']
+                === 'radio'">
+                    <label class="text__label">{{AdvanceFilterDisplayData.brandDateDuration[items].displayName}}</label>
+                    <div class="d-flex-items-center">
+                        <mat-radio-group *ngIf="items
+                        === 'whatToMonitor'" [formControlName]="items">
+                            <mat-radio-button *ngFor="let item of
+                        AdvanceFilterDisplayData.brandDateDuration[items]['options']" (click)="notifyWhatToMonitor(item.id)" [value]='item.id'>
+                                {{item.label}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <mat-radio-group *ngIf="items !=
+                        'whatToMonitor'" [formControlName]="items">
+                            <mat-radio-button *ngFor="let item of
+                        AdvanceFilterDisplayData.brandDateDuration[items]['options']" [value]='item.id'>
+                                {{item.label}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <form [formGroup]="advanceFilterRuleForm" (ngSubmit)="advanceFilterFormSubmit()">
+        <div class="filter-advance__group" *ngFor='let group of Object.keys(this.advanceFilterRuleDisplay).slice(0,Object.keys(this.advanceFilterRuleDisplay).length - 1)'>
+            <mat-divider class="mb-12"></mat-divider>
+            <div [formGroupName]='group'>
+                <div class="filter-advance__group--delete mt-23">
+                    <mat-icon (click)="deleteGroup(group)">close</mat-icon>
+                </div>
+                <div class="filter-advance__conditions">
+                    <mat-button-toggle-group name="fontStyle" class="filter__toggle" aria-label="FontStyle" [formControlName]='"condition"'>
+                        <mat-button-toggle value="AND" class="filter__toggle--and">AND</mat-button-toggle>
+                        <mat-button-toggle value="OR" class="filter__toggle--or">OR</mat-button-toggle>
+                        <mat-button-toggle value="NOT" class="filter__toggle--or">NOT</mat-button-toggle>
+                    </mat-button-toggle-group>
+
+                </div>
+                <div class="filter-advance__attribute">
+                    <div *ngFor="let attribute of Object.keys(this.advanceFilterRuleDisplay[group]).slice(0,Object.keys(this.advanceFilterRuleDisplay[group]).length - 1)" [formGroupName]='attribute'>
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['attributeOptions'].disabled}" class="filter-advance__attribute--item">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <mat-form-field appearance="outline" class="material__select">
+                                <mat-label>{{this.advanceFilterRuleDisplay[group][attribute].attributeOptions.displayName}}</mat-label>
+                                <mat-select (selectionChange)="attributeSelected(group,attribute,$event)" formControlName='attributeOptions'>
+                                    <mat-option *ngFor="let item of this.advanceFilterRuleDisplay[group].metaData.options" [value]="item.id">{{item.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <!-- select -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'select'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <mat-form-field appearance="outline" class="material__select">
+                                <mat-label>{{this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName}}</mat-label>
+                                <mat-select formControlName='originalAttribute'>
+                                    <mat-option *ngFor="let item of this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options" [value]="item.id">{{item.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- select -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'checkbox'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <mat-form-field appearance="outline" class="material__select">
+                                <mat-label>{{this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName}}</mat-label>
+                                <mat-select formControlName='originalAttribute'>
+                                    <mat-option *ngFor="let item of this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options" [value]="item.id">{{item.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <!-- INPUT TEXT -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'input-text'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                                <mat-label>{{this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName}}</mat-label>
+                                <input formControlName='originalAttribute' matInput>
+                                <mat-icon class="matsuffix__close" matSuffix fontSet="material-icons-outlined" (click)="removeExcludeFilter(exclude)">close</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'auto-complete'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <app-auto-complete [URL]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute['URL']" [BrandID]="this.brandDurationForm.controls.selectBrand.value" [StartDateEpoch]="this.brandDurationForm.get('Duration').get('StartDate').value" [EndDateEpoch]="this.brandDurationForm.get('Duration').get('EndDate').value"
+                                [label]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName" (selectedData)="setAutoCompleteValue(group,attribute,$event)"></app-auto-complete>
+                        </div>
+
+
+
+                        <!-- Slidder -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="position-relative" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'slidder'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <app-slidder (selectedData)="setSlidderValue(group,attribute,$event)" [formVal]="advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute']" [label]='this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName'
+                                [min]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options[0]" [max]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options[1]"></app-slidder>
+                        </div>
+
+                        <!-- Multi-select -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'multi-select' || this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <app-multiple-select [label]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName" [formval]="advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute']" [Options]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options"
+                                (selectedData)="setMultiSelectValue(group,attribute,$event)"></app-multiple-select>
+                        </div>
+
+
+                        <!-- Rating -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'rating'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <app-rating [label]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName" [options]="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.options" [default]="advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute']"
+                                (selectedData)="setRatingValue(group,attribute,$event)"></app-rating>
+                        </div>
+
+                        <!-- tree-checklist -->
+                        <div [ngClass]="{'hidden':advanceFilterRuleForm.get(group).get(attribute)['controls']['originalAttribute'].disabled}" class="filter-advance__attribute--item" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.type === 'tree-checklist'">
+                            <div class="filter-advance__attribute--delete">
+                                <mat-icon (click)="deleteAttribute(group,attribute)">delete_outline</mat-icon>
+                            </div>
+                            <mat-form-field fxFlex="calc(50%-20px)" appearance="outline" class="material__select">
+                                <mat-label>{{this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName}}</mat-label>
+                                <!-- {{advanceFilterRuleForm.value[group][attribute] | json}} -->
+                                <input [disabled]="Object.keys(advanceFilterRuleDisplay[group][attribute].originalAttribute.options)?.length === 0" class="cursor-pointer" matInput formControlName='originalAttribute' [value]="" readonly [matMenuTriggerFor]="treemenu">
+                                <mat-menu #treemenu="matMenu">
+                                    <div class="treemenu__dropdown" (click)="$event.stopPropagation();">
+                                        <!-- HERE IF Category. Need Radio button on top -->
+                                        <div class="p-4" *ngIf="this.advanceFilterRuleDisplay[group][attribute].originalAttribute.displayName === 'Category' && Object.keys(advanceFilterRuleDisplay[group][attribute].originalAttribute.options).length > 0">
+                                            <mat-radio-group aria-label="Select an Type" formControlName='Categorycondition'>
+                                                <mat-radio-button [value]="true">Ticket</mat-radio-button>
+                                                <mat-radio-button [value]="false">Mention</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <app-tree-checklist [treeData]="advanceFilterRuleDisplay[group][attribute].originalAttribute.options" (selectedData)="assignTreeCheckListData(group,attribute,$event)"></app-tree-checklist>
+                                    </div>
+                                </mat-menu>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="filter-advance__attribute--item filter-advance__attribute--itemadd">
+                        <a href="javascript:void(0)" (click)="addNewAttribute(group)">+ Add Attribute</a>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-advance__conditions
+                filter-advance__conditions--center">
+                <mat-button-toggle-group [formControlName]='"condition"' [value]="advanceFilterRuleForm.controls.condition.value" name="fontStyle" class="filter__toggle" aria-label="FontStyle">
+                    <mat-button-toggle value="AND" class="filter__toggle--and">AND</mat-button-toggle>
+                    <mat-button-toggle value="OR" class="filter__toggle--or">OR</mat-button-toggle>
+                    <mat-button-toggle value="NOT" class="filter__toggle--not">NOT</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </form>
+    <div class="filter-advance__addgroup filter-advance__conditions filter-advance__conditions--center">
+        <button mat-stroked-button (click)='addGroupsToRules()' class="btn__round btn__round--opaque">+ Add Group</button>
+    </div>
+</div>

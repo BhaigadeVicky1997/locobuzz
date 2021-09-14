@@ -1,0 +1,156 @@
+<div class="modal modal--fullheight">
+  <div class="modal__body modal__body--wrapper addwidget">
+    <div class="modal__body--sidebar addwidget__sidebar">
+      <div class="addwidget__sidebar--head">
+
+        <a href="javascript:void(0)" class="mr-15" (click)="closeWidgetContainer()">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="addwidget__sidebar--input" *ngIf="toggleSearch">
+          <input class="w-100-p" placeholder="Search Widget">
+        </div>
+        <h3 class="modal__title" *ngIf="!toggleSearch">Select Widgets</h3>
+        <a href="javascript:void(0)" class="ml-auto" mat-icon-button (click)="toggleSearch = !toggleSearch">
+          <mat-icon>search</mat-icon>
+        </a>
+      </div>
+      <div class="addwidget__sidebar--body">
+        <ng-container *ngIf="toggleSearch; else widget">
+         <div class="recent">
+           <mat-icon>history</mat-icon> recent search
+         </div>
+         <ul class="recent__history">
+           <li>
+             <mat-icon>north_east</mat-icon>
+             Gender Wise Distribution
+           </li>
+           <li>
+            <mat-icon>north_east</mat-icon>
+            Audience Growth
+          </li>
+          <li>
+            <mat-icon>north_east</mat-icon>
+            Facebook Page Followers Demographics
+          </li>
+          <li>
+            <mat-icon>north_east</mat-icon>
+            Top prolific users
+          </li>
+          <li>
+            <mat-icon>north_east</mat-icon>
+            Top User Post as per Followers
+          </li>
+          <li>
+            <mat-icon>north_east</mat-icon>
+            Follower Growth Trend
+          </li>
+         </ul>
+         <div class="recent__history--foot">
+           <img src="assets/analytics/search.svg" alt="Search" class="img__fluid">
+           <p>
+            Do you know Alan Emtage invented the world's first search engine.
+           </p>
+         </div>
+        </ng-container>
+        <ng-template #widget>
+          <div *ngIf="dIYWidgetCustomAsync$ | async as CustomWidget">
+          <div class="addwidget__sidebar--item" *ngFor="let widgetlist of CustomWidget">
+            <a (click)="getWidgetListByID(widgetlist)" class="addwidget__sidebar--title">
+              <span class="addwidget__sidebar--toggle">
+                <ng-container *ngIf="widgetlist.expanded; else expanded">
+                  <mat-icon >remove</mat-icon>
+                </ng-container>
+                <ng-template #expanded>
+                  <mat-icon >add</mat-icon>
+                </ng-template>
+
+              </span>
+              <span >{{ widgetlist.title }}({{widgetlist.count}})</span>
+            </a>
+            <ul class="addwidget__sidebar--list" *ngIf="widgetlist.expanded" [@expandCollapse]>
+              <li *ngFor="let widget of widgetlist.DIYMasterWidget" (click)="selectWidget(widget.widgetID)" class="addwidget__sidebar--listItem" matRipple >
+                <span class="addwidget__check">
+                  <span>1</span>
+                </span>
+                <span>{{ widget.widgetName}}</span>
+              </li>
+              <!-- <li class="addwidget__sidebar--listItem" matRipple>
+                <span class="addwidget__check chacked">
+                  <span>1</span>
+                </span>
+                <span>Facebook Page Followers Demographics</span>
+              </li>
+              <li class="addwidget__sidebar--listItem" matRipple>
+                <span class="addwidget__check">
+                  <span>1</span>
+                </span>
+                <span>Follower Growth Trend</span>
+              </li> -->
+            </ul>
+          </div>
+          <!-- <div class="addwidget__sidebar--item">
+            <a href="javascript:void(0)" class="addwidget__sidebar--title">
+              <span class="addwidget__sidebar--toggle">
+                <mat-icon>add</mat-icon>
+              </span>
+              <span>Facebook(22)</span>
+            </a>
+          </div>
+          <div class="addwidget__sidebar--item">
+            <a href="javascript:void(0)" class="addwidget__sidebar--title">
+              <span class="addwidget__sidebar--toggle">
+                <mat-icon>add</mat-icon>
+              </span>
+              <span>Twitter(4)</span>
+            </a>
+          </div>
+          <div class="addwidget__sidebar--item">
+            <a href="javascript:void(0)" class="addwidget__sidebar--title">
+              <span class="addwidget__sidebar--toggle">
+                <mat-icon>add</mat-icon>
+              </span>
+              <span>Instagram(9)</span>
+            </a>
+          </div>
+          <div class="addwidget__sidebar--item">
+            <a href="javascript:void(0)" class="addwidget__sidebar--title">
+              <span class="addwidget__check">
+                <span>1</span>
+              </span>
+              <span>Custom Widget</span>
+            </a>
+          </div> -->
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+    <div class="modal__body--content addwidget__content">
+      <ng-container *ngIf="dIYWidgetCustomAsync$ | async as CustomWidget">
+        <div class="addwidget__content--group" *ngFor="let widgetlist of CustomWidget">
+          <a href="javascript:void(0)" class="addwidget__content--title">
+            <ng-container *ngIf="widgetlist.expanded; else expanded">
+              <mat-icon>expand_more</mat-icon>
+            </ng-container>
+            <ng-template #expanded>
+              <mat-icon>navigate_next</mat-icon>
+            </ng-template>
+            <span class="ml-20">{{ widgetlist.title }}({{widgetlist.count}})</span>
+          </a>
+          <div class="addwidget__content--widgetlist" *ngIf="widgetlist.expanded" [@expandCollapse]>
+            <div class="element__row">
+              <div class="element__col" *ngFor="let widget of widgetlist.DIYMasterWidget">
+                <ng-container *ngIf="widget.configJson && widget.uiJson; else noWidgetData">
+                  <app-widget [widgetObj]="widget" [demoData]="true"></app-widget>
+                </ng-container>
+                <ng-template #noWidgetData>
+                  {{widget.widgetName}}
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

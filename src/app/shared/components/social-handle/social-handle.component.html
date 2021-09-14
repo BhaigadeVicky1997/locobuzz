@@ -1,0 +1,13 @@
+<mat-menu #brandSelect="matMenu" (click)="$event.stopPropagation();" xPosition="before" yPosition="above">
+    <ng-template matMenuContent let-type="type">
+      <span>{{type}}</span>
+      <button mat-menu-item *ngFor="let item of this.handleNames" (click)="setSocialHandle(item)">
+          <div class="d-flex-items-center">
+              <!-- <mat-icon class="colored__green mr-8 custom__icon--md">check_circle</mat-icon> -->
+              <img class="mr-4 " src="item.profilepic" alt="Brand Image" >
+              <span>{{item.handleName}}</span>
+          </div>
+        </button>
+      <a (click)="submitActionHandle()">Submit</a>
+    </ng-template>
+  </mat-menu>

@@ -1,0 +1,17 @@
+<mat-form-field color="accent" appearance="outline" class="material__select material__select" [formGroup]="Form">
+    <mat-label>{{label}}</mat-label>
+    <mat-select [disabled]="options.length == 0" formControlName="options" panelClass="dropdown__bordered" multiple>
+        <mat-select-trigger>{{Form.controls.options.value}}
+        </mat-select-trigger>
+        <mat-option #allSelected (click)="toggleAllSelection()" value="All">All
+        </mat-option>
+        <mat-option (click)="tosslePerOne()" *ngFor="let item of options" [value]='item.id'>
+            <ng-container *ngIf="item.label == 'All'; else elseTemplate">
+                {{item.label}}
+            </ng-container>
+            <ng-template #elseTemplate>
+                <app-star-rating [editable]="false" [rating]="+item.label"></app-star-rating>
+            </ng-template>
+        </mat-option>
+    </mat-select>
+</mat-form-field>

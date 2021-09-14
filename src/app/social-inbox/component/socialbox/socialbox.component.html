@@ -1,0 +1,45 @@
+<div class="post__list" [ngClass]="{'custom-scroll-post': TicketList && TicketList.length == 0}">
+    <div class="post__list--info" *ngIf="TicketList?.length > 0">
+        <span class="post__list--count" *ngIf="filter.postsType === postTypeEnum.Tickets">{{ticketsFound}} Tickets Found</span>
+        <span class="post__list--count" *ngIf="filter.postsType === postTypeEnum.Mentions">{{ticketsFound}} Mentions Found</span>
+        <div class="post__list--pagination" *ngIf="pagerCount">
+            <mat-paginator showFirstLastButtons appLocobuzzPaginator [length]="pagerCount"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="OnPageChange($event)">
+            </mat-paginator>
+        </div>
+    </div>
+    <button *ngIf="showDataFound" (click)="loadNewData()" mat-raised-button color="accent" class="post__new--btn btn__round btn__shadow">
+        <mat-icon>
+            arrow_upward
+        </mat-icon>
+        New Data Found
+    </button>
+    <!-- <ng-container *ngIf="TicketList?.length > 0 && currentPostType == postTypeEnum.Tickets && !postloader">
+        <app-post *ngFor="let ticket of TicketList" [postData]="ticket" [pageType]="'ticket'" [fromCall]="1" (postSelectEvent)="toggleBulkSelect($event)"></app-post>
+    </ng-container>
+    <ng-container *ngIf="MentionList?.length > 0 && currentPostType == postTypeEnum.Mentions && !postloader">
+        <app-post *ngFor="let ticket of MentionList" [postData]="ticket" [pageType]="'mention'" [fromCall]="1" (postSelectEvent)="toggleBulkSelect($event)"></app-post>
+    </ng-container> -->
+    <ng-container *ngIf="TicketList && TicketList?.length > 0 && !postloader; else noData">
+        <app-post *ngFor="let ticket of TicketList" [postData]="ticket" [pageType]="currentPostType" [fromCall]="1" [AllCheckBoxes]="checkAllCheckBox" (postSelectEvent)="toggleBulkSelect($event)" (postActionClicked)="postActionClicked($event)"></app-post>
+    </ng-container>
+
+    <ng-container *ngIf="postloader">
+        <app-post-loader></app-post-loader>
+        <app-post-loader></app-post-loader>
+        <app-post-loader></app-post-loader>
+    </ng-container>
+
+    <ng-template #noData>
+        <div class="noData block-center" *ngIf="noDataFound && !postloader">
+            <mat-icon>error_outline</mat-icon>
+            <p>
+                tickets not found
+            </p>
+        </div>
+    </ng-template>
+    
+</div>
+<app-post-bulk-actions class="primary shown" [pageType]="currentPostType" (bulkActionEvent)="postBulkAction($event)"  *ngIf="bulkActionpanelStatus"></app-post-bulk-actions>

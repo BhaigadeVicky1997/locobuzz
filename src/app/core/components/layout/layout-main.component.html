@@ -1,0 +1,30 @@
+<div class="app__main">
+  <div class="app__wrapper">
+    <div
+      class="app__sidebar"
+      [ngClass]="{'app__sidebar--hidden': sidebarToggleBool }"
+    >
+    <!-- 'app__sidebar--folded': sidebarToggleBool, -->
+      <app-locobuzz-sidebar
+        [pageNavInfoToggle]="showPageData"
+      ></app-locobuzz-sidebar>
+    </div>
+    <div class="app__content">
+      <div class="app__nav">
+        <ng-container>
+          <app-header [pageHeadInfoToggle]="showPageData"></app-header>
+        </ng-container>
+      </div>
+      <div class="app__content--scrollable">
+        <router-outlet></router-outlet>
+      </div>
+      <ng-template [ngIf]="showbreachnotification">
+        <app-global-notification [ticketAbouttoBreach]="ticketAbouttoBreach"
+          *ngIf="notificationToggle"
+          (NotificationStatus)="hideNotification($event)"
+        ></app-global-notification>
+      </ng-template>
+      <app-chatbot></app-chatbot>
+    </div>
+  </div>
+</div>

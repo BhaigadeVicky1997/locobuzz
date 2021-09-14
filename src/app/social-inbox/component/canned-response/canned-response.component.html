@@ -1,0 +1,79 @@
+<div class="modal__head">
+    <h3 class="modal__title">Selected Canned Response</h3>
+    <span class="modal__action">
+        <mat-icon fontSet="material-icons-outlined" [mat-dialog-close]="true">close</mat-icon>
+    </span>
+</div>
+<div class="modal__body">
+  <app-component-loader section="canned-response"></app-component-loader>
+
+    <div class="p-16" *ngIf="cannedCategoryList.length > 0; else noData">
+        <div  fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px" class="post-search__options--row" fxLayoutAlign="flex-start center">
+            <div fxFlex="50%">
+                <mat-form-field appearance="outline" class="material__select
+                    material__select--adaptive">
+                    <mat-label>Selected Response Category</mat-label>
+                    <mat-select (selectionChange) = 'selectCanned($event)' [(value)] = "selectedCannedCategory">
+                        <!-- <mat-select-trigger>
+                        <mat-icon>how_to_reg</mat-icon>&nbsp;John Doe
+                      </mat-select-trigger> -->
+                        <!-- <div class="matmenu__item matmenu__head px-12">
+                            <mat-icon>group</mat-icon><span>Avengers</span>
+                        </div> -->
+                        <mat-option class="matmenu__item" *ngFor = "let item of cannedCategoryList" [value] = "item.responseCategoryID">
+
+                            <!-- <mat-icon [ngClass]="{'colored__green':
+                                true,'colored__grey': false}">fiber_manual_record</mat-icon><mat-icon
+                                [ngClass]="{'colored__yellow':
+                                false,'colored__grey': false}"
+                                fontSet="material-icons-outlined">person</mat-icon> -->
+                            <span>{{item.responseCategoryName}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50%">
+                <mat-form-field appearance="outline" class="material__select
+                material__select--adaptive">
+
+                    <mat-label>Selected Response Name</mat-label>
+                    <mat-select [(value)] ="selectedCannedResponse">
+                        <!-- <mat-select-trigger>
+                        <mat-icon>how_to_reg</mat-icon>&nbsp;John Doe
+                      </mat-select-trigger> -->
+                        <!-- <div class="matmenu__item matmenu__head px-12">
+                            <mat-icon>group</mat-icon><span>Avengers</span>
+                        </div> -->
+                        <mat-option class="matmenu__item" *ngFor = "let item of cannedResponseList" [value] = "item.id" (click) = "selectCannedResponse(item.id, item.responseText)">
+
+                            <!-- <mat-icon [ngClass]="{'colored__green':
+                                true,'colored__grey': false}">fiber_manual_record</mat-icon><mat-icon
+                                [ngClass]="{'colored__yellow':
+                                false,'colored__grey': false}"
+                                fontSet="material-icons-outlined">person</mat-icon> -->
+                            <span>{{item.responseName}}</span>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="custom__input--wrapper mt-12">
+            <mat-form-field fxFlex="100%" appearance="outline" class="outline--none material__select material__select--adaptive">
+              <mat-label for="remarks" class="">Response Preview</mat-label>
+              <textarea matInput class="input--height" [value] = "responseText">
+              </textarea>
+            </mat-form-field>
+            <!-- <textarea class="custom__input" placeholder="Response Preview" [value] = "responseText"></textarea> -->
+        </div>
+    </div>
+    <ng-template #noData>
+      <div class="modal__nodata">
+        <p class="text__center">No Data Found</p>
+      </div>
+    </ng-template>
+</div>
+<div class="modal__foot" *ngIf="cannedCategoryList.length > 0;">
+    <button class="ml-auto colored__blue mr-10" mat-stroked-button [mat-dialog-close]="true">Cancel</button>
+    <button type="button" (click)="setCannedResponse()" mat-flat-button color="accent">Select</button>
+
+</div>

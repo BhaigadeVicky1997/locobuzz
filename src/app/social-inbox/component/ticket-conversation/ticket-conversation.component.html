@@ -1,0 +1,48 @@
+<div class="modal__head">
+    <h3 class="modal__title text__label">Last Conversations of Selected Ticket</h3>
+    <span class="modal__action">
+        <mat-icon mat-button mat-dialog-close fontSet="material-icons-outlined">close</mat-icon>
+    </span>
+</div>
+<div class="modal__body">
+    <div class="create__body bg__grey">
+        <div class="create__body__summary">
+          <!-- post Details -->
+          <div class="post-detail__conversations">
+            <div class="post-detail__conversations--body">
+                <div class="conversations"  *ngIf="!comminicationLogLoading">
+                    <div *ngIf="this.showLoadMoreOption" class="post-detail__conversations--loadmore">
+                        <button mat-raised-button (click)="getCommunicationLogHistory(lastmentionDateEpoch)" class="btn__round btn__outline">See Previous Conversation</button>
+                    </div>
+                    <div *ngFor = "let object of baseLogObject">
+                        <ng-template [ngIf]="!object.isBrandPost && !object.isCommunicationLog" [ngIfElse]="BrandCommunicationLog" >
+                            <div class="post-detail__conversations--item " [ngClass]="{'active': postObj.tagID === object.tagID}" #conversationItem>
+                                <!-- <app-post-message [baseMention] = "object"></app-post-message> -->
+                                    <app-post [postData]="object" [openReply]="postObj.tagID === object.tagID" [fromCall]="2" [pageType]="currentPostType"></app-post>
+                            </div>
+                        </ng-template>
+                       <ng-template #BrandCommunicationLog>
+                            <ng-template [ngIf]="object.isBrandPost" [ngIfElse]="CommunicationLog" >
+                                <div class="post-reply post-detail__conversations--reply">
+                                    <app-post [postData]="object" [fromCall]="2" [pageType]="'ticket'"></app-post>
+                                    <!-- <app-post-message [baseMention] = "object" ></app-post-message> -->
+                                </div>
+                            </ng-template>
+                            <ng-template #CommunicationLog>
+                                <div *ngIf = "object.isCommunicationLog" class="post-reply post-reply-log">
+                                    <app-post-log [logMessage] = "object"></app-post-log>
+                                </div>
+                            </ng-template>
+                            
+                        
+                       </ng-template>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+          <!-- Post Details Ends -->
+            
+        </div>
+    </div>
+</div>

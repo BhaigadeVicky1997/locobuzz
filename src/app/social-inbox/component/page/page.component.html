@@ -1,0 +1,74 @@
+<!-- <div class="post__list">
+    <div class="post__list--info" *ngIf="TicketList?.length > 0">
+        <span class="post__list--count">{{ticketsFound}} tickets Found</span>
+        <div class="post__list--pagination" *ngIf="ticketsFound">
+            <mat-paginator showFirstLastButtons appLocobuzzPaginator [length]="ticketsFound"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="OnPageChange($event)">
+            </mat-paginator>
+        </div>
+    </div>
+    <button mat-raised-button color="accent" class="post__new--btn btn__round btn__shadow">
+        <mat-icon>
+            arrow_upward
+        </mat-icon>
+        New Data Found
+    </button> -->
+<!-- <ng-container *ngIf="TicketList?.length > 0 && currentPostType == postTypeEnum.Tickets && !postloader">
+        <app-post *ngFor="let ticket of TicketList" [postData]="ticket" [pageType]="'ticket'" [fromCall]="1" (postSelectEvent)="toggleBulkSelect($event)"></app-post>
+    </ng-container>
+    <ng-container *ngIf="MentionList?.length > 0 && currentPostType == postTypeEnum.Mentions && !postloader">
+        <app-post *ngFor="let ticket of MentionList" [postData]="ticket" [pageType]="'mention'" [fromCall]="1" (postSelectEvent)="toggleBulkSelect($event)"></app-post>
+    </ng-container> -->
+<!-- <ng-template ngFor let-tab [ngForOf]="defaultTabs"> -->
+<!-- <app-socialbox [postDetailData] = "postDetailData"></app-socialbox> -->
+<!-- <app-post *ngFor="let ticket of TicketList" [postData]="ticket" [pageType]="'ticket'" [fromCall]="1" (postSelectEvent)="toggleBulkSelect($event)"></app-post> -->
+<!-- </ng-template> -->
+<!-- <div class="page__wrapper">
+  <mat-tab-group #contenttabgroup
+  class="main-tab-group mt-2 post-openTab"
+  [selectedIndex]="selectedTabIndex"
+  animationDuration="0ms"
+
+>
+  <mat-tab *ngFor="let tab of tabs; let tabIndex = index">
+
+    <mat-toolbar *ngIf="showToolbar" class="header__toolbar">
+      <app-post-options *ngIf="tab.tabHide" [postDetailTab]="tab" class="d-flex-items-center"></app-post-options>
+    </mat-toolbar>
+    <div class="tab__content">
+      <app-tabcontent [tab]="tab"></app-tabcontent>
+    </div>
+   
+  </mat-tab>
+</mat-tab-group>
+</div> -->
+
+<div class="page__wrapper">
+  <div *ngFor="let tab of tabs; let tabIndex = index">
+    <div [hidden]="selectedTabIndex !== tabIndex">
+      <div *ngIf="showToolbar" class="header__toolbar">
+        <app-post-options
+          *ngIf="tab.tabHide"
+          [postDetailTab]="tab"
+          class="d-flex-items-center mt-6 pl-20 pr-20"
+        ></app-post-options>
+      </div>
+      <div class="tab__content">
+        <app-tabcontent [tab]="tab"></app-tabcontent>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <ng-container *ngIf="postloader" >
+        <app-post-loader></app-post-loader>
+        <app-post-loader></app-post-loader>
+        <app-post-loader></app-post-loader>
+    </ng-container>
+
+
+
+</div>
+<app-post-bulk-actions class="primary shown" [postCount]="selectedPostList.length" (bulkActionEvent)="postBulkAction($event)"  *ngIf="bulkActionpanelStatus"></app-post-bulk-actions> -->

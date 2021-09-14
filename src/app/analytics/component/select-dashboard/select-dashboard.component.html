@@ -1,0 +1,129 @@
+<div class="arrow-back position-absolute" mat-dialog-close>
+  <button mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</div>
+
+<mat-tab-group class="modal__tab" mat-align-tabs="center">
+  <mat-tab label="All Dashboards">
+    <div class="modal__body dashboards">
+      <div class="dashboards__wrapper">
+        <div class="dashboards__head">
+          <div class="dashboards__head--item custom__pill custom__pill--lg custom__pill--select" *ngIf="hideSearch && TemplateCategory.length > 0">
+            <a href="javascript:void(0)" *ngFor="let category of TemplateCategory" (click)="getDIYTemplatesByCategory(category.templateCategoryID)"
+            [ngClass]="{'active' : category.isActive }" class="custom__pill--item">{{ category.title }}</a>
+            <!-- <a href="javascript:void(0)" class="custom__pill--item">Default Dashboards</a>
+            <a href="javascript:void(0)" class="custom__pill--item">My Created</a>
+            <a href="javascript:void(0)" class="custom__pill--item">Shared With Me</a>
+            <a href="javascript:void(0)" class="custom__pill--item">Social Media</a>
+            <a href="javascript:void(0)" class="custom__pill--item">Campaigns</a> -->
+          </div>
+          <div class="dashboards__head--item dashboards__search" *ngIf="!hideSearch">
+            <a href="javascript:void(0)" class="dashboards__search--icon" mat-icon-button (click)="clearSearch()">
+              <mat-icon>arrow_back</mat-icon>
+            </a>
+            <input [(ngModel)]="searchBoxVal" (keyup.enter)="search()" class="dashboards__search--input">
+            <a href="javascript:void(0)" class="dashboards__search--icon" mat-icon-button (click)="clearSearch()">
+              <mat-icon>clear</mat-icon>
+            </a>
+          </div>
+          <div class="dashboards__head--item ml-auto">
+            <a href="javascript:void(0)" mat-icon-button (click)="search()">
+              <mat-icon>search</mat-icon>
+            </a>
+          </div>
+          <div class="dashboards__head--item">
+            <a href="javascript:void(0)" mat-icon-button [matMenuTriggerFor]="sortmenu">
+              <mat-icon>sort</mat-icon>
+            </a>
+            <mat-menu [formGroup]="sortForm" #sortmenu="matMenu" xPosition="before">
+              <ul class="sort-dropdown" (click)="$event.stopPropagation()">
+                  <li class="sort-dropdown__item">
+                      <span class="text__label--md">Sort By</span>
+                      <mat-radio-group formControlName="sortBy" aria-label="Select an option">
+                          <div class="sort-dropdown__item--input">
+                              <mat-radio-button value="CreatedDate">Created Date</mat-radio-button>
+                          </div>
+                          <div class="sort-dropdown__item--input">
+                              <mat-radio-button value="UpdatedDate">Modified Date</mat-radio-button>
+                          </div>
+                          <div class="sort-dropdown__item--input">
+                              <mat-radio-button value="Title"> Template Name</mat-radio-button>
+                          </div>
+                      </mat-radio-group>
+                  </li>
+                  <li class="sort-dropdown__item">
+                      <span class="text__label--md">Sort Order</span>
+                      <mat-radio-group formControlName="sortOrder" aria-label="Select an option">
+                          <div class="sort-dropdown__item--input">
+                              <mat-radio-button value="asc">Ascending</mat-radio-button>
+                          </div>
+                          <div class="sort-dropdown__item--input">
+                              <mat-radio-button value="desc">Descending</mat-radio-button>
+                          </div>
+                      </mat-radio-group>
+                  </li>
+              </ul>
+          </mat-menu>
+          </div>
+        </div>
+        <div class="dashboards__body">
+          <div fxLayout="row wrap" fxFlex="100" *appIfOnDom [@animateStagger]="{value:'50'}"
+            fxLayoutAlign="flex-start space-between" fxLayoutGap="2%">
+            <div class="dashboards__card dashboards__card--scratch" (click)="openWizard()" [@animate]="{value:'*',params:{y:'100%'}}"
+              fxLayout="column" fxFlex="100" fxFlex.gt-xs="0 1 calc(50% - 2%)" fxFlex.gt-md="0 1 calc(25% - 2%)">
+              <mat-menu #options="matMenu" xPosition="before">
+                <button mat-menu-item>Customize</button>
+              </mat-menu>
+              <div class="dashboards__card--head">
+                <div class="dashboards__card--image">
+                  <img class="img__fluid" src="assets/analytics/plus-sign.svg" alt="create image">
+                </div>
+              </div>
+              <h3 class="dashboards__card--title">Create From Scratch</h3>
+              <div class="dashboards__card--content">
+                <p class="text__light">Lorem ipsum dolor sit amet, conse tetur sadipscing elitr,
+                  sed diam non umy eirmod tempor invidunt ut labore et dolore magnaam </p>
+              </div>
+            </div>
+            <ng-container *ngIf="currentTemplates.length > 0">
+            <div class="dashboards__card" [@animate]="{value:'*',params:{y:'100%'}}" fxLayout="column" fxFlex="100"
+              fxFlex.gt-xs="0 1 calc(50% - 2%)" fxFlex.gt-md="0 1 calc(25% - 2%)" *ngFor="let template of currentTemplates" >
+              <mat-menu class="custom__matmenu" #options="matMenu" xPosition="before">
+                <button mat-menu-item>Customize</button>
+              </mat-menu>
+              <div class="dashboards__card--head">
+                <span class="dashboards__card--indicator">
+                  <span *ngIf="template.isShared" class="indicator">
+                    <mat-icon class="indicator__icon">share</mat-icon>
+                  </span>
+                </span>
+                <div class="dashboards__card--image">
+                  <img class="img__fluid" src="assets/analytics/bars.svg" alt="dashboard image">
+                </div>
+
+                <a href="javascript:void(0)" class="dashboards__card--action" [matMenuTriggerFor]="options">
+                  <mat-icon class="custom__icon--lg">more_vert</mat-icon>
+                </a>
+
+              </div>
+              <h3 class="dashboards__card--title">{{ template.title }}</h3>
+              <div class="dashboards__card--content">
+                <p class="text__light">{{ template.description }}</p>
+              </div>
+            </div>
+          </ng-container>
+          </div>
+          <div class="post__list--pagination" *ngIf="pagerCount">
+            <mat-paginator showFirstLastButtons appLocobuzzPaginator [length]="pagerCount"
+              [pageSize]="20"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="OnPageChange($event)">
+            </mat-paginator>
+        </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Create Command Center"> Create Command Center </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,194 @@
+@mixin widget-theme($theme){
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  .widget{
+    background: map-get($background , card);
+    box-shadow: 0px 0px 3px #3B51751A;
+
+    &__stat{
+      padding: 15px;
+      box-shadow: 0px 3px 6px #C3CBD780;
+      background: map-get($background, card);
+      border: 1px solid map-get($foreground, divider);
+      border-radius: 4px;
+
+      &:not(:last-child){
+        margin-bottom: 15px;
+      }
+
+      &--positive,
+      &--negative,
+      &--neutral{
+        position: relative;
+        border: 1px solid transparent;
+        color: var(--color-white);
+        min-width: 225px;
+
+        & > mat-icon{
+          position: absolute;
+          right: 0;
+          font-weight: 300 !important;
+          bottom: 0;
+          @include mat-icon-size(60);
+          opacity: .2;
+          transform: translate(25%, 25%);
+        }
+      }
+
+      &--wrapper{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: 390px;
+      }
+
+
+      &--multiple{
+        flex: 0 0 160px;
+        &:not(odd){
+          margin-right: 15px;
+        }
+
+        &:nth-last-child(2){
+          margin-bottom: 0;
+        }
+      }
+
+      &--up{
+        color: var(--color-green-dark);
+        font-weight: 600;
+      }
+
+      &--down{
+        color: var(--color-red);
+        font-weight: 600;
+      }
+
+      &--single{
+        min-width: 225px;
+      }
+
+      &--positive{
+        background: linear-gradient(252deg, var(--color-green-light) 0%, var(--color-green-dark) 100%) 0% 0%;
+        box-shadow: 0px 3px 6px #1C9F0080;
+      }
+
+      &--negative{
+        background:transparent linear-gradient(72deg, var(--color-red-dark) 0%, var(--color-red) 100%) 0% 0%;
+        box-shadow: 0px 3px 6px #DC1E1E80;
+      }
+
+      &--neutral{
+        background: transparent linear-gradient(252deg, var(--color-yellow) 0%, var(--color-yellow-dark) 100%) 0% 0%;
+        box-shadow: 0px 3px 6px #DEAA0C80;
+      }
+
+      &__state-multiple:nth-last-child(2){
+        margin-bottom: 0px;
+      }
+
+      &--label{
+        margin-bottom: 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        white-space:nowrap;
+      }
+
+      &--value{
+        font-family: 'Roboto Slab', serif;;
+        font-size: 24px;
+        font-weight: 600;
+        white-space:nowrap;
+      }
+
+      &--combined{
+        display: flex;
+      }
+
+      &--combinedItem{
+        flex: 1;
+
+        &:not(:last-child){
+          margin-right: 10px;
+          padding-right: 10px;
+          border-right: 1px solid map-get($foreground, divider);
+        }
+      }
+
+      &--info{
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+
+        & > img{
+          width: 20px;
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &__head{
+      border-bottom: 1px solid map-get($foreground, divider);
+
+      &--actionItem{
+        &.active{
+          color: var(--color-locobuzz);
+          background-color: rgba(24, 94, 223, .2);
+        }
+
+        & mat-icon{
+          @include mat-icon-size(20);
+        }
+      }
+
+      &--actiongroup{
+        &:not(:last-child){
+          margin-right: 3px;
+          padding-right: 3px;
+          border-right:  1px solid map-get($foreground, divider);
+
+        }
+      }
+    }
+
+    &__body{
+      min-height: 200px;
+
+      &--horizontal{
+        & .widget__body--section{
+          &:not(:last-child){
+            border-right: 1px solid map-get($foreground, divider);
+          }
+        }
+      }
+      &--vertical{
+        & .widget__body--section{
+          &:not(:last-child){
+            border-bottom: 1px solid map-get($foreground, divider);
+          }
+        }
+
+        & .widget__stat{
+          margin-bottom: 0;
+          flex:1 0 auto;
+
+          &:last-child{
+            margin-right: 0;
+          }
+
+          &--wrapper{
+            flex-wrap: nowrap;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    &__foot{
+      border-top: 1px solid map-get($foreground, divider);
+    }
+  }
+}

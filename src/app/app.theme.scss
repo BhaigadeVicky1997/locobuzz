@@ -1,0 +1,281 @@
+$dark-primary-text:var(-color-dark-text);
+$light-primary-text:var(--color-white);
+// -----------------------------------------------------------------------------------------------------
+// @ Custom color maps for Locobuzz
+// -----------------------------------------------------------------------------------------------------
+$locobuzz-white: (
+    500: white,
+    contrast: (
+        500: $dark-primary-text
+    )
+);
+
+$locobuzz-black: (
+    500: black,
+    contrast: (
+        500: $light-primary-text,
+    )
+);
+
+$locobuzz-dark: (
+    50 : #e6e8eb,
+    100 : #c0c5ce,
+    200 : #969fae,
+    300 : #6c788d,
+    400 : #4d5b74,
+    500 : #2d3e5c,
+    600 : #283854,
+    700 : #22304a,
+    800 : #1c2841,
+    900 : #111b30,
+    A100 : #6e9bff,
+    A200 : #3b78ff,
+    A400 : #0854ff,
+    A700 : #0049ee,
+    contrast: (
+        50 : $dark-primary-text,
+        100 : $dark-primary-text,
+        200 : $dark-primary-text,
+        300 :$light-primary-text,
+        400 :$light-primary-text,
+        500 :$light-primary-text,
+        600 :$light-primary-text,
+        700 :$light-primary-text,
+        800 :$light-primary-text,
+        900 :$light-primary-text,
+        A100 : $dark-primary-text,
+        A200 :$light-primary-text,
+        A400 :$light-primary-text,
+        A700 :$light-primary-text,
+    )
+);
+
+
+
+$locobuzz-blue: (
+    50 : #e3ecfb,
+    100 : #bacff5,
+    200 : #8cafef,
+    300 : #5d8ee9,
+    400 : #3b76e4,
+    500 : #185edf,
+    600 : #1556db,
+    700 : #114cd7,
+    800 : #0e42d2,
+    900 : #0831ca,
+    A100 : #f4f6ff,
+    A200 : #c1cbff,
+    A400 : #8ea1ff,
+    A700 : #748bff,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $light-primary-text,
+        400: $light-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text
+    )
+);
+
+
+$locobuzz-yellow: (
+    50 : #fef5e5,
+    100 : #fde5be,
+    200 : #fcd492,
+    300 : #fbc266,
+    400 : #fab546,
+    500 : #f9a825,
+    600 : #f8a021,
+    700 : #f7971b,
+    800 : #f68d16,
+    900 : #f57d0d,
+    A100 : #ffffff,
+    A200 : #fff5ec,
+    A400 : #ffd8b9,
+    A700 : #ffcaa0,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text,
+        500: $dark-primary-text,
+        600: $dark-primary-text,
+        700: $dark-primary-text,
+        800: $dark-primary-text,
+        900: $dark-primary-text,
+        A100: $dark-primary-text,
+        A200: $dark-primary-text,
+        A400: $dark-primary-text,
+        A700: $dark-primary-text
+    )
+);
+
+/* For use in src/lib/core/theming/_palette.scss */
+$locobuzz-red: (
+    50 : #fbe4e4,
+    100 : #f5bcbc,
+    200 : #ee8f8f,
+    300 : #e76262,
+    400 : #e14040,
+    500 : #dc1e1e,
+    600 : #d81a1a,
+    700 : #d31616,
+    800 : #ce1212,
+    900 : #c50a0a,
+    A100 : #fff0f0,
+    A200 : #ffbdbd,
+    A400 : #ff8a8a,
+    A700 : #ff7070,
+    contrast: (
+        50 : $dark-primary-text,
+        100 : $dark-primary-text,
+        200 : $dark-primary-text,
+        300 : $dark-primary-text,
+        400 : $light-primary-text,
+        500 : $light-primary-text,
+        600 : $light-primary-text,
+        700 : $light-primary-text,
+        800 : $light-primary-text,
+        900 : $light-primary-text,
+        A100 : $dark-primary-text,
+        A200 : $dark-primary-text,
+        A400 : $dark-primary-text,
+        A700 : $dark-primary-text
+    )
+);
+
+
+// Generate Locobuzz color classes for custom palettes
+$custom_palettes: (
+    locobuzz-white: $locobuzz-white,
+    locobuzz-black: $locobuzz-black,
+    locobuzz-blue: $locobuzz-blue,
+    locobuzz-dark: $locobuzz-dark
+);
+
+@include locobuzz-color-classes($custom_palettes);
+
+// -----------------------------------------------------------------------------------------------------
+// @ Typography
+// -----------------------------------------------------------------------------------------------------
+
+// Angular Material typography
+$typography:mat-typography-config(
+    $font-family: 'Inter, Helvetica Neue, Arial, sans-serif',
+    $title: mat-typography-level(1rem, 3.2rem, 600),
+    $body-1: mat-typography-level(1.4rem, 2.4rem, 400),
+    $body-2: mat-typography-level(1.4rem, 2.4rem, 600),
+    $button: mat-typography-level(1.4rem, 1.4rem, 600),
+    $input: mat-typography-level(1.4rem, 1.15, 400) // line-height must be unitless !!!
+);
+
+
+
+// Setup the typography
+@include angular-material-typography($typography);
+
+
+// // -----------------------------------------------------------------------------------------------------
+// // @ Define the default theme
+// // -----------------------------------------------------------------------------------------------------
+
+// Define the primary, accent and warn palettes
+$default-primary-palette: mat-palette($locobuzz-dark, 700,300,900);
+$default-accent-palette: mat-palette($locobuzz-blue, 500);
+$default-warn-palette: mat-palette($locobuzz-red, 500);
+
+// // Create the Material theme object
+$theme: mat-light-theme($default-primary-palette, $default-accent-palette, $default-warn-palette);
+
+// Add ".theme-default" class to the body to activate this theme.
+// Class name must start with "theme-" !!!
+
+// Locobuzz font colors
+@function theme-foreground() {
+    // color for refrence
+    // --color-locobuzz: #185edf;
+    // --color-locobuzz-light:#EBF0FF;
+    // --color-white: #ffffff;
+    // --color-black:#000000;
+    // --color-grey: #c3cbd7;
+    // --color-red: #ff5d48;
+    // --color-green: #48b43f;
+    // --color-yellow: #ffdb4d;
+    // --color-yellow-dark:#DEAA0C;
+    // --color-blue:#678bff;
+    // --color-purple:#ac52ff;
+    // --color-purple-dark:#751BDC;
+    // --color-lighter-grey:#F6F7F8;
+    // --color-light-grey: #e8eaee;
+    // --color-dark-text:#2D3E5C;
+    // --color-main-text: #3b5175;
+    // --color-sub-text: #5e708d;
+    // --color-light-text: #7a89a0;
+    // --color-skyblue:#19BFE5;
+    @return (
+        base:              var(--color-main-text),
+        divider:           var(--color-light-grey),
+        dividers:          var(--color-grey),
+        disabled:          var(--color-light-grey),
+        disabled-button:   var(--color-light-grey),
+        disabled-text:     var(--color-light-grey),
+        hint-text:         var(--color-dark-text),
+        secondary-text:    var(--color-sub-text),
+        icon:              var(--color-sub-text),
+        icons:             var(--color-sub-text),
+        text:              var(--color-main-text),
+        light-text:        var(--color-light-text),
+        text-dark:         var(--color-dark-text),
+        slider-min:        var(--color-main-text),
+        slider-off:        var(--color-main-text),
+        slider-off-active: var(--color-main-text)
+    );
+};
+
+
+
+$foreground: theme-foreground();
+$theme-custom: map-merge($theme,(foreground: $foreground));
+body.theme-default {
+
+    // Create an Angular Material theme from the $theme map
+    @include angular-material-theme($theme-custom);
+
+    // Apply the theme to the Locobuzz Core
+    @include locobuzz-core-theme($theme-custom);
+
+    // Generate Locobuzz color classes for primary, accent and warn colors
+    $palettes: (
+        primary: $default-primary-palette,
+        accent: $default-accent-palette,
+        warn: $default-warn-palette
+    );
+    @include locobuzz-color-classes($palettes);
+}
+
+// Define an alternate dark theme.
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+$dark-theme:   mat-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+    warn: $dark-warn,
+  )
+));
+
+.darkMode{
+    @include angular-material-color($dark-theme);
+}
+
+

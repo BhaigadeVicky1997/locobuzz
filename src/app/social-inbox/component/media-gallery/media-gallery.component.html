@@ -1,0 +1,251 @@
+<div class="modal modal__grouped media-gallery">
+  <div class="modal__grouped--item">
+    <div class="modal__head">
+      <h3 class="modal__title font-semibold d-flex-items-center">
+        <a href="javascript:void(0)" mat-dialog-close>
+          <mat-icon class="mr-8">arrow_back</mat-icon>
+          <span>Media Gallery</span>
+        </a>
+      </h3>
+      <span class="text__light--sm ml-auto" *ngIf="selectedMedia > 0">{{selectedMedia}} Media Selected</span>
+      <button
+        class="ml-auto mr-10"
+        mat-stroked-button
+        color="accent"
+        (click)="openMediaDropzone()">
+        <mat-icon>cloud_upload</mat-icon> Upload New Files
+      </button>
+      <button class="mr-10" mat-stroked-button [mat-dialog-close]="true" color="accent">Cancel</button>
+      <button type="button" (click)="attachMediaToReply()" mat-flat-button
+        color="accent">Attach</button>
+    </div>
+    <div class="modal__body modal__body--wrapper">
+      <div class="modal__body--section p-0 media-gallery__sidebar">
+        <div class="media-gallery__sidebar--item border-none">
+          <div class="custom__input--wrapper media-gallery__sidebar--section">
+            <input (keyup.enter)="searchMedia()" [(ngModel)]="searchText" type="text" class="custom__input bg__white border-none" placeholder="Search" />
+            <mat-icon (click)="searchMedia()" class="custom__input--suffix">search</mat-icon>
+          </div>
+          <!-- <div
+            class="custom__pill custom__pill--colored
+            media-gallery__sidebar--section">
+            <span class="custom__pill--item">
+              Clear Filter
+              <mat-icon class="custom__pill--close" (click)="clearAllFilters()">close</mat-icon></span>
+            <span class="custom__pill--item">
+              Image <mat-icon class="custom__pill--close">close</mat-icon></span>
+          </div> -->
+        </div>
+        <div mat-tab-nav-bar color="accent" class="custom-tabs">
+          <a mat-tab-link class="mat-tab-label" (click)="toggleSection(section)"
+            [active]="activeSection == section" *ngFor="let section of
+            MediaSection">{{section}}</a>
+        </div>
+        <ng-container *ngIf="activeSection == 'Media'; else ugcoptions" >
+          <div class="media-gallery__sidebar--item" [@fadeInOut]>
+            <div class="media-gallery__sidebar--options
+              media-gallery__sidebar--section">
+              <mat-checkbox *ngFor="let item of mediaFilterSorting.mediaType"
+                (change)="applyMediaFilter($event,item)" [checked]="item.checked" [value]="item.value"
+                class="media-gallery__sidebar--optionitem">{{item.name}}</mat-checkbox>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #ugcoptions>
+          <div class="media-gallery__sidebar--item"  [@fadeInOut] >
+            <mat-radio-group aria-label="Select an option" class="media-gallery__sidebar--options">
+              <mat-radio-button  class="media-gallery__sidebar--optionitem" value="1">Text</mat-radio-button>
+              <mat-radio-button value="2">Media</mat-radio-button>
+            </mat-radio-group>
+              <div class="media-gallery__sidebar--options pt-12 pl-20">
+              <mat-checkbox *ngFor="let item of mediaFilterSorting.mediaType"
+                [value]="item.value"
+                class="media-gallery__sidebar--optionitem">{{item.name}}</mat-checkbox>
+            </div>
+          </div>
+        </ng-template>
+        <div class="media-gallery__sidebar--item">
+          <div
+            class="media-gallery__sidebar--options
+            media-gallery__sidebar--section">
+            <label class="text__label media-gallery__sidebar--optiontitle">Ratings</label>
+            <mat-checkbox *ngFor="let item of mediaFilterSorting.ratings"
+              (change)="applyMediaFilter($event,item)" [value]="item.value"
+              class="media-gallery__sidebar--optionitem">
+              <app-star-rating [rating]="item.value" [editable]="false"></app-star-rating>
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="media-gallery__sidebar--item">
+          <div
+            class="media-gallery__sidebar--options
+            media-gallery__sidebar--section">
+            <label class="text__label media-gallery__sidebar--optiontitle">Sort
+              By</label>
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button *ngFor="let item of mediaFilterSorting.sortBy"
+                (click)="applyMediaFilter($event,item)" [value]='item.value'
+                class="media-gallery__sidebar--optionitem">{{item.name}}</mat-radio-button>
+              <!-- <mat-radio-button
+                class="media-gallery__sidebar--optionitem"
+                (click)="applyMediaFilter($event)" [value]='2'
+                >Ratings</mat-radio-button
+              > -->
+            </mat-radio-group>
+          </div>
+          <div
+            class="media-gallery__sidebar--options
+            media-gallery__sidebar--section">
+            <label class="text__label media-gallery__sidebar--optiontitle">Sort
+              Order</label>
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button *ngFor="let item of mediaFilterSorting.orderBy"
+                class="media-gallery__sidebar--optionitem"
+                (click)="applyMediaFilter($event,item)" [value]='item.value'>{{item.name}}</mat-radio-button>
+              <!-- <mat-radio-button
+                class="media-gallery__sidebar--optionitem"
+                (click)="applyMediaFilter($event)" [value]='2'
+                >Descending</mat-radio-button
+              > -->
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+      <div class="modal__body--section media-gallery__content
+        position-relative">
+        <app-component-loader [section]="'media-gallery'"></app-component-loader>
+        <ng-container *ngIf="activeSection == 'Media'; else ugc" >
+          <ng-container *ngIf="UGCMentionObj &&
+            UGCMentionObj.lstUGCMention.length> 0">
+            <div class="grid" appIsotopeGrid columnWidth="23%">
+              <div class="grid-item" *ngFor="let item of
+                UGCMentionObj.lstUGCMention; let i= index" [@fadeInOut]>
+                <div
+                  class="media-gallery__card grid-element"
+                  (click)="selectGivenMedia($event,item)"
+                  [ngClass]="item.clicked ? 'active' : 'someabnormalclass'">
+                  <span class="media-gallery__card--check">
+                    <mat-icon>check_circle</mat-icon>
+                  </span>
+                  <div class="media-gallery__card--image">
+                    <ng-container *ngIf="item.mediaType == mediaTypeEnum.IMAGE">
+                      <img [src]="item.mediaPath"
+                      (load)="(UGCMentionObj.lstUGCMention.length - 1) === i ?
+                      imageLoaded(): null" />
+                    </ng-container>
+                    <ng-container *ngIf="item.mediaType == mediaTypeEnum.VIDEO">
+                      <video controls>
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/m4v" />
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/mp4" />
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/mpeg" />
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/x-msvideo" />
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/x-ms-wmv" />
+                        <source [src]="item.mediaPath" data-autoplay="false" type="video/avi" />
+                    </video>
+                    </ng-container>
+                    <ng-container *ngIf="item.mediaType == mediaTypeEnum.OTHER || item.mediaType == mediaTypeEnum.DOC
+                    || item.mediaType == mediaTypeEnum.PDF || item.mediaType == mediaTypeEnum.EXCEL">
+                    <span *ngIf="item.mediaType == mediaTypeEnum.PDF" style="background-image:url(assets/images/common/pdf.png); background-size:40%; height:155px; margin:0;">
+                    </span>
+                    <span *ngIf="item.mediaType == mediaTypeEnum.DOC" style="background-image:url(assets/images/common/word.png); background-size:40%; height:155px; margin:0;">
+                    </span>
+                    <span *ngIf="item.mediaType == mediaTypeEnum.EXCEL" style="background-image:url(assets/images/common/excel-file.png); background-size:40%; height:155px; margin:0;">
+                    </span>
+                    </ng-container>
+                    
+                  </div>
+                  <div class="media-gallery__card--content">
+                    <div class="media-gallery__card--options
+                      d-flex-items-center">
+                      <app-star-rating
+                        [rating]="item.rating"
+                        [editable]="false"></app-star-rating>
+                      <div class="ml-auto d-flex-items-center">
+                        <a class="mr-8" href="item.mediaPath" download><mat-icon
+                            fontSet="material-icons-outlined">file_download</mat-icon></a>
+                        <a
+                          (click)="openImagepopup(item.displayFileName)"><mat-icon
+                            fontSet="material-icons-outlined">create</mat-icon></a>
+                      </div>
+                    </div>
+                    <div *ngIf="item.mediaTags && item.mediaTags.length> 0"
+                      class="custom__pill custom__pill--colored
+                      media-gallery__card--options"
+                      >
+                      <ng-template
+                        ngFor
+                        let-mediatag
+                        [ngForOf]="item.mediaTags"
+                        let-i="index">
+                        <ng-template [ngIf]="i < 2"><span
+                            class="custom__pill--item bg__grey">
+                            {{ mediatag }}</span></ng-template>
+                        <ng-template #ExtraTags [ngIf]="i == 2"><span
+                            class="custom__pill--item bg__grey">
+                            + {{ item.mediaTags.length - 2 }}</span>
+                        </ng-template>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-template #ugc>
+          <div class="grid" appIsotopeGrid columnWidth="47%">
+            <div class="grid-item" *ngFor="let item of
+              UGCMentionObj.lstUGCMention; let i= index" [@fadeInOut]>
+              <div class="post">
+                <div class="post__head">
+                  <div class="post__head--profile">
+                    <div class="post__head--channel">
+                      <div class="channel">
+                        <img class="channel__image"
+                          src="assets/social-mention/post/twitter.svg"
+                          alt="channel image">
+                        <span class="channel__label">Public Tweet</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="post__head--info">
+                    <div class="post__head--infoitem">
+                      <span class="text__sub--sm">Feb 1st 2021, 12:32:20 AM</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="post__body">
+                  <div class="post__body--data">
+                    <span class="post__body--content">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                      sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                      magna aliquam erat volutpat.
+                    </span>
+                  </div>
+                </div>
+                <div class="post__foot">
+                  <div class="post__foot--wrapper">
+                    <div class="post__foot--item">
+                      <mat-checkbox></mat-checkbox>                      
+                    </div>
+                    <div class="post__foot--item">
+                      <app-star-rating [rating]="3" [editable]="false"></app-star-rating>
+                    </div>
+                  </div>
+                  <div class="post__foot--wrapper ml-auto">
+                    <div class="post__foot--item">
+                      <mat-icon>open_in_new</mat-icon>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <div *ngIf="showLoadMore" class="post-detail__conversations--loadmore text-center mb-15">
+          <button (click)="loadMoreMedia()" mat-raised-button class="btn__round btn__outline">Load More</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

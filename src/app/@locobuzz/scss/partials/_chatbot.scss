@@ -1,0 +1,234 @@
+$chatbotElem: ".chatbot";
+$dialogElem: ".chatbot__dialog";
+
+@mixin chatbot-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $is-dark: map-get($theme, is-dark);
+
+  .chatbot {
+    &__bubble {
+      background-color: var(--color-locobuzz);
+      color: var(--color-white);
+      box-shadow: 0px 3px 6px #185edf80;
+      &--drag {
+        @include mat-icon-size(12);
+      }
+    }
+
+    &__dialog {
+      background-color: map-get($background, card);
+      box-shadow: 0px 3px 8px rgba(59, 81, 117, 0.3);
+
+      & .mat-tab-link {
+        min-width: auto !important;
+        padding: 0 15px !important;
+      }
+
+      & .mat-tab-label-active {
+        background-color: rgba(24, 94, 223, 0.1);
+      }
+
+      & .chatbot__attachment--body {
+        & .mat-tab-label-active {
+          background-color: transparent !important;
+          border: 3px solid var(--color-light-grey);
+        }
+        & .mat-tab-label {
+          padding: 0 0px;
+          margin: 0 0.5rem;
+          @include media-breakpoint("xl") {
+            height: 100px;
+          }
+        }
+        & .mat-tab-group.mat-primary .mat-ink-bar {
+          background-color: transparent !important;
+        }
+      }
+
+      &.expanded .chatbot__content--users {
+        flex: 0 0 300px;
+        max-width: 300px;
+        border-right: 1px solid map-get($foreground, divider);
+        & .mat-tab-links {
+          flex-direction: column;
+          max-width: 299px;
+          overflow: hidden;
+        }
+        & .mat-tab-link {
+          justify-content: flex-start;
+          &:not(:last-child) {
+            border-bottom: 1px solid map-get($foreground, divider);
+          }
+          flex-direction: row;
+          height: auto;
+          padding: 1rem 20px !important;
+
+          & .profile__img {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            flex: 0 0 40px;
+          }
+        }
+
+        & .mat-tab-nav-bar,
+        & .mat-tab-header {
+          border: none !important;
+        }
+
+        & .mat-ink-bar {
+          display: none;
+        }
+
+        & .profile .custom__badge {
+          top: 50%;
+          transform: translateY(-40%);
+          box-shadow: none;
+        }
+      }
+    }
+
+    &__head {
+      &--channels {
+        & .mat-tab-header,
+        & .mat-tab-nav-bar {
+          border: none !important;
+        }
+        border-bottom: 1px solid map-get($foreground, divider);
+      }
+    }
+
+    &__foot {
+      &--input {
+        border: 1px solid map-get($foreground, divider);
+      }
+    }
+
+    &__info {
+      border-bottom: 1px solid map-get($foreground, divider);
+    }
+
+    &__log {
+      @if ($is-dark) {
+        background: map-get($background, background);
+      } @else {
+        background: var(--color-lighter-grey);
+      }
+
+      &--section {
+        &.recieved {
+          .messages {
+            overflow-wrap: anywhere;
+            align-items: flex-start;
+            &__text {
+              background: map-get($background, card);
+              border-radius: 15px 15px 15px 15px;
+              box-shadow: 0px 1px 2px #00000029;
+
+              &:first-child {
+                border-radius: 0px 15px 15px 15px;
+              }
+            }
+          }
+        }
+
+        &.sent {
+          .messages {
+            overflow-wrap: anywhere;
+            text-align: left;
+            align-items: flex-end;
+            &__text {
+              background: var(--color-locobuzz);
+              color: map-get($background, card);
+              border-radius: 15px 15px 15px 15px;
+              box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16);
+              margin-bottom: 15px;
+
+              &:first-child {
+                border-radius: 15px 0px 15px 15px;
+              }
+            }
+
+            &__attachment {
+              background: map-get($background, card);
+              color: map-get($foreground, text);
+            }
+          }
+        }
+
+        & {
+          .messages {
+            &__time {
+              background: transparent !important;
+              padding: 0 5px !important;
+              color: map-get($foreground, dividers) !important;
+              box-shadow: none !important;
+            }
+          }
+        }
+      }
+
+      &--messages {
+        & > p {
+          box-shadow: 0px 1px 2px #00000029;
+        }
+      }
+    }
+
+    &__attachment {
+      &--add {
+        border: 1px solid map-get($foreground, divider);
+
+        & mat-icon.mat-icon {
+          color: map-get($foreground, text);
+          @include mat-icon-size(15);
+        }
+      }
+
+      &__tab--header {
+        & .mat-tab-header {
+          border-top: none !important;
+          margin: auto;
+          max-width: 100%;
+        }
+        & .mat-primary {
+          & .mat-ink-bar {
+            background-color: none !important;
+          }
+        }
+      }
+    }
+
+    &__loader {
+      height: 2px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      @if ($is-dark) {
+        background: map-get($background, background);
+      } @else {
+        background: var(--color-light-grey);
+      }
+      &:before{
+        display: block;
+        position: absolute;
+        content: "";
+        left: -200px;
+        width: 200px;
+        height: 4px;
+        background-color: var(--color-locobuzz);
+        animation: loading 2s linear infinite;
+      }
+    }
+
+    @keyframes loading {
+      from {left: -200px; width: 30%;}
+      50% {width: 30%;}
+      70% {width: 70%;}
+      80% { left: 50%;}
+      95% {left: 120%;}
+      to {left: 100%;}
+  }
+  }
+}

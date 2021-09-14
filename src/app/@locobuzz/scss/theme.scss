@@ -1,0 +1,18 @@
+
+@mixin locobuzz-core-theme($theme) {
+    // Theming for Locobuzz core styles
+    @include colors-theme($theme);
+    @include material-theme($theme);
+    @include typography-theme($theme);
+    @include components-theme($theme);
+    @include helpers-theme($theme);
+    @include modal-theme($theme);
+    @include filter-theme($theme);
+    @include post-theme($theme);
+    @include sidemodal-theme($theme);
+    @include library-theme($theme);
+    @include chatbot-theme($theme);
+    @include widget-theme($theme);
+    @include highChart-theme($theme);
+}
+

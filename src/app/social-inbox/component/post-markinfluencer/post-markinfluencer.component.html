@@ -1,0 +1,36 @@
+<div class="modal__head">
+    <h3 class="modal__title">Mark Influencer</h3>
+    <span class="modal__action">
+        <mat-icon fontSet="material-icons-outlined" [mat-dialog-close]="true">close</mat-icon>
+    </span>
+</div>
+<form >
+<div class="modal__body">
+    <div class="p-16">
+        <mat-form-field  appearance="outline" class="material__select
+        material__select--adaptive">
+        <mat-label>Influencer</mat-label>
+        <!-- formControlName="assignToName"  -->
+        <mat-select [(value)]="selectedInfluencer" (selectionChange) = "updateInfluencer($event)" >
+            <!-- <mat-select-trigger>
+            <mat-icon>how_to_reg</mat-icon>&nbsp;John Doe
+          </mat-select-trigger> -->
+            <mat-option  class="matmenu__item" *ngFor = "let item of influencerList" [value]="item.categoryID" ariaLabel ={{item.category}} >
+
+                <!-- <mat-icon [ngClass]="{'colored__green':
+                    truw,'colored__grey': false}">fiber_manual_record</mat-icon><mat-icon
+                    [ngClass]="{'colored__yellow':
+                    false,'colored__grey': false}"
+                    fontSet="material-icons-outlined">person</mat-icon> -->
+                    <span>{{item.category}}</span>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+</div>
+<div class="modal__foot">
+    <button class="mr-8 ml-auto colored__red" mat-stroked-button (click) = "inActiveInfluencer()">Remove Influencer</button>
+    <button type="submit" mat-flat-button color="accent" [mat-dialog-close]="true" (click) ="updateAPI()">Mark Influencer</button>
+
+</div>
+</form>

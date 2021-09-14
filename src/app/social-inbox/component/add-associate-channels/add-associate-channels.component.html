@@ -1,0 +1,49 @@
+<div class="modal__head">
+    <h3 class="modal__title">Add Associate Channel</h3>
+    <span class="modal__action">
+        <mat-icon fontSet="material-icons-outlined" [mat-dialog-close]="true">close</mat-icon>
+    </span>
+</div>
+<div class="modal__body">
+    <div class="p-16 pt-25 w-400 m-auto">
+        <form>
+            <div fxLayout="row">
+                <div fxLayout="column" fxFlex="35%">
+                    <mat-form-field appearance="outline" class="material__select
+                        material__select--adaptive material__select--border--right">
+                        <mat-label>Channel</mat-label>
+                        <mat-select name = 'select' ngModel  #selected = "ngModel">
+                            <mat-option value = "1" class="matmenu__item">Twitter</mat-option>
+                            <mat-option value = "2" class="matmenu__item">Facebook</mat-option>
+                            <mat-option value = "3" class="matmenu__item">Instagram</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxFlex="65%">
+                    <mat-form-field appearance="outline" class="material__select
+                        material__select--adaptive material__select--border--left">
+                        <mat-label>Account Name</mat-label>
+                        <input name = 'input' ngModel #search = "ngModel" matInput (input) ="searchUser(search, selected)">
+                        <mat-icon matSuffix >search</mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <div class="list py-20">
+            <div class="list__item" *ngFor = "let item of searchedUsers">
+                <div class="profile">
+                    <div class="profile__img">
+                        <img alt="user image" src="http://pbs.twimg.com/profile_images/751039108571541505/H6XpCJRr_400x400.jpg">
+                    </div>
+                    <div class="profile__name" (click) = "onSelect(item)">{{item.screenname}}</div>
+                    <div class="profile__handle"> (@johndoe)</div>
+                </div>
+                <mat-icon class="colored__green ml-auto" *ngIf = "isSelected == item.screenname">check_circle</mat-icon>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal__foot">
+    <button class="ml-auto mr-15" mat-stroked-button color="accent" [mat-dialog-close]="true">Cancel</button>
+    <button type="submit" mat-flat-button color="accent" (click) = "saveUsers()">Add</button>
+</div>

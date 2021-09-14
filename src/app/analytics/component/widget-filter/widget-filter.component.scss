@@ -1,0 +1,91 @@
+.dashboard{
+    &__sidebar{
+        &--head{
+            display: flex;
+            align-items: center;
+            height: 50px;
+            &--title{
+              padding: 5px 15px;
+              display: flex;
+              padding: 15px;
+              padding-bottom: 0px;
+            }
+            & p{
+              font-size: 16px;
+              font-weight: 600;
+            }
+          }
+          &--body{
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            padding-bottom: 0px;
+            position: relative;
+            height: 89vh;
+            &--chart{
+                & p{
+                    font-weight: 600;
+                }
+                & ul{
+                    display: flex;
+                    & li{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin: 0;
+                        margin-right: 14px;
+                        & span{
+                            cursor: pointer;
+                            padding: 2px 3px;
+                        }
+                        &:nth-child(1){
+                           cursor: pointer;
+                           padding-right: 15px;
+                           font-weight: 600;                        
+                        }
+                    }
+                }
+            }
+            &--series{
+                display: flex;
+                flex-direction: column;
+                padding-top: 25px;
+                & p{
+                    font-weight: 600;
+                }
+                & ul{
+                    display: flex;
+                    flex-wrap: wrap;
+                    row-gap: 9px;
+                    & li{
+                        display: flex;
+                        flex: 1;
+                    }
+                }
+            }
+            &--other{
+                display: flex;
+                flex-direction: column;
+                padding-top: 25px;
+                & p{
+                    font-weight: 600;
+                }
+                & ul{
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    row-gap: 9px;
+                    & li{
+                        display: flex;
+                        flex: 1;
+                    }
+                }
+            }
+          }
+          &--foot{
+            position: absolute;
+            bottom: 0;
+            right: 5px;
+          }
+    }
+}

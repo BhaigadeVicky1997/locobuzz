@@ -1,0 +1,48 @@
+<div class="modal">
+    <div class="modal__head">
+        <h3 class="modal__title font-semibold d-flex-items-center">
+            Upload New Media
+        </h3>
+        <span class="text__light--sm ml-auto" *ngIf="filesUploaded.length > 0">{{filesUploaded.length}} files selected</span>
+        <span (click)="cancelSaving()" class="modal__action">
+            <mat-icon mat-dialog-close fontSet="material-icons-outlined">close</mat-icon>
+        </span>
+    </div>
+    <div class="modal__body">
+        <div class="dropzone" [ngClass]="{'dropped': isImageDropped}">
+            <div class="dropzone__item dropzone__drop" ngx-dropzone
+                (change)="onImageDropped($event)">
+                <div class="dropzone__drop--item">
+                    <mat-icon class="dropzone__icon"
+                        fontSet="material-icons-outlined">cloud_upload</mat-icon>
+                    <div class="text__sub dropzone__drop--text">Drag & drop or
+                        click to upload files/media</div>
+                </div>
+            </div>
+            <app-media-dropitem class="dropzone__item" [image]="file" [file]="file" [onUpload]="true" (removeSelected)="onImageRemoved($event)" *ngFor="let file of filesUploaded" [@fadeInOut]></app-media-dropitem>
+            <!-- <div class="dropzone__item" *ngFor="let file of filesUploaded"
+                [removable]="true" >
+                <div class="dropzone__item--image">
+                    <ngx-dropzone-image-preview class="dropzone__item--imagepreview"
+                        ngProjectAs="ngx-dropzone-preview" [file]="file"></ngx-dropzone-image-preview>
+                    <div class="dropzone__item--overlay"
+                        (click)="onImageRemoved(file)">
+                        <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+                    </div>
+                </div>
+                <div class="dropzone__item--content">
+                    <span class="text__label ">Rate it</span>
+                    <app-star-rating rating="0" (ratingUpdated)="starAffect($event)" [id]="file.name" class="mb-8"></app-star-rating>
+                    <textarea class="custom__input" placeholder="Post Tags"  rows="5"></textarea>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="modal__foot">
+        <span class="modal__foot--item text__sub--sm"><span class="colored__red">*</span>You can upload JPEG, JPG,
+            PNG and GIF image files upto 5 Mb of file size and MP4, MOV, AVI,
+            WMV and MKV video file upto 1GB of file size.</span>
+        <button (click)="cancelSaving()" mat-button class="mr-12 ml-12" mat-dialog-close>Cancel</button>
+        <button type="button" (click)="saveFilesToServer()" mat-flat-button color="accent">Save</button>
+    </div>
+</div>

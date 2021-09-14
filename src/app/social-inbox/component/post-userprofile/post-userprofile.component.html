@@ -1,0 +1,258 @@
+
+<div *ngIf="customAuthorDetails && customAuthorDetails.channelGroup" class="post-profile">
+  <div class="post-profile__info">
+    <div class="post-profile__info--profile">
+      <div class="post-profile__info--profileimg">
+        <img class="img__fluid" [src]="customAuthorDetails.profilePicUrl" />
+      </div>
+      <div class="post-profile__info--profilecontent">
+        <ng-template [ngIf]="customAuthorDetails.channelGroup ==
+          channelGroupEnum.Email ||
+          customAuthorDetails.channelGroup == channelGroupEnum.WhatsApp"
+          [ngIfElse]="ProfileLink">
+          <span class="post-profile__info--profilename">{{
+            customAuthorDetails.screenName
+            }}</span>
+        </ng-template>
+        <ng-template #ProfileLink>
+          <a [href]="customAuthorDetails.profileUrl" target="_blank"
+            class="post-profile__info--profilename">{{
+            customAuthorDetails.screenName }}</a>
+        </ng-template>
+
+        <span class="post-profile__info--profilehandle">{{
+          customAuthorDetails.screenname
+          }}</span>
+        <span *ngIf="customAuthorDetails.location"
+          class="post-profile__info--profilehandle">
+          <mat_icon>location</mat_icon>{{ customAuthorDetails.location }}
+        </span>
+      </div>
+      <div class="post-profile__info--profileactions" *ngIf="showActions">
+        <button mat-icon-button class="btn__hover">
+          <mat-icon fontSet="material-icons-outlined"
+            (click)="openEnrichView()">portrait</mat-icon>
+        </button>
+        <mat-menu #brandSelect="matMenu" (click)="$event.stopPropagation();" xPosition="before" yPosition="above">
+          <ng-template matMenuContent let-type="type">
+            <div class="px-10 pb-10 bb__light-grey">
+              <span class="text__label">{{type}}</span>
+            </div>
+            <button mat-menu-item *ngFor="let item of this.handleNames" (click)="setSocialHandle(item)">
+                <div class="d-flex-items-center">
+                    <img class="mr-4 img w-20" [src]="item.profilepic" alt="Brand Image" >
+                    <span>{{item.handleName}}</span>
+                </div>
+            </button>
+            <div class="d-flex-items-center p-10 bt__light-grey">
+              <a class="ml-auto colored__locobuzz" (click)="submitActionHandle()">Submit</a>
+            </div>
+          </ng-template>
+        </mat-menu>
+        <!-- <app-social-handle [handleNames]="this.handleNames" (submitSocialHandleEvent)="submitActionHandle($event)"></app-social-handle> -->
+        <div *ngIf="author && currentUser.data.user.role !== userRoleEnum.ReadOnlySupervisorAgent" class="custom__dropdown ml-4">
+          <button mat-icon-button class="btn__hover">
+            <mat-icon fontSet="material-icons-outlined">more_vert</mat-icon>
+          </button>
+          <ul class="custom__dropdown--list">
+            <li *ngIf="author && author.channelGroup === 1" mat-menu-item>
+              <mat-icon>follow_the_signs</mat-icon>
+              <span  *ngIf="author.isBrandFollowing" [matMenuTriggerFor]="brandSelect" [matMenuTriggerData]="{type: 'UnFollow by handle'}" (click)="setAuthorFlag(getAuthorAction.FollowUnFollow,author.isBrandFollowing)">UnFollow</span>
+              <span  *ngIf="!author.isBrandFollowing" [matMenuTriggerFor]="brandSelect"[matMenuTriggerData]="{type: 'Follow by handle'}" (click)="setAuthorFlag(getAuthorAction.FollowUnFollow,author.isBrandFollowing)">Follow</span>
+            </li>
+            <li mat-menu-item>
+              <mat-icon>hide_source</mat-icon>
+              <span>Hide</span>
+            </li>
+            <li *ngIf="author && author.channelGroup === 1" mat-menu-item >
+              <mat-icon>do_not_disturb_on_total_silence</mat-icon>
+              <span *ngIf="author.isMuted" [matMenuTriggerFor]="brandSelect" [matMenuTriggerData]="{type: 'Unmute by handle'}" (click)="setAuthorFlag(getAuthorAction.MuteUnMute,author.isMuted)">UnMute</span>
+              <span *ngIf="!author.isMuted" [matMenuTriggerFor]="brandSelect" [matMenuTriggerData]="{type: 'Mute by handle'}" (click)="setAuthorFlag(getAuthorAction.MuteUnMute,author.isMuted)">Mute</span>
+            </li>
+            <li *ngIf="author && (author.channelGroup === 1 || author.channelGroup === 2)" mat-menu-item>
+              <mat-icon>block</mat-icon>
+              <span *ngIf="author.isBlocked" [matMenuTriggerFor]="brandSelect" [matMenuTriggerData]="{type: 'UnBlock by handle'}" (click)="setAuthorFlag(getAuthorAction.BlockUnBlock,author.isBlocked)">UnBlock</span>
+              <span *ngIf="!author.isBlocked" [matMenuTriggerFor]="brandSelect" [matMenuTriggerData]="{type: 'Block by handle'}" (click)="setAuthorFlag(getAuthorAction.BlockUnBlock,author.isBlocked)">Block</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="post-profile__info--profilesummary">
+      <div *ngIf="customAuthorDetails.gender && customAuthorDetails.gender !=
+        -1">
+        <label class="text-semibold">Gender: </label>
+        <span class="text__light colored__blue">{{
+          customAuthorDetails.gender
+          }}</span>
+      </div>
+      <div *ngIf="customAuthorDetails.age">
+        <label class="text-semibold">Age: </label>
+        <span class="text__light">{{ customAuthorDetails.age }}</span>
+      </div>
+      <div *ngIf="customAuthorDetails.influencer">
+        <label class="text-semibold">Influencer: </label>
+        <span class="text__light">{{
+          customAuthorDetails.influencer
+          }}</span>
+          <mat-icon (click)="markInfluencer()" class="icon" fontSet="material-icons-outlined">edit</mat-icon>
+      </div>
+    </div>
+  </div>
+  <div class="post-profile__score">
+    <div class="post-profile__score--item">
+      <div class="post-profile__score--label">
+        <span class="post-profile__score--labelmain">Sentiment Uplift Score</span>
+        <span class="post-profile__score--labelsub">
+          <span>Last Updated on
+            {{customAuthorDetails.upliftLastupdatedDatetime}}</span>
+          <mat-icon class="post-profile__score--replay"
+            (click)="getSentimentUpliftAndNPSScore()">replay
+          </mat-icon>
+        </span>
+      </div>
+      <span
+        class="post-profile__score--value colored__yellow--dark">Number  - {{customAuthorDetails.sentimentUpliftScore}}</span>
+    </div>
+    <div class="post-profile__score--item">
+      <ng-template [ngIf]="customAuthorDetails.channelGroup ==
+        channelGroupEnum.Facebook ||
+        customAuthorDetails.channelGroup == channelGroupEnum.Twitter">
+        <div class="post-profile__score--label">
+          <span class="post-profile__score--labelmain">NPS Score</span>
+          <span class="post-profile__score--labelsub">
+            <span>Last Updated on {{customAuthorDetails.npsLastRecordDate}}</span>
+            <mat-icon class="post-profile__score--replay"
+              (click)="getSentimentUpliftAndNPSScore()">replay
+            </mat-icon>
+          </span>
+        </div>
+        <span class="post-profile__score--value colored__green">{{
+          customAuthorDetails.npsScore
+          }}</span>
+        <ng-template [ngIf]="customAuthorDetails.npsScore == -1">
+          <span class="LastUpdatedNPSScoreText">No feedback yet</span>
+        </ng-template>
+      </ng-template>
+    </div>
+
+    <div class="post-profile__score--item">
+      <ng-template [ngIf]="customAuthorDetails.channelGroup ==
+        channelGroupEnum.Facebook ||
+        customAuthorDetails.channelGroup == channelGroupEnum.Twitter">
+        <div class="post-profile__score--labelsub">
+          <ng-template [ngIf]="!customAuthorDetails.isNpsOn">
+            <mat-icon class="mr-3 colored__yellow--dark">help_outline</mat-icon>
+            <span class="LastUpdatedNPSScoreText">Turn on NPS feedback settings to
+              check this score</span>
+          </ng-template>
+          <ng-template [ngIf]="customAuthorDetails.npsScore == -1">
+            <span class="LastUpdatedNPSScoreText">No feedback yet</span>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>
+
+  </div>
+</div>
+<mat-expansion-panel class="box__shadow--none expansion--panel post-profile__info--body"  [expanded]="true">
+  <mat-expansion-panel-header [collapsedHeight]="'47px'"
+    [expandedHeight]="'47px'" class="accordian_headers">
+    <mat-panel-title>Profile</mat-panel-title>
+  </mat-expansion-panel-header>
+  <div *ngIf="customAuthorDetails && customAuthorDetails.channelGroup" class="post-profile__info--profilecontact">
+    <div *ngIf="customAuthorDetails.phoneNumber"
+      class="post-profile__info--profilecontactitem">
+      <mat-icon class="post-profile__info--profilecontacticon"
+        fontSet="material-icons-outlined">call</mat-icon>
+      <span>{{ customAuthorDetails.phoneNumber }}</span>
+      <span (click)="copyMessage(customAuthorDetails.phoneNumber)">
+        <mat-icon class="post-profile__info--profilecopy"
+          fontSet="material-icons-outlined">content_copy
+        </mat-icon>
+      </span>
+    </div>
+    <div *ngIf="customAuthorDetails.email"
+      class="post-profile__info--profilecontactitem">
+      <mat-icon class="post-profile__info--profilecontacticon"
+        fontSet="material-icons-outlined">alternate_email
+      </mat-icon>
+      <span>{{ customAuthorDetails.email }}</span>
+      <span (click)="copyMessage(customAuthorDetails.email)">
+        <mat-icon class="post-profile__info--profilecopy"
+          fontSet="material-icons-outlined">content_copy
+        </mat-icon>
+      </span>
+    </div>
+  </div>
+  <div *ngIf="customAuthorDetails && customAuthorDetails.connectedUsers.length> 0" class="post-section post-section--scroll">
+    <ul 
+    class="post-profile__info--social">
+    <ng-template ngFor let-user [ngForOf]="customAuthorDetails.connectedUsers">
+      <li class="post-profile__info--socialitem">
+        <img class="post-profile__info--socialimage" [src]="user.channelImage"
+          alt="twitter icon /" />
+        <span>{{ user.name }}<span *ngIf="user.screenName">({{user.screenName}})</span></span>
+      </li>
+      <ng-container *ngIf="user.following">
+        <li class="post-profile__info--socialstats">
+          <span *ngIf="user.followers">Followers - </span>
+          <span class="text__dark--sm text-semibold"> {{ user.followers }}</span>
+        </li>
+        <li class="post-profile__info--socialstats">
+          <span *ngIf="user.following">Following - </span>
+          <span class="text__dark--sm text-semibold"> {{ user.following }}</span>
+        </li>
+        <li class="post-profile__info--socialstats">
+          <span *ngIf="user.tweets">Tweets - </span><span class="text__dark--sm
+            text-semibold"> {{ user.tweets }}</span>
+        </li>
+      </ng-container>    
+    </ng-template>
+    <li *ngIf="currentUser.data.user.role !== userRoleEnum.ReadOnlySupervisorAgent" class="post-profile__info--socialitem cursor-pointer" (click)="openAssociateDialog()">
+      <mat-icon class="post-profile__info--socialimage post-profile__info--add">add</mat-icon>
+      <span class="colored__blue">Add Associate Channel</span>
+    </li>
+    <!-- <li
+          *ngFor="
+            let each of profileInfo[lable]['postSection']['socialstats']
+          "
+          class="post-profile__info--socialstats"
+        >
+          <span>{{ each["type"] }} - </span
+          ><span class="text__dark--sm text-semibold">
+            {{ each["value"] }}</span
+          >
+        </li> -->
+  </ul>
+  </div>
+  <div *ngIf="customAuthorDetails && customAuthorDetails.channelGroup" class="post-section">
+    <div *ngIf="customAuthorDetails.Bio" class="post-profile__info--bio">
+      <span class="post-section__title">Bio</span>
+      <p>{{ customAuthorDetails.Bio }}</p>
+    </div>
+    <div class="post-profile__info--traits" *ngIf="customAuthorDetails.traits.length > 0">
+      <span class="post-section__title">Traits</span>
+      <div class="custom__pill">
+        <span *ngFor="let trait of customAuthorDetails.traits"
+          class="custom__pill--item">{{ trait.name }}</span>
+      </div>
+    </div>
+  </div>
+</mat-expansion-panel>
+<mat-expansion-panel class="box__shadow--none expansion--panel post-profile__info--body">
+  <mat-expansion-panel-header [collapsedHeight]="'47px'"
+    [expandedHeight]="'47px'" class="accordian_headers">
+    <mat-panel-title>CRM Details</mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="post-crm post-section">
+    <ul>
+      <li *ngFor="let crm of CrmDetails" class="post-crm--item">
+        <span class="post-crm--label">{{ crm.id }} : </span>
+        <span class="post-crm--value">{{
+          crm.value
+          }}</span>
+      </li>
+    </ul>
+  </div>
+</mat-expansion-panel>

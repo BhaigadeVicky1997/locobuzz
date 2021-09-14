@@ -1,0 +1,483 @@
+<!-- <button  (click)="openAssociateDialog()">Open Associal Demo button</button> -->
+<span class="side-modal--close" [mat-dialog-close]="true">
+  <mat-icon>close</mat-icon>
+</span>
+<mat-tab-group [selectedIndex]="activeTab" class="custom-padding--tab">
+    <mat-tab *ngFor="let lable of Object.keys(profileInfo)" [label]="lable">
+      <!-- <app-component-loader [section]="lable"></app-component-loader> -->
+      <!-- <div class="component__loader"  style="min-height: 50;" *ngIf="userProfileLoading">
+        <mat-spinner color="accent"></mat-spinner>
+      </div> -->
+
+        <!-- Ony For Overview -->
+        <div *ngIf="lable === 'Overview'" class="post-overview">
+            <div class="post-overview__ticket">
+                <span class="post-section__title">Ticket Overview</span>
+                <div class="post-overview__ticket--row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                    <div class="post-overview__ticket--column custom__inputwrapper material__select--wrapper" fxFlex="100%">
+                        <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                            <mat-label>Ticket ID</mat-label>
+                            <mat-select [(value)]="selectedTicketID">
+                                <mat-option [value]="ticketID"> {{ticketID}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="post-overview__ticket--row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                  <div class="post-overview__ticket--column custom__inputwrapper material__select--wrapper" fxFlex="100%" [ngClass]="{'element__disable' : disableTicketSections }">
+                    <app-assign-user-dropdown [value]="AssignedTo" [options]="assignTo" [label]="'agentName'" (selectedData)="changeAssignTo($event)"></app-assign-user-dropdown>
+                    <!-- <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                      <mat-label>Assign To</mat-label>
+                      <mat-select [(value)]="AssignedTo" (selectionChange)="changeAssignTo($event)">
+                        <mat-option class="matmenu__item" [value]="user.agentID" *ngFor="let user of assignTo">
+                            <span>{{user.agentName}}</span>
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                                <!-- - <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                      <mat-label>Assign To</mat-label>
+                      <input type="text"
+                            matInput
+                            [(value)]="AssignedTo"
+                            [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="changeAssignTo($event)">
+                        <ng-container *ngFor="let data of userwithteam">
+                          <mat-optgroup *ngIf="data.teamName !== null; else userlist">
+                              <div class="matmenu__head">{{data.teamName}}</div>
+                              <mat-option  class="matmenu__menu" *ngFor="let user of data.user" [value]="user.agentName">
+                                <mat-icon [ngClass]="{'colored__green': user.logIn_Status == 1,'colored__grey': user.logIn_Status == 0}" class="mr-8">fiber_manual_record</mat-icon><mat-icon [ngClass]="{'colored__yellow': user.userRole == 13,'colored__grey': user.userRole !== 13}"  class="mr-4 user-profile"  fontSet="material-icons-outlined" >person</mat-icon><span>{{user.agentName}}</span>
+                              </mat-option>
+                          </mat-optgroup>
+                          <ng-template #userlist>
+                            <mat-option class="matmenu__menu" *ngFor="let user of data.user" [value]="user.agentName">
+                              <mat-icon [ngClass]="{'colored__green': user.logIn_Status == 1,'colored__grey': user.logIn_Status == 0}" class="mr-8">fiber_manual_record</mat-icon><mat-icon [ngClass]="{'colored__yellow': user.userRole == 13,'colored__grey': user.userRole !== 13}"  class="mr-4 user-profile"  fontSet="material-icons-outlined" >person</mat-icon><span>{{user.agentName}}</span>
+                            </mat-option>
+                          </ng-template>
+                        </ng-container>
+                      </mat-autocomplete>
+                    </mat-form-field>  -->
+                  </div>
+              </div>
+                <div class="post-overview__ticket--row mb-10" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                    <div  class="post-overview__ticket--column custom__inputwrapper material__select--wrapper" fxFlex="50%">
+                        <mat-form-field appearance="outline"  class="material__select material__select--adaptive" [ngClass]="{'element__disable' : disableTicketSections }">
+                            <mat-label>Ticket Priority</mat-label>
+                            <mat-select [(value)]="ticketPriority" (selectionChange)="changePriority($event)">
+                                <!-- <mat-select-trigger>
+                  <mat-icon>low_priority</mat-icon>&nbsp;{{ticketPriority}}
+                </mat-select-trigger> -->
+                                <mat-option [value]="3">
+                                    <!-- <mat-icon class="colored__red--dark">low_priority</mat-icon>  -->
+                                    Urgent
+                                </mat-option>
+                                <mat-option [value]="2">
+                                    <!-- <mat-icon class="colored__red">low_priority</mat-icon>  -->
+                                    High
+                                </mat-option>
+                                <mat-option [value]="1">
+                                    <!-- <mat-icon class="colored__yellow">low_priority</mat-icon>  -->
+                                    Medium
+                                </mat-option>
+                                <mat-option [value]="0">
+                                    <!-- <mat-icon class="colored__green">low_priority</mat-icon>  -->
+                                    Low
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="post-overview__ticket--column custom__inputwrapper material__select--wrapper" fxFlex="50%">
+                        <mat-form-field appearance="outline" class="material__select material__select--adaptive">
+                            <mat-label>Ticket Status</mat-label>
+                            <mat-select [(value)]="ticketStatus" (selectionChange)="changeTicketStatus($event)">
+                                <!-- <mat-select-trigger>
+                  <mat-icon>folder</mat-icon>&nbsp;Open
+                </mat-select-trigger> -->
+                                <mat-option [value]="0">
+                                    <!-- <mat-icon>folder</mat-icon>  -->
+                                    Open
+                                </mat-option>
+                                <mat-option [value]="3">
+                                    <!-- <mat-icon>folder</mat-icon>  -->
+                                    Close
+                                </mat-option>
+                                <mat-option [value]="5" [ngClass]="{'element__disable' : disableTicketSections }">
+                                    <!-- <mat-icon>folder</mat-icon>  -->
+                                    On Hold
+                                </mat-option>
+                                <mat-option [value]="7" [ngClass]="{'element__disable' : disableTicketSections }">
+                                    <!-- <mat-icon>folder</mat-icon>  -->
+                                    Awaiting Response From Customer
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="post-overview__ticket--row mb-10" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                    <div class="post-overview__ticket--column custom__inputwrapper material__select--wrapper" fxFlex="50%">
+                        <label class="text__label custom__inputlabel">Ticket Category</label>
+                        <div class="d-flex-align-center">
+                            <mat-icon class="mr-4 colored__blue custom__icon" fontSet="material-icons-outlined">local_activity
+                            </mat-icon>
+                            <span>
+                {{ticketCategory}}
+              </span>
+                        </div>
+                    </div>
+                    <div class="post-overview__ticket--column custom__inputwrapper" fxFlex="50%">
+                        <label class="text__label custom__inputlabel">Total Mentions</label>
+                        <div class="d-flex-align-center">
+                            <mat-icon class="mr-4 colored__yellow--dark custom__icon" fontSet="material-icons-outlined">message</mat-icon>
+                            <span>
+                {{totalMention}}
+              </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-overview__ticket--row mb-10" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                    <div class="post-overview__ticket--column custom__inputwrapper" fxflex="1">
+                        <label class="text__label custom__inputlabel">Ticket Created on</label>
+                        <span>{{ ticketCreatedOn }}</span>
+                        <!-- <span class="text__light">{{
+                profileInfo[lable]["ticketOverview"]["createdOnTime"]
+                }}</span></span> -->
+                    </div>
+                </div>
+                <div *ngIf="lable === 'Profile'">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'47px'" [expandedHeight]="'47px'" class="accordian_headers">
+                            <mat-panel-title>Profile</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="post-profile__info--profilecontact">
+                            <div class="post-profile__info--profilecontactitem">
+                                <mat-icon class="post-profile__info--profilecontacticon" fontSet="material-icons-outlined">call
+                                </mat-icon>
+                                <span>{{profileInfo[lable]['call']}}</span>
+                                <mat-icon class="post-profile__info--profilecopy" fontSet="material-icons-outlined">content_copy
+                                </mat-icon>
+                            </div>
+                            <div class="post-profile__info--profilecontactitem">
+                                <mat-icon class="post-profile__info--profilecontacticon" fontSet="material-icons-outlined">
+                                    alternate_email</mat-icon>
+                                <span>{{profileInfo[lable]['alternateEmail']}}</span>
+                                <mat-icon class="post-profile__info--profilecopy" fontSet="material-icons-outlined">content_copy
+                                </mat-icon>
+                            </div>
+                        </div>
+                        <ul class="post-profile__info--social post-section">
+                            <li *ngFor="let each of profileInfo[lable]['postSection']['socialImg']" class="post-profile__info--socialitem">
+                                <img class="post-profile__info--socialimage" [src]="each['img']" alt="twitter icon /">
+                                <span>{{each['name']}}<span>({{each['handle']}})</span></span>
+                            </li>
+                            <li *ngFor="let each of profileInfo[lable]['postSection']['socialstats']" class="post-profile__info--socialstats"><span>{{each['type']}} - </span>
+                                <span class="text__dark--sm text-semibold"> {{each['value']}}</span></li>
+                            <li class="post-profile__info--socialitem">
+                                <a href="javascript:void(0)">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Add Associate Channel</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="post-section">
+                            <div class="post-profile__info--bio">
+                                <span class="post-section__title">Bio</span>
+                                <p>{{profileInfo[lable]['Bio']}}</p>
+                            </div>
+                            <div class="post-profile__info--traits">
+                                <span class="post-section__title">Traits</span>
+                                <div class="custom__pill">
+                                    <span *ngFor="let each of profileInfo[lable]['traits']" class="custom__pill--item">{{each}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'47px'" [expandedHeight]="'47px'" class="accordian_headers">
+                            <mat-panel-title>CRM Details</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="post-crm post-section">
+                            <ul>
+                                <li *ngFor="let each of Object.keys(profileInfo[lable]['CRMDetails'])" class="post-crm--item">
+                                    <span class="post-crm--label">{{each}} : </span>
+                                    <span class="post-crm--value">{{profileInfo[lable]['CRMDetails'][each]}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </mat-expansion-panel>
+                </div>
+                <div class="post-overview__ticket--row" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
+                    <div class="post-overview__ticket--column custom__inputwrapper" fxFlex="50%">
+                        <label class="text__label custom__inputlabel">Brand</label>
+                        <div class="d-flex-align-center">
+                            <img [src]="brandImageUrl" class="custom__icon mr-4 profile__img" />
+                            <span class="text__light">
+                {{brand}}
+              </span>
+                        </div>
+                    </div>
+                    <div class="post-overview__ticket--column custom__inputwrapper" *ngIf="showProfile" fxFlex="50%">
+                        <label class="text__label custom__inputlabel">Profile</label>
+                        <div class="d-flex-align-center">
+                            <img [src]="profileInfo[lable]['ticketOverview']['profileImg']" class="custom__icon mr-4 profile__img" />
+                            <span class="text__light">{{ profileName
+                }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <!-- <div *ngIf="lable === 'Profile'">
+      <div *ngIf="customAuthorDetails.channelGroup" class="post-profile">
+        <div class="post-profile__info">
+          <div class="post-profile__info--profile">
+            <div class="post-profile__info--profileimg">
+              <img class="img__fluid" [src]="customAuthorDetails.profilePicUrl" />
+            </div>
+            <div class="post-profile__info--profilecontent">
+              <ng-template [ngIf]="
+                  customAuthorDetails.channelGroup == channelGroupEnum.Email ||
+                  customAuthorDetails.channelGroup == channelGroupEnum.WhatsApp
+                " [ngIfElse]="ProfileLink">
+                <span class="post-profile__info--profilename">{{
+                  customAuthorDetails.screenName
+                  }}</span>
+              </ng-template>
+              <ng-template #ProfileLink>
+                <a [href]="customAuthorDetails.profileUrl" target="_blank" class="post-profile__info--profilename">{{
+                  customAuthorDetails.screenName }}</a>
+              </ng-template>
+
+              <span class="post-profile__info--profilehandle">{{
+                customAuthorDetails.screenname
+                }}</span>
+              <span *ngIf="customAuthorDetails.location" class="post-profile__info--profilehandle">
+                <mat_icon>location</mat_icon>{{ customAuthorDetails.location }}
+              </span>
+            </div>
+            <div class="post-profile__info--profileactions">
+              <button mat-icon-button class="btn__hover">
+                <mat-icon fontSet="material-icons-outlined">portrait</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="post-profile__info--profilesummary">
+            <div *ngIf="
+                customAuthorDetails.gender && customAuthorDetails.gender != -1
+              ">
+              <label class="text-semibold">Gender: </label>
+              <span class="text__light colored__blue">{{
+                customAuthorDetails.gender
+                }}</span>
+            </div>
+            <div *ngIf="customAuthorDetails.age">
+              <label class="text-semibold">Age: </label>
+              <span class="text__light">{{ customAuthorDetails.age }}</span>
+            </div>
+            <div *ngIf="customAuthorDetails.influencer">
+              <label class="text-semibold">Influencer: </label>
+              <span class="text__light">{{
+                customAuthorDetails.influencer
+                }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="post-overview__score">
+          <div class="post-overview__score--item">
+            <div class="post-overview__score--label">
+              <span class="post-overview__score--labelmain">Sentiment Uplift Score</span>
+              <span class="post-overview__score--labelsub">
+                <span>Last Updated on {{customAuthorDetails.upliftLastupdatedDatetime}}</span>
+                <mat-icon class="post-overview__score--replay" (click)="getSentimentUpliftAndNPSScore()">replay
+                </mat-icon>
+              </span>
+            </div>
+            <span
+              class="post-overview__score--value colored__yellow">{{customAuthorDetails.sentimentUpliftScore}}</span>
+          </div>
+          <div class="post-overview__score--item">
+            <ng-template [ngIf]="
+                customAuthorDetails.channelGroup == channelGroupEnum.Facebook ||
+                customAuthorDetails.channelGroup == channelGroupEnum.Twitter
+              ">
+              <div class="post-overview__score--label">
+                <span class="post-overview__score--labelmain">NPS Score</span>
+                <span class="post-overview__score--labelsub">
+                  <span>Last Updated on {{customAuthorDetails.npsLastRecordDate}}</span>
+                  <mat-icon class="post-overview__score--replay" (clicgetSentimentUpliftAndNPSScorek)="getSentimentUpliftAndNPSScore()">replay
+                  </mat-icon>
+                </span>
+              </div>
+              <span class="post-overview__score--value colored__green">{{
+                customAuthorDetails.npsScore
+                }}</span>
+              <ng-template [ngIf]="!customAuthorDetails.isNpsOn">
+                <span class="LastUpdatedNPSScoreText">Turn on NPS feedback settings to check this score</span>
+              </ng-template>
+              <ng-template [ngIf]="customAuthorDetails.npsScore == -1">
+                <span class="LastUpdatedNPSScoreText">No feedback yet</span>
+              </ng-template>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="lable === 'Profile'">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header [collapsedHeight]="'47px'" [expandedHeight]="'47px'" class="accordian_headers">
+          <mat-panel-title>Profile</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="post-profile__info--profilecontact">
+          <div *ngIf="customAuthorDetails.phoneNumber" class="post-profile__info--profilecontactitem">
+            <mat-icon class="post-profile__info--profilecontacticon" fontSet="material-icons-outlined">call</mat-icon>
+            <span>{{ customAuthorDetails.phoneNumber }}</span>
+            <span (click)="copyMessage(customAuthorDetails.phoneNumber)">
+              <mat-icon class="post-profile__info--profilecopy" fontSet="material-icons-outlined">content_copy
+              </mat-icon>
+            </span>
+          </div>
+          <div *ngIf="customAuthorDetails.email" class="post-profile__info--profilecontactitem">
+            <mat-icon class="post-profile__info--profilecontacticon" fontSet="material-icons-outlined">alternate_email
+            </mat-icon>
+            <span>{{ customAuthorDetails.email }}</span>
+            <span (click)="copyMessage(customAuthorDetails.email)">
+              <mat-icon class="post-profile__info--profilecopy" fontSet="material-icons-outlined">content_copy
+              </mat-icon>
+            </span>
+          </div>
+        </div>
+        <ul *ngIf="customAuthorDetails.connectedUsers.length > 0" class="post-profile__info--social post-section">
+
+          <ng-template ngFor let-user [ngForOf]="customAuthorDetails.connectedUsers">
+
+            <li class="post-profile__info--socialitem">
+              <img class="post-profile__info--socialimage" [src]="user.channelImage" alt="twitter icon /" />
+              <span>{{ user.name }}<span *ngIf="user.screenName">({{user.screenName}})</span></span>
+
+            </li>
+            <li *ngIf="user.following" class="post-profile__info--socialstats">
+              <span *ngIf="user.followers">Followers - </span><span class="text__dark--sm text-semibold">
+                {{ user.followers }}</span>
+              <span *ngIf="user.following">Following - </span><span class="text__dark--sm text-semibold">
+                {{ user.following }}</span>
+              <span *ngIf="user.tweets">Tweets - </span><span class="text__dark--sm text-semibold">
+                {{ user.tweets }}</span>
+            </li>
+          </ng-template>
+        </ul>
+        <div class="post-section">
+          <div *ngIf="customAuthorDetails.Bio" class="post-profile__info--bio">
+            <span class="post-section__title">Bio</span>
+            <p>{{ customAuthorDetails.Bio }}</p>
+          </div>
+          <div class="post-profile__info--traits">
+            <span class="post-section__title">Traits</span>
+            <div class="custom__pill">
+              <span *ngFor="let trait of customAuthorDetails.traits" class="custom__pill--item">{{ trait.name }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header [collapsedHeight]="'47px'" [expandedHeight]="'47px'" class="accordian_headers">
+          <mat-panel-title>CRM Details</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="post-crm post-section">
+          <ul>
+            <li *ngFor="let crm of CrmDetails" class="post-crm--item">
+              <span class="post-crm--label">{{ crm.id }} : </span>
+              <span class="post-crm--value">{{
+                crm.value
+                }}</span>
+            </li>
+          </ul>
+        </div>
+      </mat-expansion-panel>
+    </div>  -->
+        <ng-template [ngIf]="author && upliftAndSentimentScore && ticketSumamry">
+            <ng-template [ngIf]="author.channelGroup && upliftAndSentimentScore.brandID && ticketSumamry.ticketID">
+                <app-post-userprofile *ngIf="lable === 'Profile'" [author]="author" [upliftAndSentimentScore]="upliftAndSentimentScore" [ticketSumamry]="ticketSumamry"></app-post-userprofile>
+            </ng-template>
+
+        </ng-template>
+
+        <!-- Personal Details -->
+        <ng-template [ngIf]="author && author.channelGroup">
+            <form [formGroup]="personalDetailForm" (ngSubmit)="onSubmit()">
+                <div *ngIf="lable === 'Personal Details'" class="post-personal post-section">
+                    <div *ngIf="customCrmColumns" class="post-section--content">
+                        <div *ngFor="let column of customCrmColumns" class="custom__inputwrapper">
+                            <ng-template [ngIf]="column.value != undefined">
+                              <mat-form-field appearance="outline" class="material__select">
+                                <mat-label>{{ column.dbColumnName }}</mat-label>
+                                <input matInput [formControlName]="column.dbColumn" [value]="column.value" />
+                              </mat-form-field>
+                            </ng-template>
+
+                            <!-- <ng-template #notValue>
+                          <input class="custom__input" [placeholder]="column.dbColumnName" >
+                        </ng-template>                    -->
+                        </div>
+                    </div>
+                    <div class="post-section--footer">
+                        <button class="ml-auto" type="submit" mat-flat-button color="accent">Update</button>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+        <!-- Timeline -->
+        <div *ngIf="lable === 'Timeline' &&  ticketTimeline && ticketTimeline.data" class="post-section">
+            <div class="post-overview__ticket--column custom__inputwrapper">
+                <label class="text__label custom__inputlabel">Ticket ID</label>
+                <!-- <app-custom-dropdown [options]="profileInfo[lable]['ticketId']" class="w-100-p"></app-custom-dropdown> -->
+                <mat-form-field color="accent" *ngIf="ticketTimeline" appearance="outline" class="material__select">
+                    <mat-label>{{ ticketTimeline.data.ticketIds[0] }}</mat-label>
+                    <mat-select (selectionChange)="CallTicketTimeLine($event.value)">
+                        <mat-option *ngFor="let item of ticketTimeline.data.ticketIds" [value]="item">{{ item }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <ul class="post-timeline">
+                <ng-template ngFor let-item [ngForOf]="ticketTimeline.data.communicationLogs">
+                    <ng-template [ngIf]="
+              item.logText &&
+              item.logVersion == 1 &&
+              item.status == logstatusEnum.GroupDisplayMessage
+            ">
+                        <li class="post-timeline__item">
+                            <span class="post-timeline__label" [innerHTML]="item.logText | safehtml "></span>
+                            <span *ngIf="item.actionTakenFrom == actionstatusEnum.EmailReply">
+                via email</span>
+                            <span *ngIf="
+                  item.actionTakenFrom == actionstatusEnum.EmailResponseLink
+                ">
+                via link in email</span>
+                            <span class="post-timeline__timestamp">
+                {{ item.mentionTimeEpoch | datetimeFormatter:'DD-MMMM-YYYY HH:mm a' }}</span>
+                        </li>
+                    </ng-template>
+                    <ng-template [ngIf]="
+              item.logText &&
+              item.logVersion == 0 &&
+              (item.status != logstatusEnum.Unassigned ||
+                (item.status == logstatusEnum.Unassigned && item.userID == -1))
+            ">
+                        <li class="post-timeline__item">
+                            <span class="post-timeline__label" [innerHTML]="item.logText | safehtml "></span>
+                            <span *ngIf="item.actionTakenFrom == actionstatusEnum.EmailReply">
+                via email</span>
+                            <span *ngIf="
+                  item.actionTakenFrom == actionstatusEnum.EmailResponseLink
+                ">
+                via link in email</span>
+                            <span class="post-timeline__timestamp">
+                {{ item.mentionTimeEpoch | datetimeFormatter:'DD-MMMM-YYYY HH:mm a' }}</span>
+                        </li>
+                    </ng-template>
+                </ng-template>
+            </ul>
+        </div>
+    </mat-tab>
+</mat-tab-group>

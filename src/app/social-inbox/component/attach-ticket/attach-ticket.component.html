@@ -1,0 +1,49 @@
+<div class="post-reply">
+  <div class="post-reply__head">
+    <span class="post-reply__head--title">Attach Tickets</span>
+    <span class="post-reply__head--action">
+      <mat-icon (click)="closeAttachTicket()">close</mat-icon>
+    </span>
+  </div>
+  <div class="post-reply__body">
+    <div fxLayout="row" fxLayoutGap="15px" class="p-20">
+      <div class="custom__column" fxFlex="22%" *ngIf="ticketStatGroup">
+        <mat-form-field appearance="outline" class="material__select">
+          <mat-label>Attach to</mat-label>
+          <mat-select [(value)]="selected">
+            <mat-optgroup
+              *ngFor="let group of ticketStatGroup"
+              [label]="group.name"
+              [disabled]="group.disabled"
+            >
+              <mat-option
+                *ngFor="let pokemon of group.tickets"
+                [value]="pokemon.value"
+              >
+                {{ pokemon.viewValue }}
+              </mat-option>
+            </mat-optgroup>
+            <!-- <mat-option >ID : 124657</mat-option> -->
+          </mat-select>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="colored__blue" (click)="lastTalk()" style="width:100%;">See Ticket Conversation</button>
+      </div>
+      <div class="custom__column" fxFlex="78%">
+        <textarea [(ngModel)]="attachedNote" class="custom__input" placeholder="Add note"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="post-reply__foot">
+    <button
+      type="button"
+      (click)="closeAttachTicket()"
+      mat-flat-button
+      class="ml-auto"
+    >
+      Cancel
+    </button>
+    <button (click)="attachTicket()" type="button" mat-flat-button class="ml-8" color="accent">
+      Attach
+    </button>
+  </div>
+</div>

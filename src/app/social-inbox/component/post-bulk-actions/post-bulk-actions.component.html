@@ -1,0 +1,104 @@
+<div class="post-bulkselect" [@slideInBottom]>
+  <div class="post-bulkselect__item">
+    <mat-checkbox (change)="bulkpostselect($event.checked)">Select All</mat-checkbox>
+  </div>
+  <div class="post-bulkselect__item ml-auto">
+    <span class="post-bulkselect__label">{{ postCount }} Tickets Selected</span>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreply" (click)="bulkAction('reply')">
+    <button mat-stroked-button>Reply</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreply" (click)="bulkAction('tagcategory')">
+    <button mat-stroked-button>Tag Category</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkapprove" (click)="bulkAction('approve')">
+    <button mat-stroked-button>Approve</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreject" (click)="bulkAction('ignore')">
+    <button mat-stroked-button>Reject</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkonhold" (click)="bulkAction('hold')" >
+    <button mat-stroked-button [matMenuTriggerFor]="onholdnote">Put on hold</button>
+    
+  </div>
+  <mat-menu #onholdnote="matMenu" class="note-elem__dropdown">
+    <div class="note-elem pr-20 pl-20 pt-10">
+      <div class="note-elem__input" (click)="$event.stopPropagation()">
+        <label class="text__label custom__input--label">Add Note</label>
+        <textarea
+          ngModel
+          #note="ngModel"
+          class="custom__input"
+          placeholder="Enter note here"
+        ></textarea>
+      </div>
+      <div class="note-elem__actions">
+        <button mat-button color="accent" class="ml-auto">Cancel</button>
+        <button mat-button color="accent" (click)="bulkonHold(note.value)">
+          Save
+        </button>
+      </div>
+    </div>
+  </mat-menu>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkescalae" (click)="bulkAction('escalate')">
+    <button mat-stroked-button>Escalate</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkassign" (click)="bulkAction('assign')">
+    <button mat-stroked-button>Assign</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreopen" (click)="bulkAction('reopen')">
+    <button mat-stroked-button [matMenuTriggerFor]="bulkreopennote">Reopen</button>
+  </div>
+  <mat-menu #bulkreopennote="matMenu" class="note-elem__dropdown">
+    <div class="note-elem pr-20 pl-20 pt-10">
+      <div class="note-elem__input" (click)="$event.stopPropagation()">
+        <label class="text__label custom__input--label">Add Note</label>
+        <textarea
+          ngModel
+          #note="ngModel"
+          class="custom__input"
+          placeholder="Enter note here"
+        ></textarea>
+      </div>
+      <div class="note-elem__actions">
+        <button mat-button color="accent" class="ml-auto">Cancel</button>
+        <button mat-button color="accent" (click)="bulkReopen(note.value)">
+          Save
+        </button>
+      </div>
+    </div>
+  </mat-menu>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreplyapproved" (click)="bulkReplyApproved()">
+    <button mat-stroked-button>Approve</button>
+  </div>
+  <div class="post-bulkselect__item" *ngIf="bulkActionbtn.btnbulkreplyrejected" >
+    <button mat-stroked-button [matMenuTriggerFor]="bulkreplyrejectnote">Reject</button>
+  </div>
+  <mat-menu #bulkreplyrejectnote="matMenu" class="note-elem__dropdown">
+    <div class="note-elem">
+        <div class="note-elem__input" (click)="$event.stopPropagation()">
+            <label class="text__label custom__input--label">Add Note</label>
+            <textarea ngModel #note="ngModel" class="custom__input" placeholder="Enter note here"></textarea>
+        </div>
+        <div class="note-elem__actions">
+            <button mat-stroked-button class="ml-auto mr-8">Cancel</button>
+            <button mat-stroked-button (click)="bulkreplyRejected(note.value)">
+Save
+</button>
+        </div>
+    </div>
+</mat-menu>
+  
+  <div
+    class="post-bulkselect__item post-bulkselect__item--red" *ngIf="bulkActionbtn.btnbulkdirectclose"
+    (click)="bulkAction('close')"
+  >
+    <button mat-stroked-button>Direct Close</button>
+  </div>
+  <div
+    class="post-bulkselect__item post-bulkselect__item--close"
+    (click)="bulkAction('dismiss')"
+  >
+    <mat-icon>close</mat-icon>
+  </div>
+</div>

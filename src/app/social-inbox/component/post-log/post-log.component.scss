@@ -1,0 +1,26 @@
+.post-log{
+    padding: 1rem;
+    max-width: 517px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+
+    &__content{
+        font-style: italic;
+        margin-bottom: 0;
+    }
+
+    &__highlight{
+        text-decoration: underline;
+        font-style: italic;
+        cursor: pointer;
+    }
+
+    &__strip{
+        margin-top: 1rem;
+        padding: 5px;
+
+        &--label{
+            font-weight: 500;
+        }
+    }
+}

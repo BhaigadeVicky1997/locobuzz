@@ -1,0 +1,107 @@
+// -----------------------------------------------------------------------------------------------------
+// @ Theming
+// -----------------------------------------------------------------------------------------------------
+@mixin page-layouts-theme($theme) {
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    .app-layout-main{
+        background:map-get($foreground, base);
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------
+// @ Page Layouts
+// -----------------------------------------------------------------------------------------------------
+$carded-header-height: 200px !default;
+$carded-toolbar-height: 64px !default;
+$header-height: 120px !default;
+
+// Calculate toolbar-less carded header height
+$carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-height;
+
+app-layout-main{
+    .app__sidebar{
+        & .sidebar{
+            &__sub{
+                transition: .2s all;
+
+                @include media-breakpoint('xs'){
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.flex-parent{
+    display: flex;
+    flex-direction: column;
+
+    &__main{
+        flex: 1;
+    }
+
+    &__foot{
+        margin-top: auto;
+    }
+}
+
+
+.page__wrapper,
+.header__toolbar {
+    & > .mat-tab-group{
+        & > .mat-tab-header{
+            display: none !important;
+
+            & ~ .mat-tab-body-wrapper > .mat-tab-body-active > .mat-tab-body-content{
+                overflow: hidden;
+            }
+        }
+    }
+
+    & .mat-tab-body {
+        animation: fade-out 0.5s;
+        opacity: 0;
+    }
+    & .mat-tab-body.mat-tab-body-active {
+        animation: fade-in 0.5s;
+        opacity: 1;
+    }
+}
+
+.element{
+  &__row{
+    &:not(:last-child){
+      margin-bottom: 20px;
+    }
+  }
+}
+
+
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+

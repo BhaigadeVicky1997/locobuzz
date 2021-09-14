@@ -1,0 +1,76 @@
+<div class="modal__head">
+  <h3 class="modal__title"><mat-icon class="mr-8"
+      fontSet="material-icons-outlined">notifications_active</mat-icon>
+    Subscribe this ticket</h3>
+  <span class="modal__action">
+    <mat-icon fontSet="material-icons-outlined" [mat-dialog-close]="true">close</mat-icon>
+  </span>
+</div>
+<form [formGroup]="subscribeForm" #subscribeFormElement (ngSubmit)="subscribePost()">
+  <div class="modal__body">
+    <div class="modal__body--section">
+      <div class="d-flex-items-center mb-12">
+        <span class="text__label mr-8">Subscribe to<span class="colored__red">*</span> - </span>
+        <mat-radio-group aria-label="Select an action"  formControlName="subscribeTo">
+          <mat-radio-button (change)="assignSubject($event.value)" value="1">All Activity</mat-radio-button>
+          <mat-radio-button (change)="assignSubject($event.value)"  value="2">Ticket Status Change</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="custom__inputwrapper space-bottom">
+        <mat-form-field appearance="outline"  class="material__select">
+          <mat-label>Send email to subscribe<span class="colored__red">*</span> </mat-label>
+          <mat-chip-list #chipList aria-label="Email selection" formControlName="emailIds">
+            <mat-chip
+              *ngFor="let email of emails"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeEmail(email)">
+              {{email}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Type to search for emails"
+              #emailInput
+              [formControl]="emailCtrl"
+              name="emails"
+              (focus)="clearFilteredlist()"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addEmail($event)">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedEmail($event)">
+            <mat-option *ngFor="let email of filteredEmails" [value]="email">
+              {{email}}
+            </mat-option>
+            <!-- <mat-option *ngIf="filteredEmails.length === 0" [disabled]="true" [value]="email">
+             No record Found
+            </mat-option> -->
+          </mat-autocomplete>
+          <mat-hint>*You can only add contacts which are configured in our
+            database.</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="custom__inputwrapper space-bottom">
+        <mat-form-field appearance="outline"  class="material__select" >
+          <mat-label>Subject</mat-label>
+          <input matInput readonly formControlName="subject">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="modal__foot">    
+    <mat-checkbox formControlName="sendNewUpdates">Send Only new ticket updates in email</mat-checkbox>
+    <ng-container  *ngIf="isSubscribe; else notSubscribed">
+      <button type="button" class="ml-auto colored__blue mr-10" [disabled]="modifySubscribeLoader" mat-stroked-button [loading]="subscribeLoader" (click)="unsubscribePost()">Unsubscribe</button>
+      <button type="submit" mat-raised-button color="accent" [disabled]="subscribeLoader || !(subscribeForm.get('subscribeTo').dirty || subscribeForm.get('emailIds').dirty || subscribeForm.get('subject').dirty || subscribeForm.get('sendNewUpdates').dirty)" type="button" [loading]="modifySubscribeLoader" (click)="modifySubscribe()">Modify Subscribe</button>
+    </ng-container>
+    <ng-template #notSubscribed>
+      <button type="button" class="ml-auto mr-10" color="accent" mat-stroked-button [mat-dialog-close]="true">Cancel</button>
+      <button mat-flat-button  color="accent" type="submit"  [loading]="subscribeLoader" >
+        <!-- <mat-icon class="mr-10"  fontSet="material-icons-outlined">notifications_active</mat-icon> -->
+        Subscribe
+      </button>
+    </ng-template>
+  </div>
+</form>

@@ -1,0 +1,179 @@
+<div class="post-detail">
+    <div *ngIf="!hideQuickWindow" class="post-detail__list">
+        <div class="post-detail__list--head">
+            <div [mat-dialog-close]="true" (click)="CloseTicketDetailWindow()" class="post-detail__close">
+                <mat-icon>arrow_back</mat-icon>
+                <span class="text__title">New Ticket Filter</span>
+            </div>
+        </div>
+        <div *ngIf="postShortenedData && !hideQuickWindow" class="post-detail__list--body">
+            <ng-container *ngFor="let each of TicketData" >
+                <app-post-shortened [postShortenedData]="each" [ngClass]="{'active': each?.ticketInfo?.ticketID === selectedPostID }" ></app-post-shortened>
+            </ng-container>
+            
+        </div>
+    </div>
+    <div class="post-detail__conversations">
+        <div [ngClass]="{'none': showLockStrip}" class="post-detail__conversations--head">
+            <div class="post-detail__conversations--head-item">
+                <button mat-stroked-button class="materialbtn__md"  [matMenuTriggerFor]="addnote"><mat-icon class="btn__icon mr-3">add</mat-icon> Add Note</button>
+                <mat-menu #addnote="matMenu" class="note-elem__dropdown p-6">
+                    <div class="note-elem">
+                        <div class="note-elem__input pt-7" (click)="$event.stopPropagation()" style="height: 188px;">
+                            <mat-form-field appearance="outline" class="material__select">
+                                <mat-label class="text-capitalize">Add note</mat-label>
+                                <textarea matInput ngModel #note="ngModel" class="resize"></textarea>
+                            </mat-form-field>                           
+                        </div>
+                        <div class="note-elem__actions">
+                            <button mat-button class="ml-auto colored__blue">Cancel</button>
+                            <button mat-button (click) = "addNote(note)" class="colored__blue">Save</button>
+                        </div>
+                    </div>
+                </mat-menu>
+            </div>
+            
+            <div class="post-detail__conversations--head-item block-center sending" *ngIf="sendingReply">
+                <mat-icon>radio_button_unchecked</mat-icon> <span>Sending Replies - <span>Sent : </span> <span>2</span> <span>Pending : </span> <span>8</span></span>
+            </div>
+            <!-- <div class="post-detail__conversations--head-item">
+                <app-custom-dropdown  [options]="userList" class="w-100-p"></app-custom-dropdown>
+            </div> -->
+            <!-- <div class="post-detail__conversations--head-item colored__yellow--dark ml-auto">
+                <div class="d-flex-items-center">
+                    <mat-icon class="mr-4">check</mat-icon>
+                    <span>CRM</span>
+                </div>
+            </div> -->
+            <!-- <div class="post-detail__conversations--head-item">
+                <button mat-icon-button mat-button [matMenuTriggerFor]="menu"  class="materialbtn__icon">
+                    <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
+                </button>
+            </div> -->
+
+            <!-- User Conversations -->
+
+            <mat-menu #menu="matMenu" class="active__user__list padding__15">
+                <p class="text__label">Invite Team lead or Super Agent</p>
+                <input matInput class="custom__input" placeholder="Search" (click)="$event.stopPropagation();">
+                <ul class="active__user__list--team" (click)="$event.stopPropagation();">
+                    <li class="text__label">
+                        Team Lead
+                    </li>
+                    <li class="text__capitalize">
+                        <img class="active__user__img" src="assets/images/media/media-1.jpg" alt="">
+                        <span class="user__online colored__green"></span>
+                        <span class="active__user__name">Petey cruiser</span>
+                        <span class="active__user__invite colored__blue cursor-pointer">Invite</span>
+                    </li>
+                    <li class="text__capitalize">
+                        <img class="active__user__img" src="assets/images/media/media-1.jpg" alt="">
+                        <span class="user__online colored__green"></span>
+                        <span class="active__user__name">Petey cruiser</span>
+                        <span class="active__user__invite colored__blue cursor-pointer">Invite</span>
+                    </li>
+
+                </ul>
+                <ul class="active__user__list--agent" (click)="$event.stopPropagation();">
+                    <li class="text__label text__capitalize">
+                        super agent
+                    </li>
+                     <li class="text__capitalize">
+                        <img class="active__user__img" src="assets/images/media/media-1.jpg" alt="">
+                        <span class="user__online colored__green"></span>
+                        <span class="active__user__name">Petey cruiser</span>
+                        <span class="active__user__invite colored__blue cursor-pointer">Invite</span>
+                    </li>
+                    
+                </ul>
+            </mat-menu>
+
+            <!-- User Conversations -->
+
+            <div class="post-detail__conversations--head-item ml-auto">
+                <button mat-icon-button class="materialbtn__icon btn__hover" [matMenuTriggerFor]="ticketActionmenu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #ticketActionmenu="matMenu" xPosition="before" >
+                    <ul class="sort-dropdown" (click)="$event.stopPropagation();">
+                      <li class="sort-dropdown__item">
+                          <mat-radio-group aria-label="Select an option">
+                            <div *ngFor="let radiobutton of LogFilter.radioButtonList" class="sort-dropdown__item--input">
+                              <mat-radio-button  [value]="radiobutton.value" (change)="logFilterChange($event)"  [checked]="radiobutton.checked" >{{radiobutton.name}}</mat-radio-button>
+                            </div>
+                          </mat-radio-group>
+                      </li>
+                      <li class="sort-dropdown__item">
+                        <mat-radio-group aria-label="Select an option">
+                          <div class="sort-dropdown__item--input">
+                            <mat-slide-toggle>Hide Actioned Statuses</mat-slide-toggle>
+                          </div>
+                        </mat-radio-group>
+                    </li>
+                    </ul>
+                  </mat-menu>
+            </div>
+        </div>
+        <div *ngIf="showLockStrip" [ngClass]="{'openTabFixed': showLockStrip}" class="post-detail__conversations--head block-center">
+            <div class="post-detail__conversations--head-item">
+                <p class="top-strip mt-9"><span class="font-weight-600 text-underline">{{ ticketLockUserName }}</span> 
+                    is working on this case since {{ ticketLockTime }} minutes
+                    <mat-slide-toggle (change)="callLockUnlock($event)" [(ngModel)]="showBlurLockStrip"  class="ml-2 text-italic">
+                       <span>{{lockUnlockLabel}}</span> </mat-slide-toggle>
+                </p>
+                <p *ngIf="lockUnlockNote != ''">Note: {{ lockUnlockNote }}</p>
+            </div>
+        </div>
+        <div class="post-detail__conversations--body">
+            <div class="post-detail__conversations--item" *ngIf="comminicationLogLoading">
+                <app-post-loader></app-post-loader>
+                <div class="post-reply">
+                    <app-post-loader></app-post-loader>
+                </div>
+                <app-post-loader></app-post-loader>
+            </div>
+            <div class="conversations"  *ngIf="!comminicationLogLoading">
+                <div *ngIf="this.showLoadMoreOption" class="post-detail__conversations--loadmore">
+                    <button mat-raised-button (click)="getCommunicationLogHistory(lastmentionDateEpoch)" class="btn__round btn__outline">See Previous Conversation</button>
+                </div>
+                <div *ngFor = "let object of baseLogObject">
+                    <ng-template [ngIf]="!object.isBrandPost && !object.isCommunicationLog" [ngIfElse]="BrandCommunicationLog" >
+                        <div class="post-detail__conversations--item " [ngClass]="{'active': postObj.tagID === object.tagID}" #conversationItem>
+                            <!-- <app-post-message [baseMention] = "object"></app-post-message> -->
+                                <app-post [postData]="object" [openReply]="postObj.tagID === object.tagID" [fromCall]="2" [pageType]="currentPostType"></app-post>
+                        </div>
+                    </ng-template>
+                   <ng-template #BrandCommunicationLog>
+                        <ng-template [ngIf]="object.isBrandPost" [ngIfElse]="CommunicationLog" >
+                            <div class="post-reply post-detail__conversations--reply">
+                                <app-post [postData]="object" [fromCall]="2" [pageType]="'ticket'"></app-post>
+                                <!-- <app-post-message [baseMention] = "object" ></app-post-message> -->
+                            </div>
+                        </ng-template>
+                        <ng-template #CommunicationLog>
+                            <div *ngIf = "object.isCommunicationLog" class="post-reply post-reply-log">
+                                <app-post-log [logMessage] = "object"></app-post-log>
+                            </div>
+                        </ng-template>
+                        
+                    
+                   </ng-template>
+                  
+                </div>
+            </div>
+            <div [ngClass]="{'bg__blur' : showBlurLockStrip }"></div>
+        </div>
+    </div>
+    <!-- <div class="bg__blur"></div> -->
+    <!-- <div class="post-detail__profileinfo" *ngIf = "authorDetails && communicationLogResponse && upliftAndSentimentScore && ticketInfo ">
+        <ng-template [ngIf]="communicationLogResponse.data && authorDetails.channelGroup">
+        <app-post-userinfo [profileInfo]="postDetailData['profileInfo']" (someEvent)="CallTicketTimeLine($event)"
+         [ticketTimeline]="communicationLogResponse"  [author]="authorDetails" [upliftAndSentimentScore] = "upliftAndSentimentScore" [ticketSumamry]="ticketInfo"></app-post-userinfo>
+        </ng-template>
+        </div> -->
+        <div class="post-detail__profileinfo">
+            <app-post-userinfo [profileInfo]="postDetailData['profileInfo']" class="bg__white"></app-post-userinfo>
+            <div [ngClass]="{'bg__blur2' : showBlurLockStrip }"></div>
+        </div>
+            
+</div>

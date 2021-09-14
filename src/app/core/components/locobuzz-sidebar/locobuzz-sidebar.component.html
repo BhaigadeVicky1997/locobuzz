@@ -1,0 +1,136 @@
+<div class="sidebar">
+  <div class="sidebar__main">
+      <div class="sidebar__head">
+              <span class="sidebar__head--navicon" (click)="mobileNav()">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </span>
+           <div class="logo">
+               <img class="logo__image" src="assets/locobuzz-logo.svg" />
+          </div>
+      </div>
+      <div class="sidebar__content" [ngClass]="{'mobile__nav':sidebarContent}">
+          <div class="sidebar__content--brand">
+              <div class="d-flex-items-center no-wrap">
+                  <span class="sidebar__content--label hideonfold">Brand</span>
+                  <span class="sidebar__content--action sidebaar__text hideonfold">See all</span>
+              </div>
+              <div class="sidebar__content--brandmenu brandmenu">
+                  <span class="brandmenu__icon">N</span>
+                  <span class="brandmenu__name sidebaar__text hideonfold">Not Applicable</span>
+                  <span class="brandmenu__action sidebaar__text hideonfold">
+
+                  </span>
+              </div>
+          </div>
+          <div>
+              <app-navigation></app-navigation>
+              <ul class="sidebar__compose">
+                  <li class="sidebar__compose--item colored__blue">
+                    <a  class="sidebar__compose--link hidecompose">
+                    <mat-icon class="sidebar__compose--icon" fontSet="material-icons-outlined" aria-hidden="false"
+                      aria-label="dashboard icon">edit</mat-icon>
+                    <span class="sidebar__compose--title hideonfold">Compose</span>
+                  </a>
+                  </li>
+                </ul>
+          </div>
+      </div>
+      <div class="sidebar__foot">
+          <ul class="sidebar__profile" style="border-top: 1px solid #42587D;">
+              <li class="sidebar__profile--item">
+                <a  class="sidebar__profile--link mt-16"  [matMenuTriggerFor]="profileMenu">
+                <img class="img__fluid sidebar__profile--image" src="http://srscomputers.in/assets/mahesh/images/dummy.png" alt="">
+                <span class="sidebar__profile--title line-height-18 hideonfold text-capitalize">john doe <br>
+                  <span class="navigation__title--sub">Loreum ipsum</span>
+                </span>
+                <mat-icon class="sidebar__profile--icon ml-auto mr-0" fontSet="material-icons-outlined" aria-hidden="false"
+                aria-label="dashboard icon">expand_more</mat-icon>
+              </a>
+              </li>
+            </ul>
+
+            <mat-menu  yPosition="above" class="w-218" #profileMenu="matMenu">
+              <button mat-menu-item class="navigation__profile--menu">
+                <mat-icon>account_circle</mat-icon>
+                <span>Account Setting</span> </button>
+              <button mat-menu-item class="navigation__profile--menu">
+                <mat-icon>attach_money</mat-icon>
+                <span>Billings</span> </button>
+              <button mat-menu-item class="navigation__profile--menu" (click)="$event.stopPropagation();">
+                 <mat-icon>g_translate</mat-icon>
+                 <span>Language</span>
+                    <mat-select [value]="selected" class="navigation__profile--language">
+                        <mat-option value="Eng">Eng</mat-option>
+                        <mat-option value="Eng">Eng</mat-option>
+                        <mat-option value="Eng">Eng</mat-option>
+                        <mat-option value="Eng">Eng</mat-option>
+                    </mat-select>
+                </button>
+              <button mat-menu-item class="navigation__profile--menu position-relative">
+                 <mat-icon>dark_mode</mat-icon>
+                 <span>Theme</span>
+                 <label class="switch">
+                  <input class="switch-input" type="checkbox" (click)="themeModeChange()"/>
+                  <span class="switch-label" data-on="Night" data-off="Day"></span>
+                  <span class="switch-handle"></span>
+                </label>
+                </button>
+              <button mat-menu-item class="navigation__profile--menu">
+                 <mat-icon>perm_media</mat-icon>
+                 <span>Media Gallary</span></button>
+              <button mat-menu-item class="navigation__profile--menu">
+                <mat-icon>help</mat-icon>
+                <span>Help</span> </button>
+              <button mat-menu-item class="navigation__profile--menu">
+                <img class="img-icon" src="assets/images/media/play-store.png" class="img__fluid w-18 mr-15" alt="">
+                 <span>Download Mobile App</span> </button>
+              <button (click)="logOut()" mat-menu-item class="navigation__profile--logout">Logout</button>
+            </mat-menu>
+      </div>
+  </div>
+
+  <div class="sidebar__sub"  [ngClass]="{'sidebar__sub--hidden': !sideBarStatus}">
+      <div class="sidebar__sub--head">
+        <div *ngIf="IsTakeaBreak">
+          <a
+            class="sidebar__head--btn btn__custom-icon"
+            (click)="openTakeBreakPopup()"
+            *ngIf="showTakeaBreak"
+          >
+            <mat-icon
+              fontSet="material-icons-outlined"
+              class="custom__icon--sm mr-4"
+              >local_cafe</mat-icon
+            >
+            <span class="colored__grey text-nowrap text-regular hideonfold"
+              >Take a Break</span
+            >
+          </a>
+          <a class="btn__custom-icon" *ngIf="!showTakeaBreak">
+            <mat-icon
+              fontSet="material-icons-outlined"
+              class="colored__yellow mr-4 hideonfold"
+              >local_cafe</mat-icon
+            >
+            <span class="text__light--sm text-nowrap text-regular colored__yellow"
+              >{{ timetobreak }}
+            </span>
+            <a (click)="CancelBreak()"
+              ><mat-icon
+                fontSet="material-icons-outlined mr-4 custom__icon--sm colored__yellow"
+                >highlight_off</mat-icon
+              ></a
+            >
+          </a>
+        </div>
+          <div class="sidebar__head--toggle" (click)="toggleSidebar()">
+              <mat-icon class="navigation__icon" fontSet="material-icons-outlined" aria-hidden="false" aria-label="double arrow icon">double_arrow</mat-icon>
+          </div>
+      </div>
+      <div class="sidebar__content sidebar__content--scrollable">
+          <app-post-summary [postSummary]="summary" (dataRecieved)="postSummaryEvent($event)" *ngIf="pageNavInfoToggle"></app-post-summary>
+      </div>
+  </div>
+</div>

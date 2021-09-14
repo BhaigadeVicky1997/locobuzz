@@ -1,0 +1,57 @@
+<div class="post">
+  <div class="post__head">
+      <div class="post__head--profile">
+          <div class="post__head--channel">
+              <div class="channel">
+                  <img class="channel__image" [src]="timeline.channelIcon" alt="channel image">
+                  <span class="channel__label">{{ timeline.messageText }}</span>
+              </div>
+          </div>
+      </div>
+      <div class="post__head--info">
+          <div class="post__head--infoitem">
+              <span class="text__sub--sm">{{ timeline.ticketTiming.timetoshow }}</span>
+          </div>
+      </div>
+  </div>
+  <div class="post__body">
+      <div class="post__body--data">
+          <span class="post__body--content">
+              {{timeline.mentionDescription}}
+          </span>
+          <div class="post__body--media" *ngIf="timeline.imageurls && timeline.imageurls.length > 0" >
+              <img class="img__fluid" [src]="timeline.imageurls[0]">
+          </div>
+      </div>
+      <div class="post__stat" >
+          <ng-template [ngIf]="timeline.channelGroup == 1">
+              <div class="post__stat--item">
+                  <span class="post__stat--icon">
+                      <mat-icon fontSet="material-icons-outlined">favorite</mat-icon>
+                  </span>
+                  <span class="post__stat--value">{{timeline.LikeCount}}</span>
+              </div>
+              <div class="post__stat--item">
+                  <span class="post__stat--icon">
+                      <mat-icon fontSet="material-icons-outlined">repeat</mat-icon>
+                  </span>
+                  <span class="post__stat--value">{{timeline.CommentCount}}</span>
+              </div>
+          </ng-template>
+         <ng-template [ngIf]="timeline.channelGroup == 2">
+          <div class="post__stat--item">
+              <span class="post__stat--icon">
+                  <mat-icon fontSet="material-icons-outlined">favorite</mat-icon>
+              </span>
+              <span class="post__stat--value">{{timeline.LikeCount}}</span>
+          </div>
+          <div class="post__stat--item">
+              <span class="post__stat--icon">
+                  <mat-icon fontSet="material-icons-outlined">repeat</mat-icon>
+              </span>
+              <span class="post__stat--value">{{timeline.CommentCount}}</span>
+          </div>
+         </ng-template>
+      </div>
+  </div>
+</div>

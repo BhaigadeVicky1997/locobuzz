@@ -1,0 +1,17 @@
+<div class="custom__alert d-flex-items-center">
+  <span (click)="applyabouttobreach()" class="text-center" style="width: 100%;">
+    <mat-icon class="mr-8">timer</mat-icon>
+    <span *ngIf="ticketAbouttoBreach > 1; else singleticketobreach"
+      >{{ ticketAbouttoBreach }} Tickets are about to breach</span
+    >
+    <ng-template #singleticketobreach>
+      <span>{{ ticketAbouttoBreach }} Ticket is about to breach</span>
+    </ng-template>
+    <mat-icon>arrow_right_alt</mat-icon>
+  </span>  
+  <a class="ml-auto">
+    <mat-icon (click)="closeNotification()" mat-button class="colored__white"
+      >close</mat-icon
+    >
+  </a>
+</div>

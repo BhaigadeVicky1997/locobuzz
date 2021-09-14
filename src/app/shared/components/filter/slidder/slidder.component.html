@@ -1,0 +1,27 @@
+<mat-form-field color="accent" appearance="outline" class="material__select material__select">
+    <mat-label>{{label}}</mat-label>
+
+    <input class="cursor-pointer" matInput [value]="followerValue" readonly [matMenuTriggerFor]="sliderDropdown">
+    <!-- <mat-select [disabled]="filterData[group][items]['options'].length == 0" [formControlName]="items" panelClass="dropdown__bordered">
+    <mat-option *ngFor="let item of
+        filterData[group][items]['options']" [value]='item.id'>{{item.label}}
+    </mat-option>
+</mat-select> -->
+    <mat-menu #sliderDropdown="matMenu" class="filter__dropdown">
+        <div class="slider" (click)="$event.stopPropagation();">
+            <nouislider [connect]="true" [min]="min" [max]="max" [step]="1" [(ngModel)]="followerCountRange" (slide)="onSliderChange($event)"></nouislider>
+            <div class="rangeInput">
+                <div class="custom__inputwrapper rangeInput__item">
+                    <label class="text__label custom__inputlabel">Minimum</label>
+                    <input class="slider__min custom__input rangeInput__item--min" [value]="followerCountMin" [min]="min" [max]="max" type="number" (input)="onRangeInput('min',$event)">
+                </div>
+
+                <div class="custom__inputwrapper rangeInput__item">
+                    <label class="text__label custom__inputlabel">Maximum</label>
+                    <input class="slider__min custom__input rangeInput__item--max" [value]="followerCountMax" [min]="min" [max]="max" type="number" (input)="onRangeInput('max',$event)">
+                </div>
+            </div>
+        </div>
+    </mat-menu>
+    <mat-icon *ngIf="isExclude" matSuffix class="matsuffix__close" fontSet="material-icons-outlined" (click)="removeExcludeFilter(label)">close</mat-icon>
+</mat-form-field>

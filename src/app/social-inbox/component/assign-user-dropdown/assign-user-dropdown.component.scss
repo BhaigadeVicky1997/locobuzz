@@ -1,0 +1,18 @@
+.autocomplete-option{
+    &__item{
+        display: flex;
+        align-items: center;
+        &--label{
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        &--usericon{
+            margin-right: 5px;
+        }
+
+        &--usercheck {
+            margin-left: auto;
+        }
+    }
+}

@@ -1,0 +1,36 @@
+@import "app/@locobuzz/scss/partials/_breakpoints.scss";
+.post{
+    &__list{
+        position: relative;
+        padding: 12px;
+        margin-bottom: 60px;
+
+        &--info{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 0;
+        }
+
+        &--count{
+            font-style: italic;
+        }
+    }
+
+    &__new{
+        &--btn{
+            position: fixed;
+            left: 50%;
+            top: 24%;
+            font-weight: 300;
+            transform: translate(24%, -50%);
+            opacity: 0.8;
+            z-index: 2;
+            @include media-breakpoint('xl'){
+                top: 13%;
+                transform: translate(24%, 0);
+            }
+        }
+    }
+}

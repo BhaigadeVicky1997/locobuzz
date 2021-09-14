@@ -1,0 +1,30 @@
+@mixin sidemodal-theme($theme){
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+    .side-modal{
+        background: map-get($background, card);
+        box-shadow: -2px 0px 4px rgba(122, 137, 160, 0.2);
+        width: 400px;
+
+        &__full{
+          width: 100%;
+          max-width: 100vw !important;
+        }
+
+        &--foot{
+            border-top:  1px solid map-get($foreground, divider);
+        }
+
+    }
+}
+
+.cdk-overlay-backdrop.side-modal-overlay{
+    background: rgba(0, 0, 0, 0.1);
+
+    & ~ .cdk-global-overlay-wrapper .mat-dialog-container{
+        overflow: inherit;
+    }
+}
+
+@include animate('.side-modal',slideInRight,.3);
+

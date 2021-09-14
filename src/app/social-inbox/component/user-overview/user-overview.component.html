@@ -1,0 +1,54 @@
+<div class="user-overview">
+    <div *ngIf="userLoyaltyDetails" class="user-overview__stats" fxLayout="row wrap"
+                fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="12px
+        grid" fxLayoutAlign="flex-start">
+        <div fxFlex="33.33%">
+            <div class="stat">
+                <span class="stat__label">Total Engagement</span>
+                <span class="stat__value">{{userLoyaltyDetails.totalEngagement}}</span>
+            </div>
+        </div>
+        <div fxFlex="33.33%">
+            <div class="stat">
+                <span class="stat__label">Reaction/Likes</span>
+                <span class="stat__value">{{userLoyaltyDetails.likes}}</span>
+            </div>
+        </div>
+        <div fxFlex="33.33%">
+            <div class="stat">
+                <span class="stat__label">Share/Retweets</span>
+                <span class="stat__value">{{userLoyaltyDetails.shares}}</span>
+            </div>
+        </div>
+        <div fxFlex="33.33%">
+            <div class="stat">
+                <span class="stat__label">Comments/Replies</span>
+                <span class="stat__value">{{userLoyaltyDetails.comments}}</span>
+            </div>
+        </div>
+        <div fxFlex="33.33%">
+            <div class="stat">
+                <span class="stat__label">Brand Afinity</span>
+                <span class="stat__value colored__yellow--dark">5</span>
+            </div>
+        </div>
+    </div>
+    <div class="user-overview__charts"  *ngIf="userLoyaltyDetails">
+        <mat-tab-group>
+            <mat-tab label="Sentiment Trend (Last
+                30 Interactions)">
+                <!-- <highcharts-chart [Highcharts]="highcharts"
+                    *appIfOnDom
+                    [options]="sentimentDetailOptions">
+                </highcharts-chart> -->
+                <app-chart [highchartOptions]="sentimentDetailOptions"></app-chart>
+            </mat-tab>
+            <mat-tab  label="User Interaction">
+                <!-- <highcharts-chart [Highcharts]="highcharts"
+                    [options]="userInteractionOptions">
+                </highcharts-chart> -->
+                <app-chart [highchartOptions]="userInteractionOptions"></app-chart>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

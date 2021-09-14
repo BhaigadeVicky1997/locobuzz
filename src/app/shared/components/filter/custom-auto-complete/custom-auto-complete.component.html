@@ -1,0 +1,10 @@
+<mat-form-field color="accent" class="material__input mb-12" appearance="outline">
+    <mat-label>{{label}}</mat-label>
+    <input #Input type="text" aria-label="Number" matInput [formControl]="inputForm" [matAutocomplete]="auto">
+    <mat-icon matSuffix fontSet="material-icons-outlined">search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selection()">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option}}
+        </mat-option>
+    </mat-autocomplete>
+</mat-form-field>

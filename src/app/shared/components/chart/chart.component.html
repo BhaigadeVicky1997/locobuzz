@@ -1,0 +1,26 @@
+<div class="chartcomponent" *ngIf="highchartOptions && (highchartOptions | json) != '{}'; else notfound">
+    <ng-content select="[chart-brand]"></ng-content>
+    <!-- <highcharts-chart
+        [ngClass]="{'centerChart': centerAlign}"
+        [Highcharts]="Highcharts"
+        [options]="highchartOptions"
+        [(update)]="highchartTrigger"
+        style="width:100%;height:100%;margin: 0 auto;"
+        (chartInstance)="logChartInstance($event)">
+    </highcharts-chart> -->
+    <highcharts-chart
+    [ngClass]="{'centerChart': centerAlign}"
+    [Highcharts]="highcharts"
+    [(update)]="updateFlag"
+    [oneToOne]="true"
+    [options]="highchartOptions"
+    (chartInstance)="logChartInstance($event)"
+    runOutsideAngular="true">
+  </highcharts-chart>
+</div>
+<ng-template #notfound>
+  <div class="chartcomponent__nodata">
+    <h3 class="text__title text-center">No Data found</h3>
+  </div>
+</ng-template>
+<!-- {{highchartOptions}} -->

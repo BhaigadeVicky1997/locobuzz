@@ -1,0 +1,196 @@
+.post{
+    &-profile{
+        padding: 15px;
+           &__info{
+            &--profile{
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+    
+            &--profileimg{
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 1px solid var(--color-light-grey);
+                overflow: hidden;
+                margin-right: 1rem;
+            }
+    
+            &--profilename{
+                font-weight: 600;
+                text-transform: capitalize;
+                font-size: 1.6rem;
+                
+            }
+    
+            &--profilehandle{
+                font-size: 12px;
+            }
+    
+            &--profilecontent{
+                display: flex;
+                flex-direction: column;
+            }
+    
+            &--profileactions{
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+            }
+
+            &--profilesummary{
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+
+                & > div{
+                    flex:0 0 65%;
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &--profilecontact{
+                padding: 15px;
+            }
+
+            &--profilecontactitem{
+                display: flex;
+                align-items: center;
+                margin-bottom: 1rem;
+            }
+
+            &--profilecontacticon{
+                display: inline-block;
+                margin-right: 1rem;
+            }
+    
+            &--profilecopy{
+                display: inline-block;
+                margin-left: 15px;
+                cursor: pointer;
+            }
+
+            &--social{
+                position: relative;
+                margin: 0;
+
+                &::before{
+                    content: "";
+                    height: 100%;
+                    width: 1px;
+                    position: absolute;
+                    top:-15px;
+                    bottom: -15px;
+                    left: 12px;
+                }
+               
+            }
+
+            &--socialitem{
+                display: flex;
+                align-items: center;
+
+                &:not(:last-child){
+                    margin-bottom: 15px;
+                }
+
+            }
+
+           &--socialstats{
+                display: flex;
+                align-items: center;
+                position: relative;
+                padding-left: 30px;
+                margin-bottom: 1rem;
+
+                &::before{
+                    content: "";
+                    display: inline-block;
+                    width: 1rem;
+                    height: 1rem;
+                    border-radius: 50%;
+                    position: absolute;
+                    left: 8px;
+                }
+            }
+
+            &--socialimage{
+                display: inline-block;
+                margin-right: 1rem;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                z-index: 1;
+            }
+          
+            &--add{
+                border-radius: 50%;
+
+            }
+
+            &--add{
+                background-color: var(--color-locobuzz);
+                color: var(--color-white);
+                width: 25px;
+                height: 25px;
+            }
+
+        }
+
+        &__score{
+            &--item{
+                display: flex;
+                align-items: center;
+                &:not(:last-child){
+                    margin-bottom: 1rem;
+                }
+            }
+    
+            &--label{
+                display: flex;
+                flex-direction: column;
+                
+            }
+    
+            &--labelmain{
+                font-weight: 600;
+            }
+    
+            &--labelsub{
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+            }
+            
+            &--replay{
+               margin-left: 1rem;
+               cursor: pointer;
+            }
+    
+            &--value{
+                margin-left: auto;
+                font-weight: 600;
+                font-size: 1.8rem;
+            }
+        }
+
+
+    
+    }
+
+    &-personal {
+        & .post-section{
+             &--content{
+                 max-height: calc(100vh - 144px);
+             }
+         }
+     }
+
+     &-crm{
+        &--item{
+            margin-bottom: 20px;
+        }
+    }
+ 
+}

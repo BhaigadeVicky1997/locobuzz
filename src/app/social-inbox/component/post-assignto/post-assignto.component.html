@@ -1,0 +1,41 @@
+<div class="modal__head">
+    <h3 class="modal__title text-capitalize">Assign selected ticket</h3>
+    <span class="modal__action">
+        <mat-icon fontSet="material-icons-outlined" [mat-dialog-close]="true">close</mat-icon>
+    </span>
+</div>
+<form [formGroup]="assignToForm" id="assignToForm" (ngSubmit)="onSubmit()">
+    <div class="modal__body">
+        <div class="p-16">
+            <div class="w-600 m-auto">
+
+                <app-assign-user-dropdown formControlName="assignToName" [options]="assignTo" [label]="'agentName'" [value]="selectedAssignTo" (selectedData)="setAssigntoFromValue($event)"></app-assign-user-dropdown>
+                <!-- <mat-form-field appearance="outline" class="material__select
+                        material__select--adaptive">
+                        <mat-label>Assign To</mat-label>
+                        <mat-select formControlName="assignToName"
+                            [(value)]="selectedAssignTo">
+                            <mat-option class="matmenu__item" *ngFor="let item of
+                                assignTo" [value]="item.agentID">
+                                <span>{{item.agentName}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                    <div class="custom__input--wrapper">
+                        <mat-form-field appearance="outline" class="material__select">
+                            <mat-label class="text-capitalize">Add note</mat-label>
+                            <textarea matInput formControlName="note" style="resize: none;"></textarea>
+                          </mat-form-field>
+                        <!-- <mat-label>Add note</mat-label>
+                        <textarea matInput class="custom__input" formControlName="note"
+                            placeholder="Add note"></textarea> -->
+                    </div>
+                <!-- <button type="submit" form="assignToForm" mat-flat-button color="accent">Assign</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="modal__foot">
+        <button class="ml-auto mr-10" mat-stroked-button [mat-dialog-close]="true" color="accent">Cancel</button>
+        <button type="submit" mat-flat-button color="accent">Assign</button>
+    </div>
+</form>

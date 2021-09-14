@@ -1,0 +1,33 @@
+.saved-filters{
+    margin: 0;
+    max-width: 371px;
+    
+    &__item{
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        &:not(:last-child){
+            margin-bottom: 20px;
+        }
+    }
+
+    &__icon{
+        margin-right: 1rem;
+        border-radius: 4px;
+    }
+
+    &__content{
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+
+        &--label,
+        &--description{
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+    }
+}

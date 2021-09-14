@@ -1,0 +1,53 @@
+<div class="post-reply">
+    <div class="post-reply__head">
+        <span class="post-reply__head--title">Reply</span>
+        <span class="post-reply__head--action" (click)="closePostReply()">
+            <mat-icon>close</mat-icon>
+        </span>
+    </div>
+    <div class="post-reply__body">
+        <div class="custom__row" fxLayout="row" fxLayoutGap="15px">
+            <div class="custom__column" >
+                <mat-form-field appearance="outline">
+                    <mat-label>Reply Type</mat-label>
+                    <mat-select>
+                      <mat-option>Reply & Escalate</mat-option>
+                      <mat-option>close</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div class="custom__column" fxFlex="100">
+                <mat-form-field  appearance="outline">
+                    <mat-label>To</mat-label>
+                    <mat-chip-list #chipList aria-label="email selection">
+                      <mat-chip *ngFor="let email of emails" [selectable]="selectable"
+                               [removable]="removable" (removed)="removeEmail(email)">
+                        {{email.id}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip><!-- [matChipInputAddOnBlur]="addOnBlur" -->
+                      <input placeholder="New email..."
+                             [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                             
+                             (matChipInputTokenEnd)="addEmail($event)">
+                    </mat-chip-list>
+                  </mat-form-field>
+            </div>   
+        </div>
+        <div class="custom__row">            
+            <div class="custom__column">
+                <textarea class="custom__input"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="post-reply__foot">
+        <div class="input__wrapper">                           
+            <mat-checkbox>Send to Groups</mat-checkbox>
+        </div>
+        <div class="input__wrapper">                           
+            <mat-checkbox>Add previous mail trail</mat-checkbox>
+        </div>
+        <button mat-flat-button class="ml-auto">Cancel</button>
+        <button mat-flat-button class="ml-8" color="accent">Next</button>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.972" height="48.972" viewBox="0 0 48.972 48.972">
+  <defs>
+    <filter id="Path_11814" x="0" y="0" width="48.972" height="48.972" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_20299" data-name="Group 20299" transform="translate(-9887.757 11634.243)">
+    <g transform="matrix(1, 0, 0, 1, 9887.76, -11634.24)" filter="url(#Path_11814)">
+      <path id="Path_11814-2" data-name="Path 11814" d="M19.986,0A19.986,19.986,0,1,1,0,19.986,19.986,19.986,0,0,1,19.986,0Z" transform="translate(4.5 4.5)" fill="#f7f8f9"/>
+    </g>
+    <path id="Path_11804" data-name="Path 11804" d="M989.894,187.491h0a1.249,1.249,0,0,0,0,1.751,9.758,9.758,0,0,1,0,13.818,1.25,1.25,0,0,0,0,1.753,1.147,1.147,0,0,0,.837.358,1.236,1.236,0,0,0,.875-.358,12.259,12.259,0,0,0,0-17.322,1.148,1.148,0,0,0-.837-.359h-.038a1.145,1.145,0,0,0-.837.359Z" transform="translate(8927.823 -11805.909)" fill="#869dad" fill-rule="evenodd"/>
+    <path id="Path_11805" data-name="Path 11805" d="M983.827,190.138h0a1.149,1.149,0,0,0,0,1.473,8.266,8.266,0,0,1,0,11.787,1.146,1.146,0,0,0,0,1.472,1.12,1.12,0,0,0,.757.279.952.952,0,0,0,.717-.279,10.379,10.379,0,0,0,0-14.733.989.989,0,0,0-.717-.319h0a1.169,1.169,0,0,0-.757.319Z" transform="translate(8930.345 -11807.043)" fill="#869dad" fill-rule="evenodd"/>
+    <path id="Path_11806" data-name="Path 11806" d="M980.731,194.17h0a1.145,1.145,0,0,0-1.474,0,1.11,1.11,0,0,0,0,1.513,4.97,4.97,0,0,1,0,7.048,1.06,1.06,0,0,0,0,1.473,1.131,1.131,0,0,0,.758.279,1.02,1.02,0,0,0,.716-.279,7.066,7.066,0,0,0,0-10.035Z" transform="translate(8932.287 -11808.765)" fill="#869dad" fill-rule="evenodd"/>
+    <path id="Path_11807" data-name="Path 11807" d="M965.512,196.088h-2.55a.926.926,0,0,0-.913.916v6.252a.926.926,0,0,0,.913.916h2.55Z" transform="translate(8939.422 -11809.688)" fill="#869dad" fill-rule="evenodd"/>
+    <path id="Path_11808" data-name="Path 11808" d="M972.354,191.753l-2.867,2.151v8.641l2.867,2.15a.89.89,0,0,0,1.432-.717V192.47a.89.89,0,0,0-1.432-.717Z" transform="translate(8936.284 -11807.781)" fill="#869dad" fill-rule="evenodd"/>
+  </g>
+</svg>

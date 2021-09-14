@@ -1,0 +1,254 @@
+<div class="chatbot__dialog" [ngClass]="{'expanded': chatExpanded}"
+    *ngIf="chatToggle" [@scaleInOut]>
+    <div class="chatbot__head">
+        <div class="chatbot__head--channels" *ngIf="channels">
+            <div mat-tab-nav-bar color="accent">
+                <a mat-tab-link [active]="channelActiveIndex == i"
+                    class="chatbot__head--link" *ngFor="let channel of
+                    channels;let i= index" (click)="switchChannel(channel.channelId)">
+                    <img class="chatbot__head--icon" [src]="channel.image">
+                    <span class="text__label">{{channel.name}}</span>
+                    <span class="custom__badge custom__badge--red" *ngIf="chatObject?.length > 0 && chatObject[i]?.userProfiles && chatObject[i]?.userProfiles.length > 0">
+                        {{chatObject[i].userProfiles.length}}
+                    </span>
+                </a>
+            </div>
+
+            <div class="chatbot__head--actions">
+                <a href="javascript:void(0)" (click)="toggleChatboxDimension()">
+                    <mat-icon>crop_din</mat-icon>
+                </a>
+                <a href="javascript:void(0)" (click)="closeChatBox()">
+                    <mat-icon>close</mat-icon>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="chatbot__content">
+      <div class="chatbot__loader" *ngIf="chatloading"></div>
+        <ng-container *ngIf="chatProfiles?.length> 0 && chatlog?.length > 0; else noChat">
+            <div class="chatbot__content--users">
+                <div mat-tab-nav-bar color="accent">
+                    <a mat-tab-link [active]="userActiveIndex == i"
+                        class="chatbot__head--link profile" *ngFor="let profile
+                        of chatProfiles; let i= index" (click)="switchProfiles(profile.authorSocialID)">
+                        <img class="profile__img" [src]="profile.picUrl && profile.picUrl !==  '' ? profile.picUrl : defaultUserImg">
+                        <span class="custom__badge custom__badge--red on-shrink" *ngIf="profile?.notificationCount && notificationCount?.notificationCount > 0">{{profile.notificationCount}}</span>
+                        <div class="on-expand chatbot__user--section">
+                            <div class="chatbot__user">
+                                <span class="text__label chatbot__user--name">{{profile.authorName}}</span>
+                                <span class="text__sub--sm chatbot__user--message">{{profile.lastChat}}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="chatbot__content--messages">
+                <div class="chatbot__info" *ngIf="activeUser">
+                    <a href="javascript:void(0)" class="profile">
+                        <img class="profile__img mr-0"
+                            [src]="activeUser.picUrl && activeUser.picUrl !==  '' ? activeUser.picUrl : defaultUserImg ">
+                        <!-- <span class="profile__status online"></span> -->
+                    </a>
+                    <p class="text__sub m-0 p-8">
+                        <a class="text__label" href="javascript:void(0)" (click)="openUserProfile(1)">{{activeUser?.authorName}}</a> message on <span class="text__label">{{activeUser?.brandName}}</span>
+                    </p>
+                </div>
+                <div class="chatbot__log" #chatLogElem (scroll)="getDataonScroll()">
+                    <div class="scroll__loader" *ngIf="lazyLoading" [@slideInTop]>
+                        <mat-icon>refresh</mat-icon>
+                    </div>
+                    <ng-container *ngFor="let item of chatlog; let groupIndex = index">
+                        <div class="chatbot__log--section"
+                            [ngClass]="{'recieved': !item.isBrandPost, 'sent': item.isBrandPost}"
+                            *ngIf="item.concreteClassName !== chatType.log" [@fadeInBottom]>
+                            <div class="profile" *ngIf="!item.isBrandPost">
+                                <img class="profile__img mr-12"
+                                [src]="activeUser.picUrl && activeUser.picUrl !==  '' ? activeUser.picUrl : defaultUserImg">
+                            </div>
+                            <div class="chatbot__log--messages messages">
+                                <ng-container *ngFor="let chat of item.chats; let chatIndex = index">
+                                    <ng-container *ngIf="chat?.description !== '' && !chat?.attachments" >
+                                        <span class="messages__text" [@fadeInBottom]>
+                                            {{chat.description}}
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="chat.attachments && (chat.attachmentsType === MediaEnum.IMAGEANDVIDEOGROUP || chat.attachmentsType === MediaEnum.IMAGE)" >
+                                        <span class="messages__text messages__attachment" [ngClass]="{'messages__attachment--flex': chat.attachments.length > 1}" [@fadeInBottom]>
+                                            <ng-container *ngFor="let media of chat.attachments; let attachmentIndex = index">
+                                                <span class="messages__attachment--img cursor-pointer" [ngClass]="{'messages__attachment--full': attachmentIndex == 2 && chat.attachments.length == 3}"  *ngIf="4 > attachmentIndex" (click)="openAttachmentPreview(groupIndex, chatIndex,  attachmentIndex)">
+                                                    <span class="messages__attachment--overlay" *ngIf="attachmentIndex === 3 && chat.attachments.length > 4">+{{chat.attachments.length - 3}}</span>
+                                                    <img *ngIf="media.mediaType === MediaEnum.IMAGE || media.mediaType === MediaEnum.ANIMATEDGIF"  class="img__fluid bg__white"  [src]="media.mediaUrl" [alt]="media.name">
+                                                    <!-- <mat-icon class="messages__attachment--icon" *ngIf="media.mediaType === 3" fontSet="material-icons-outlined">play_circle_outline</mat-icon> -->
+                                                    <video class="messages__attachment--video" controls *ngIf="media.mediaType === MediaEnum.VIDEO" style="border-radius: 10px;">
+                                                      <source [src]="media.mediaUrl" type="video/mp4">
+                                                      <source [src]="media.mediaUrl" type="video/ogg">
+                                                      Your browser does not support HTML video.
+                                                    </video>
+                                                </span>
+                                            </ng-container>
+                                            <span class="messages__attachment--content" *ngIf="chat.description">{{chat.description}}</span>
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="chat.attachments && (chat.attachmentsType === MediaEnum.IMAGEWITHSUBTITLE)">
+                                      <img class="image__bordered mb-5" [src]="chat.attachments.mediaUrl" [alt]="chat.attachments.name">
+                                      <span class="text__sm">{{chat.attachments.title}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="chat.attachments && chat.attachmentsType === MediaEnum.QUICKREPLY">
+                                      <div class="suggestion__text">
+                                        <a href="javascript:void(0)" class="suggestion__text--link" *ngFor="let chatItem of chat.attachments.quickReplyButtons.message.quick_replies">
+                                            <span class="text__label">{{chatItem.title}}</span>
+                                        </a>
+                                      </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="chat.attachments && chat.attachmentsType === MediaEnum.FILE">
+                                        <span class="messages__attachFile">
+                                          <object data="https://www.eesd2020.org/wp-content/uploads/2018/10/dummy.pdf" type="text/html" height="130" style="overflow:hidden; height:130px;">
+                                              alt : <a href="https://www.eesd2020.org/wp-content/uploads/2018/10/dummy.pdf">PDF TITLE</a>
+                                          </object>
+                                          <span class="messages__attachFile--pdfFile">
+                                              <span>
+                                                  <img src="assets/images/chatbot/pdf.svg" alt="">
+                                                  <span>untitle.doc</span>
+                                              </span>
+                                              <mat-icon>file_download</mat-icon>
+                                          </span>
+                                          <div class="messages__attachFile--foot">
+                                              <span class="messages__attachFile--foot--textMessage">This invoice of your product.</span>
+                                          </div>
+                                      </span>
+                                      <span class="messages__attachFile--docFile">
+                                          <span>
+                                              <img src="assets/images/chatbot/doc.svg" alt="">
+                                              <span>untitle.doc</span>
+                                          </span>
+                                          <mat-icon>file_download</mat-icon>
+                                      </span>
+                                    </ng-container>
+                                </ng-container>
+                                <span class="text__light--sm messages__time" >{{item.mentionTime  | datetimeFormatter:'chatbot' }}</span>
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </div>
+
+                <div class="chatbot__foot">
+                    <div class="d-flex-items-center mb-12">
+                        <a href="javascript:void(0)" class="mr-12"
+                            (click)="toggleReplySection()"
+                            style="transform-origin:left" *ngIf="replyToggle"
+                            [@scaleInOut]>
+                            <mat-icon class="custom__icon text__light"
+                                fontSet="material-icons-outlined">keyboard_backspace</mat-icon>
+                            <span class="text__light"> Reply</span>
+                        </a>
+                        <a href="javascript:void(0)" class="mr-12" *ngIf="selectedMention" (click)="openUserProfile(3)">
+                            <mat-icon class="custom__icon text__light"
+                                fontSet="material-icons-outlined">local_activity</mat-icon>
+                            <span class="text__light"> {{selectedMention.ticketInfo.ticketID}}</span>
+                        </a>
+                        <a href="javascript:void(0)" class="mr-12" (click)="openUserProfile(1)">
+                            <mat-icon class="custom__icon text__light">info</mat-icon>
+                            <span class="text__light"> Author Info</span>
+                        </a>
+                        <a href="javascript:void(0)" class="mr-12" (click)="openCannedResponse()">
+                            <mat-icon class="custom__icon text__light">info</mat-icon>
+                            <span class="text__light"> Canned Responses</span>
+                        </a>
+                        <a href="javascript:void(0)" class="ml-auto
+                            custom__dropdown" (click)="openTicketDetail()">
+                            <mat-icon class="custom__icon text__light"
+                                fontSet="material-icons-outlined">more_vert</mat-icon>
+                            <ul class="custom__dropdown--list above">
+                                <li mat-menu-item>Ticket Details</li>
+                            </ul>
+                        </a>
+                    </div>
+                    <div class="d-flex-items-center" *ngIf="!replyToggle">
+                        <button mat-stroked-button color="accent" class="mr-12"
+                            (click)="toggleReplySection()">Reply</button>
+                        <button mat-stroked-button color="accent" class="mr-12" (click)="excalateReply()">Escalate
+                            Ticket</button>
+                        <button mat-stroked-button color="accent" (click)="directCloseTicket()">Close Ticket</button>
+                    </div>
+                    <div class="chatbot__foot--actions" *ngIf="replyToggle">
+                        <div class="chatbot__foot--input">
+                            <a href="javascript:void(0)" class="p-4" [matMenuTriggerFor]="emojiMenu">
+                                <mat-icon class="custom__icon text__light"
+                                    fontSet="material-icons-outlined">sentiment_satisfied_alt</mat-icon>
+                            </a>
+                            <mat-menu #emojiMenu="matMenu" class="custom__matmenu"  xPosition="after" yPosition="above">
+                                <div (click)="$event.stopPropagation();$event.preventDefault();">
+                                    <emoji-mart [darkMode]="false" [set]="selectedEmojiSet" (emojiSelect)="selectEmoji($event)" [showPreview]="false"></emoji-mart>
+                                </div>
+                            </mat-menu>
+                            <input type="text" class="p-0" [(ngModel)]="chatText" (keyup.enter)="replyMessage()">
+                            <a href="javascript:void(0)" class="p-4" *ngIf="chatAttachement.length === 0" (click)="openMediaDialog()">
+                                <mat-icon class="custom__icon text__light"
+                                    fontSet="material-icons-outlined">attach_file</mat-icon>
+                            </a>
+                        </div>
+                        <button mat-flat-button color="accent" class="btn__md" (click)="replyMessage()">
+                            <mat-icon class="custom__icon">send</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="chatbot__attachment" *ngIf="chatAttachement.length > 0" [@slideInBottom]>
+                    <div class="chatbot__attachment--head">
+                        <h3 class="text__title">Preview</h3>
+                        <a href="javascript:void(0)" class="ml-auto" (click)="clearSelectedMedia()">
+                            <mat-icon>close</mat-icon>
+                        </a>
+                    </div>
+                    <div class="chatbot__attachment--body">
+                        <mat-tab-group headerPosition="below" class="chatbot__tab--header">
+                            <mat-tab class="chatbot__tab-label" *ngFor="let imageItem of chatAttachement; let i = index">
+                                <ng-template mat-tab-label>
+                                    <div  class="chatbot__attachment--images">
+                                        <img class="img__fluid" [src]="imageItem.mediaUrl" [alt]="imageItem.name">
+                                        <mat-icon class="icon__remove" fontSet="material-icons-outlined" (click)="removeAttachement(i, $event)">cancel</mat-icon>
+                                    </div>
+                                  </ng-template>
+                                  <div  class="chatbot__attachment--preview" [ngClass]="{'chatbot__attachment--preview--chatExpanded': chatExpanded}">
+                                      <img class="img__fluid" [src]="imageItem.mediaUrl" [alt]="imageItem.name">
+                                  </div>
+                                </mat-tab>
+                                <mat-tab disabled>
+                                    <ng-template mat-tab-label>
+                                        <button mat-icon-button class="chatbot__attachment--add" (click)="openMediaDialog()">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                    </ng-template>
+                                </mat-tab>
+                          </mat-tab-group>
+                        <!--
+                        <ul class="chatbot__attachment--images">
+                            <li *ngFor="let media of this.chatAttachement">
+                                <img class="img__fluid" [src]="media.mediaUrl" [alt]="media.name">
+                            </li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+
+        </ng-container>
+        <ng-template #noChat>
+           <div class="chatbot__notfound" *ngIf="!chatloading">
+               <img class="chatbot__notfound--image mb-15" src="assets/images/chatbot/no-chats.svg"/>
+                <p class="text__title">No chats are available!</p>
+                <p class="text__light">Did you know now you can send a quick reply to your influencers with the help of chatbot, click here for more information</p>
+           </div>
+        </ng-template>
+    </div>
+</div>
+<div class="chatbot__bubble" *ngIf="!chatToggle" (click)="openChatBox()"
+    [@scaleInOut]>
+    <!-- <mat-icon class="chatbot__bubble--drag">drag_indicator</mat-icon> -->
+    <div class="chatbot__bubble--icon" matBadgeColor="warn"
+        matBadgePosition="before" mat-raised-button [matBadge]="chatCount"
+        [matBadgeHidden]="chatCount == 0">
+        <img class="img__fluid" src="/assets/images/common/chat-bubble.svg"
+            alt="chat bubble icon">
+    </div>
+</div>

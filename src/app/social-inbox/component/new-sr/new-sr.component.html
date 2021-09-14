@@ -1,0 +1,642 @@
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <div class="modal__head">
+    <h3 class="modal__title">
+      <mat-icon
+        class="cursor-pointer"
+        mat-dialog-close
+        fontSet="material-icons-outlined"
+      >
+        keyboard_backspace
+      </mat-icon>
+      Create New SR
+    </h3>
+    <span class="modal__action">
+      <mat-icon mat-button mat-dialog-close fontSet="material-icons-outlined"
+        >close</mat-icon
+      >
+    </span>
+  </div>
+  <div class="modal__body">
+    <div class="sr__create">
+      <div class="sr__create__summary">
+        <app-post-userprofile [showActions]="false"></app-post-userprofile>
+      </div>
+      <mat-divider [vertical]="true" class="margin-left__10"></mat-divider>
+
+      <div class="sr__create__options">
+        <div
+          class="margin-bottom"
+          fxLayout="row"
+          row-gap="20px"
+          fxLayout.xs="column"
+          fxLayout.sm="column"
+          fxLayoutGap="20px"
+          fxLayoutAlign="flex-start center"
+        >
+          <div fxFlex="33.33%" fxFlex.sm="100%" *ngIf="showmobilenumber">
+            <span class="mob--number">
+              <mat-form-field
+                fxFlex="35%"
+                appearance="outline"
+                class="outline--none material__select material__select--adaptive material__select--border--right"
+              >
+                <mat-select [value]="selected">
+                  <mat-option value="+91">+91</mat-option>
+                  <mat-option value="+91">+91</mat-option>
+                  <mat-option value="+91">+91</mat-option>
+                  <mat-option value="+91">+91</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <!-- <mat-divider [vertical]="true"></mat-divider> -->
+
+              <mat-form-field
+                appearance="outline"
+                fxFlex="65%"
+                class="outline--none material__select material__select--adaptive material__select--border--left"
+              >
+                <mat-label for="mobilenumber" class="num-label"
+                  >mobile number</mat-label
+                >
+                <input
+                  id="mobilenumber"
+                  type="string"
+                  formControlName="mobilenumber"
+                  matInput required
+                />
+              </mat-form-field>
+            </span>
+          </div>
+          <div
+            fxFlex="33.33%"
+            fxFlex.sm="100%"
+            class="mobile__full__width"
+            *ngIf="showcreditcard"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="creditcard">Credit Card Number</mat-label>
+              <input
+                matInput
+                id="creditcard"
+                type="string"
+                formControlName="creditcard"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-divider class="margin-bottom"></mat-divider>
+        <div
+          row-gap="20px"
+          fxLayout="row wrap"
+          fxLayout.xs="column"
+          fxLayout.sm="column"
+          fxLayoutGap="8px"
+        >
+        <div
+            fxFlex="100%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20 block-center"
+            *ngIf="showrequesttype"
+          >
+            
+              <mat-label for="requesttype">Request Type</mat-label>
+              
+              <mat-radio-group aria-label="Select an action"  formControlName="requesttype" class="ml-25">
+                <mat-radio-button (change)="changeRequestType($event.value)" value="1">Request/Complaint</mat-radio-button>
+                <mat-radio-button (change)="changeRequestType($event.value)" value="2">Lead</mat-radio-button>
+              </mat-radio-group>
+            
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showfirstname"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="firstname">First Name</mat-label>
+              <input
+                matInput
+                id="firstname"
+                type="string"
+                formControlName="firstname" required
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showfullname"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="fullname">Full Name</mat-label>
+              <input
+                matInput
+                id="fullname"
+                type="string"
+                formControlName="fullname"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showlastname"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="lastname">Last Name</mat-label>
+              <input
+                matInput
+                id="lastname"
+                type="string"
+                formControlName="lastname"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showpancard"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="pancard">Pan card</mat-label>
+              <input
+                matInput
+                id="pancard"
+                type="string"
+                formControlName="pancard"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showaddress"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="address">Address</mat-label>
+              <input
+                matInput
+                id="address"
+                type="string"
+                formControlName="address"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showcustId"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="custId">Customer ID</mat-label>
+              <input
+                matInput
+                id="custId"
+                type="string"
+                formControlName="custId"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showtitle"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="remarks">Title</mat-label>
+              <input
+                matInput
+                id="title"
+                type="string"
+                formControlName="remarks"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showstorelocation"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="storelocation">Store Location</mat-label>
+              <input
+                matInput
+                id="storelocation"
+                type="string"
+                formControlName="storelocation"
+              />
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showquerytype"
+          >
+            <mat-form-field
+              fxFlex.sm="100%"
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="querytype">Query Type</mat-label>
+              <mat-select id="querytype" formControlName="querytype" required>
+                <mat-option value="Complaint" selected>Complaint</mat-option>
+                <mat-option value="Feedback" selected>Feedback</mat-option>
+                <mat-option value="Query" selected>Query</mat-option>
+                <mat-option value="Request" selected>Request</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showfunctionalarea"
+          >
+            <mat-form-field
+              fxFlex.sm="100%"
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="functionalarea">Fucntional Area</mat-label>
+              <mat-select
+                id="functionalarea"
+                formControlName="functionalarea"
+                (selectionChange)="changefunction($event)"
+                required
+              >
+                <mat-option
+                  *ngFor="let item of functionalarea"
+                  [value]="item"
+                  >{{ item }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showproduct"
+          >
+            <mat-form-field
+              fxFlex.sm="100%"
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="product">Product</mat-label>
+              <mat-select id="product" formControlName="product" required>
+                <mat-option
+                  *ngFor="let item of productList"
+                  [value]="item.id"
+                  >{{ item.value }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showsource"
+          >
+            <mat-form-field
+              fxFlex.sm="100%"
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="source">Source</mat-label>
+              <mat-select id="source" formControlName="source" required>
+                <mat-option *ngFor="let item of sourceList" [value]="item.id">{{
+                  item.value
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showdomainarea"
+          >
+            <mat-form-field
+              fxFlex.sm="100%"
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="domainarea">Domain Area</mat-label>
+              <mat-select id="domainarea" formControlName="domainarea" required>
+                <mat-option *ngFor="let item of domainareaArray" value="item">{{
+                  item
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+          fxFlex="32%"
+          fxFlex.sm="100%"
+          class="mobile__full__width mb-20"
+          *ngIf="showcountry"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="outline--none outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="country">Country</mat-label>
+            <mat-select id="country" formControlName="country" required>
+              <mat-option
+                *ngFor="let item of countryList"
+                [value]="item.id"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showcity"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="city">City</mat-label>
+              <mat-select id="city" formControlName="city" required>
+                <mat-option *ngFor="let item of cityList" [value]="item.id">{{
+                  item.value
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+            fxFlex="32%"
+            fxFlex.sm="100%"
+            class="mobile__full__width mb-20"
+            *ngIf="showstate"
+          >
+            <mat-form-field
+              appearance="outline"
+              class="outline--none outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="state">State</mat-label>
+              <mat-select id="state" formControlName="state" required>
+                <mat-option *ngFor="let item of statelist" [value]="item.id">{{
+                  item.value
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div
+          fxFlex="32%"
+          fxFlex.sm="100%"
+          class="mobile__full__width mb-20"
+          *ngIf="showleadtype"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="outline--none outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="leadtype">Lead Type</mat-label>
+            <mat-select id="leadtype" formControlName="leadtype" required>
+              <mat-option *ngFor="let item of leadList" [value]="item.id">{{
+                item.value
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+          <div
+          fxFlex="32%"
+          fxFlex.sm="100%"
+          class="mobile__full__width mb-20"
+          *ngIf="showcategory"
+        >
+          <mat-form-field
+            fxFlex.sm="100%"
+            appearance="outline"
+            class="outline--none outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="category">Category</mat-label>
+            <mat-select id="category" formControlName="category" required>
+              <mat-option
+                *ngFor="let item of categoryList"
+                [value]="item.id"
+                >{{ item.value }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          fxFlex="32%"
+          fxFlex.sm="100%"
+          class="mobile__full__width mb-20"
+          *ngIf="showsubcategory"
+        >
+          <mat-form-field
+            fxFlex.sm="100%"
+            appearance="outline"
+            class="outline--none outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="subcategory">Sub-Category</mat-label>
+            <mat-select
+              id="subcategory"
+              formControlName="subcategory"
+              required
+            >
+              <mat-option value="Sub-Category" selected
+                >Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Category" selected
+                >Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Category" selected
+                >Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Category" selected
+                >Sub-Category</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          fxFlex="32%"
+          fxFlex.sm="100%"
+          class="mobile__full__width mb-20"
+          *ngIf="showsubsubcategory"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="outline--none outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="subsubcategory">Sub-Sub-Category</mat-label>
+            <mat-select
+              id="subsubcategory"
+              formControlName="subsubcategory"
+              required
+            >
+              <mat-option value="Sub-Sub-Category" selected
+                >Sub-Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Sub-Category" selected
+                >Sub-Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Sub-Category" selected
+                >Sub-Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Sub-Category" selected
+                >Sub-Sub-Category</mat-option
+              >
+              <mat-option value="Sub-Sub-Category" selected
+                >Sub-Sub-Category</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="32%" fxFlex.sm="100%" class="mobile__full__width mb-20" *ngIf="showemail">
+          <mat-form-field
+            appearance="outline"
+            class="outline--none material__select material__select--adaptive"
+          >
+            <mat-label for="email">Email Address</mat-label>
+            <input
+              matInput
+              id="email"
+              type="string"
+              formControlName="email"
+            />
+          </mat-form-field>
+        </div>
+        </div>
+        <div
+          class="margin-bottom"
+          fxLayout="row"
+          row-gap="20px"
+          fxLayout.xs="column"
+          fxLayoutGap="20px"
+          fxLayoutAlign="flex-start center"
+          *ngIf="showconversationlog"
+        >
+          <div fxFlex="100%" class="conversation">
+            <mat-form-field
+              fxFlex="100%"
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="conversationlog" class="num-label"
+                >Conversation Log</mat-label
+              >
+              <textarea
+                id="conversationlog"
+                formControlName="conversationlog"
+                matInput
+                class="input--height" readonly
+              >
+              </textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div
+          class="margin-bottom"
+          fxLayout="row"
+          row-gap="20px"
+          fxLayout.xs="column"
+          fxLayoutGap="20px"
+          fxLayoutAlign="flex-start center"
+          *ngIf="showremarks"
+        >
+          <div fxFlex="100%">
+            <mat-form-field
+              fxFlex="100%"
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="remarks" class="">Remarks</mat-label>
+              <textarea
+                matInput
+                id="remarks"
+                formControlName="remarks"
+                class="input--height"
+                placeholder="Ex. It makes me feel..."
+              >
+              </textarea>
+            </mat-form-field>
+          </div>
+        </div>
+        <div
+          class="margin-bottom"
+          fxLayout="row"
+          row-gap="20px"
+          fxLayout.xs="column"
+          fxLayoutGap="20px"
+          fxLayoutAlign="flex-start center"
+          *ngIf="showcomments"
+        >
+          <div fxFlex="100%">
+            <mat-form-field
+              fxFlex="100%"
+              appearance="outline"
+              class="outline--none material__select material__select--adaptive"
+            >
+              <mat-label for="remarks" class="">Comments</mat-label>
+              <textarea
+                matInput
+                id="comments"
+                formControlName="remarks"
+                class="input--height"
+                placeholder="Ex. It makes me feel..."
+              >
+              </textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <app-modal-loader [section]="'post-filter'"></app-modal-loader> -->
+  </div>
+  <div class="modal__foot">
+    <button
+      mat-stroked-button
+      mat-dialog-close
+      color="primary"
+      class="colored__blue ml-auto mr-5"
+    >
+      Cancel
+    </button>
+    <button mat-raised-button color="accent" type="submit">Submit</button>
+  </div>
+</form>
